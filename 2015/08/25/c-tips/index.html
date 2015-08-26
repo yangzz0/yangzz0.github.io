@@ -5,29 +5,19 @@
 <head>
   <meta charset="utf-8">
   
-  <title>git 使用总结 | 焖</title>
+  <title>c-tips | 焖</title>
   <meta name="author" content="yangzz">
   
-  <meta name="description" content="&lt;!-- [TOC] --&gt;
-常用命令&amp;gt; git
+  <meta name="description" content="字符串自动连接make
+-B/--always-make  通过刷新所有文件的时间戳，重新编译
 
-git add
-git branch
-git checkout
-git cherry-pick
-git clone
-git commit
-git diff
-git fetch
-git init
-git log
-git merge
-git mv">
+刷新源文件的时间戳
+find . -name *.c|xargs touch">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="git 使用总结"/>
+  <meta property="og:title" content="c-tips"/>
   <meta property="og:site_name" content="焖"/>
 
   
@@ -80,43 +70,22 @@ git mv">
     <header>
       
         <div class="icon"></div>
-        <time datetime="2015-08-04T07:09:47.000Z"><a href="/2015/08/04/git-use-abstract/">2015-08-04</a></time>
+        <time datetime="2015-08-25T10:08:03.000Z"><a href="/2015/08/25/c-tips/">2015-08-25</a></time>
       
       
   
-    <h1 class="title">git 使用总结</h1>
+    <h1 class="title">c-tips</h1>
   
 
     </header>
     <div class="entry">
       
-        <!-- [TOC] -->
-<h2 id="常用命令">常用命令</h2><pre><code><span class="blockquote">&gt; git</span>
-</code></pre><ul>
-<li><code>git add</code></li>
-<li><code>git branch</code></li>
-<li><code>git checkout</code></li>
-<li><code>git cherry-pick</code></li>
-<li><code>git clone</code></li>
-<li><code>git commit</code></li>
-<li><code>git diff</code></li>
-<li><code>git fetch</code></li>
-<li><code>git init</code></li>
-<li><code>git log</code></li>
-<li><code>git merge</code></li>
-<li><code>git mv</code></li>
-<li><code>git pull</code></li>
-<li><code>git push</code></li>
-<li><code>git rebase</code></li>
-<li><code>git remote</code></li>
-<li><code>git reset</code></li>
-<li><code>git rm</code></li>
-<li><code>git show</code></li>
-<li><code>git stash</code></li>
-<li><code>git status</code></li>
-<li><code>git tag</code></li>
+        <h2 id="字符串自动连接">字符串自动连接</h2><h2 id="make">make</h2><ul>
+<li><code>-B/--always-make</code>  通过刷新所有文件的时间戳，重新编译</li>
 </ul>
-<h2 id="协作模型">协作模型</h2><h2 id="参考文章">参考文章</h2><p><a href="http://www.ruanyifeng.com/blog/2015/08/git-use-process.html" target="_blank" rel="external">http://www.ruanyifeng.com/blog/2015/08/git-use-process.html</a></p>
+<h2 id="刷新源文件的时间戳">刷新源文件的时间戳</h2><ul>
+<li><code>find . -name *.c|xargs touch</code></li>
+</ul>
 
       
     </div>
@@ -124,11 +93,6 @@ git mv">
       
         
         
-  
-  <div class="tags">
-    <a href="/tags/git/">git</a>
-  </div>
-
 <!-- Baidu Button BEGIN -->
 <div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
 <a class="bds_qzone"></a>
@@ -154,8 +118,8 @@ document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static
 
  <nav id="pagination" >
     
-    <a href="/2015/08/04/linux-cmd/" class="alignleft prev" >上一页</a>
     
+    <a href="/2015/08/20/nginx-module-dev-arc/" class="alignright next" >下一页</a>
     
     <div class="clearfix"></div>
 </nav>
