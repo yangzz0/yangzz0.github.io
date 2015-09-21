@@ -5,37 +5,18 @@
 <head>
   <meta charset="utf-8">
   
-  <title>linux 下工具命令 | 焖</title>
+  <title>视频直播、点播草稿 | 焖</title>
   <meta name="author" content="yangzz">
   
-  <meta name="description" content="sort
-
-
-参数
-含义
-
-
-
-
--kx
-按照第x列的大小进行排序
-
-
--n
-按照数字比较，默认字典序排序
-
-
-
-du
-du -sh *统计当前文件夹下各个文件的大小
-du -shm *统计当前文件夹下各个文件的大小,以M 为单位。-shk 以 KB为单位
-
-locatelinux 下可以使用 lo">
+  <meta name="description" content="rtmp 指令—-中继（relay）Syntax: pull url [key=value]*
+Context: application
+创建pull中继，拉取远程的流放到本地使用，当有播放器连接的时候命令才会生效
+Url 语法: [rtmp://]host[:port][/app[/playpat">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="linux 下工具命令"/>
+  <meta property="og:title" content="视频直播、点播草稿"/>
   <meta property="og:site_name" content="焖"/>
 
   
@@ -88,79 +69,91 @@ locatelinux 下可以使用 lo">
     <header>
       
         <div class="icon"></div>
-        <time datetime="2015-08-04T10:14:42.000Z"><a href="/2015/08/04/linux-cmd/">2015-08-04</a></time>
+        <time datetime="2015-09-05T16:00:00.000Z"><a href="/2015/09/06/rtmp/">2015-09-06</a></time>
       
       
   
-    <h1 class="title">linux 下工具命令</h1>
+    <h1 class="title">视频直播、点播草稿</h1>
   
 
     </header>
     <div class="entry">
       
-        <h1 id="sort">sort</h1><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-kx</code></td>
-<td>按照第x列的大小进行排序</td>
-</tr>
-<tr>
-<td><code>-n</code></td>
-<td>按照数字比较，默认字典序排序</td>
-</tr>
-</tbody>
-</table>
-<h1 id="du">du</h1><ul>
-<li><code>du -sh *</code><br>统计当前文件夹下各个文件的大小</li>
-<li><code>du -shm *</code><br>统计当前文件夹下各个文件的大小,以<code>M</code> 为单位。<code>-shk</code> 以 <code>KB</code>为单位</li>
-</ul>
-<h1 id="locate">locate</h1><blockquote><p>linux 下可以使用 locate 和 find 来查找文件,但是 locate 在定位时要比 find 快.</p>
-<p>locate 并不是穿梭于档案文件中查找,而是在<strong>数据库</strong>查找文件.find 正好相反,他的查找要穿梭于档案文件中.</p>
-</blockquote>
-<p><code>locate [-ir] keyword</code><br>更新数据库<br><del><code>locate -u</code></del><br><code>updatedb</code></p>
-<p><strong>命令选项</strong></p>
+        <h2 id="rtmp_指令—-中继（relay）">rtmp 指令—-中继（relay）</h2><pre><code><span class="attribute">Syntax</span>: <span class="string">pull url [key=value]*</span>
+<span class="attribute">Context</span>: <span class="string">application</span>
+</code></pre><p>创建pull中继，拉取远程的流放到本地使用，当有播放器连接的时候命令才会生效</p>
+<p>Url 语法: <code>[rtmp://]host[:port][/app[/playpath]]</code>.</p>
+<p>如果app没有指定，则使用本地请求中的app名字</p>
 <table>
 <thead>
 <tr>
-<th>参数</th>
-<th>含义</th>
+<th>参数名称</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>i</td>
-<td>不区分大小写</td>
+<td>app</td>
+<td>指明应用名称</td>
 </tr>
 <tr>
-<td>r</td>
-<td>后面可以接收正则表达式</td>
+<td>name</td>
+<td>绑定监听的本地流名字，为空则监听所有的流</td>
+</tr>
+<tr>
+<td>tcUrl</td>
+<td>自动构建如果为空</td>
+</tr>
+<tr>
+<td>pageUrl</td>
+<td></td>
+</tr>
+<tr>
+<td>swfUrl</td>
+<td></td>
+</tr>
+<tr>
+<td>flashVer</td>
+<td></td>
+</tr>
+<tr>
+<td>playPath</td>
+<td>远程播放地址</td>
+</tr>
+<tr>
+<td>live</td>
+<td>合并指定的行为，为直播流</td>
+</tr>
+<tr>
+<td>start</td>
+<td></td>
+</tr>
+<tr>
+<td>stop</td>
+<td></td>
+</tr>
+<tr>
+<td>static</td>
+<td>静态化，会在nginx 启动的时候创建</td>
 </tr>
 </tbody>
 </table>
-<p><strong>参考</strong></p>
+<p><strong>Example</strong></p>
+<pre><code><span class="tag">pull</span> <span class="rule"><span class="attribute">rtmp</span>:<span class="value">//<span class="number">192.168</span>.<span class="number">1.129</span>/live/test name=ted</span></span>;
+</code></pre><h2 id="Notify相关指令">Notify相关指令</h2><p>主要用于回调通知</p>
+<h3 id="on_connect">on_connect</h3><pre><code>nginx 块: rtmp, <span class="keyword">server</span>
+</code></pre><p>当客户端发起一个连接的时候，同时将会发起一个异步的http请求，客户端连接将会被挂起等待http请求的结果。根据不同的结果做出不同的响应。</p>
+<p><strong>返回结果</strong></p>
 <ul>
-<li><a href="http://yijiebuyi.com/blog/58d0b9eec7f18769439f388a8037c151.html" target="_blank" rel="external">locate 在linux下快速定位文档</a></li>
+<li>2xx — 刚才发起的RTMP会话请求继续</li>
+<li>3xx — 重定向到另外一个应用，应用名在<code>Location</code>响应头中</li>
+<li>其他连接将会被丢弃</li>
 </ul>
-<h1 id="问题总结_FAQ">问题总结 FAQ</h1><ol>
-<li><p>crontab不执行问题</p>
-<blockquote><p>今天有个服务不能使用了，查来查去，原来 <code>crontab</code> 被干掉了。装上后还是无法运行，原来还要依赖 <code>crond</code> 这个服务</p>
-</blockquote>
-<ul>
-<li>检查文件具有可执行权限 <code>chmod a+x</code></li>
-<li>crond服务是否启动。查看及启动方式 <code>service crond start</code> <code>service crond status</code></li>
-</ul>
-</li>
-</ol>
-<p><strong>参考</strong></p>
-<ul>
-<li><a href="http://www.nginx.cn/2451.html" target="_blank" rel="external">crontab不执行问题</a></li>
-<li><a href="http://baike.baidu.com/link?url=4A3zDEAEGxKEkZV0GihvwInk1Rx9lCsJEZTeBUCgZq6a_h519pBSgCaCynxbiURbpXFUZ7Qqn-iF2Pj6Wp58Bq" target="_blank" rel="external">crond</a></li>
+<p>应用不能放在<code>application</code>块，连接阶段的时候还不知道具体是请求的哪一个应用。<br>HTTP请求默认使用POST方法。</p>
+<h3 id="on_play">on_play</h3><p>与on_connect 类似，只是返回结果为 <code>3xx</code>的时候需要指定新的流名称</p>
+<h2 id="参考资料">参考资料</h2><ul>
+<li><a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#live" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module/wiki/Directives#live</a></li>
+<li><a href="http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html?utm_source=tuicool" target="_blank" rel="external">http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html?utm_source=tuicool</a></li>
 </ul>
 
       
@@ -171,7 +164,7 @@ locatelinux 下可以使用 lo">
         
   
   <div class="tags">
-    <a href="/tags/linux/">linux</a>
+    <a href="/tags/nginx-rtmp/">nginx-rtmp</a>
   </div>
 
 <!-- Baidu Button BEGIN -->
@@ -199,8 +192,10 @@ document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static
 
  <nav id="pagination" >
     
-    <a href="/2015/08/05/php-upload-file/" class="alignleft prev" >上一页</a>
+    <a href="/2015/09/18/lua-metatable/" class="alignleft prev" >上一页</a>
     
+    
+    <a href="/2015/08/17/vod/" class="alignright next" >下一页</a>
     
     <div class="clearfix"></div>
 </nav>

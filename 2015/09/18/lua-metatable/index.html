@@ -5,13 +5,27 @@
 <head>
   <meta charset="utf-8">
   
-  <title>焖</title>
+  <title>元表、元方法 | 焖</title>
   <meta name="author" content="yangzz">
+  
+  <meta name="description" content="每一个值都有一个元表。table和userdata可以有各自独立的元表，其他类型的值则共享其类型所属的单一元表
+
+表是lua中非常重要的基本数据类型，实现其他的一些编程技术概念的基础，如模块、包、类。通过语言提供的元表和元方法可以更改表的表现行为。
+☆ 元方法
+
+
+元方法
+简单描述
+
+
+
+
+__me">
   
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  
+  <meta property="og:title" content="元表、元方法"/>
   <meta property="og:site_name" content="焖"/>
 
   
@@ -46,8 +60,7 @@
 </nav>
 <div class="clearfix"></div></header>
   <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper">
-  <article class="post">
+    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
   
     <div class="gallery">
   <div class="photoset">
@@ -69,7 +82,7 @@
       
       
   
-    <h1 class="title"><a href="/2015/09/18/lua-metatable/">元表、元方法</a></h1>
+    <h1 class="title">元表、元方法</h1>
   
 
     </header>
@@ -176,127 +189,27 @@
       
         
         
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
   
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
+  <div class="tags">
+    <a href="/tags/lua/">lua</a>, <a href="/tags/元方法/">元方法</a>, <a href="/tags/元表/">元表</a>
   </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
+
+<!-- Baidu Button BEGIN -->
+<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
+<a class="bds_qzone"></a>
+<a class="bds_tsina"></a>
+<a class="bds_tqq"></a>
+<a class="bds_renren"></a>
+<a class="bds_t163"></a>
+<span class="bds_more"></span>
+<a class="shareCount"></a>
 </div>
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-09-05T16:00:00.000Z"><a href="/2015/09/06/rtmp/">2015-09-06</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/09/06/rtmp/">视频直播、点播草稿</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h2 id="rtmp_指令—-中继（relay）">rtmp 指令—-中继（relay）</h2><pre><code><span class="attribute">Syntax</span>: <span class="string">pull url [key=value]*</span>
-<span class="attribute">Context</span>: <span class="string">application</span>
-</code></pre><p>创建pull中继，拉取远程的流放到本地使用，当有播放器连接的时候命令才会生效</p>
-<p>Url 语法: <code>[rtmp://]host[:port][/app[/playpath]]</code>.</p>
-<p>如果app没有指定，则使用本地请求中的app名字</p>
-<table>
-<thead>
-<tr>
-<th>参数名称</th>
-<th>说明</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>app</td>
-<td>指明应用名称</td>
-</tr>
-<tr>
-<td>name</td>
-<td>绑定监听的本地流名字，为空则监听所有的流</td>
-</tr>
-<tr>
-<td>tcUrl</td>
-<td>自动构建如果为空</td>
-</tr>
-<tr>
-<td>pageUrl</td>
-<td></td>
-</tr>
-<tr>
-<td>swfUrl</td>
-<td></td>
-</tr>
-<tr>
-<td>flashVer</td>
-<td></td>
-</tr>
-<tr>
-<td>playPath</td>
-<td>远程播放地址</td>
-</tr>
-<tr>
-<td>live</td>
-<td>合并指定的行为，为直播流</td>
-</tr>
-<tr>
-<td>start</td>
-<td></td>
-</tr>
-<tr>
-<td>stop</td>
-<td></td>
-</tr>
-<tr>
-<td>static</td>
-<td>静态化，会在nginx 启动的时候创建</td>
-</tr>
-</tbody>
-</table>
-<p><strong>Example</strong></p>
-<pre><code><span class="tag">pull</span> <span class="rule"><span class="attribute">rtmp</span>:<span class="value">//<span class="number">192.168</span>.<span class="number">1.129</span>/live/test name=ted</span></span>;
-</code></pre><h2 id="Notify相关指令">Notify相关指令</h2><p>主要用于回调通知</p>
-<h3 id="on_connect">on_connect</h3><pre><code>nginx 块: rtmp, <span class="keyword">server</span>
-</code></pre><p>当客户端发起一个连接的时候，同时将会发起一个异步的http请求，客户端连接将会被挂起等待http请求的结果。根据不同的结果做出不同的响应。</p>
-<p><strong>返回结果</strong></p>
-<ul>
-<li>2xx — 刚才发起的RTMP会话请求继续</li>
-<li>3xx — 重定向到另外一个应用，应用名在<code>Location</code>响应头中</li>
-<li>其他连接将会被丢弃</li>
-</ul>
-<p>应用不能放在<code>application</code>块，连接阶段的时候还不知道具体是请求的哪一个应用。<br>HTTP请求默认使用POST方法。</p>
-<h3 id="on_play">on_play</h3><p>与on_connect 类似，只是返回结果为 <code>3xx</code>的时候需要指定新的流名称</p>
-<h2 id="参考资料">参考资料</h2><ul>
-<li><a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#live" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module/wiki/Directives#live</a></li>
-<li><a href="http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html?utm_source=tuicool" target="_blank" rel="external">http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html?utm_source=tuicool</a></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
+<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=3326447" ></script>
+<script type="text/javascript" id="bdshell_js"></script>
+<script type="text/javascript">
+document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+</script>
+<!-- Baidu Button END -->      
       <div class="clearfix"></div>
     </footer>
   </div>
@@ -304,327 +217,37 @@
 
 
 
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
+ <nav id="pagination" >
     
-      <img src="">
     
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-08-17T06:54:36.000Z"><a href="/2015/08/17/vod/">2015-08-17</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/08/17/vod/">使用nginx实现视频点播</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p><a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#video-on-demand" target="_blank" rel="external">文档</a></p>
-<p>使用 play 相关的指令可以实现点播功能。相关命令:</p>
-<ul>
-<li>play</li>
-<li>play_temp_path</li>
-<li>play_local_path</li>
-</ul>
-<h2 id="配置">配置</h2><p>使用play命令可以点播mp4和flv文件。文件路径支持<code>本地目录</code>和http指定的<code>url</code>路径。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#26412;&#22320;&#25991;&#20214;&#10;application vod &#123;&#10;    play /var/flvs;&#10;&#125;&#10;&#10;#&#32593;&#32476;&#20013;&#30340;&#25991;&#20214;&#10;application vod_http &#123;&#10;    play http://myserver.com/vod;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>play 指令中可以指定多个文件路径</p>
-</li>
-<li><p>多个play指令的时候，会合并指令中的位置。在播放的时候会在这些路径列表中的文件夹下依次查找，查不到，就会给前端返回一个错误。</p>
-</li>
-<li><p>mp4 文件需要 采用 H.264 和 AAC 格式编码。</p>
-</li>
-<li><p>flv文件点播需要添加关键帧（可以使用yamdi添加），<code>record</code> 指令生成的文件没有关键帧。</p>
-</li>
-</ul>
-<p>当播放一个网络文件时，nginx会先把文件下载完，然后才播放。下载文件临时存放的位置由<code>play_temp_path</code>指定，默认是存在<code>/tmp</code>文件夹下。另外，可以使用 <code>play_local_path</code>指令，把下载的文件复制到本地，配合play指令可以指定多个路径列表的特点，提高性能，不用是ngx每次都去下载网络视频资源。</p>
-<p>配置更改如下即可实现点播url指定的文件，同时可以将文件缓存再本地，提高性能。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#32593;&#32476;&#20013;&#30340;&#25991;&#20214;&#10;application vod_http &#123;&#10;    play_local_path /tmp/videos;&#10;    play /tmp/videos http://example.com/videos;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="添加关键帧">添加关键帧</h2><pre><code>yamdi –<span class="tag">i</span> src<span class="class">.flv</span> –o dst.flv
-</code></pre><p><a href="http://yamdi.sourceforge.net/" target="_blank" rel="external">yamdi 文档</a></p>
-<h2 id="点播视频">点播视频</h2><p>可以使用ffmpeg自带的ffplay</p>
-<pre><code>ffplay <span class="symbol">rtmp:</span>/<span class="regexp">/localhost/vod</span><span class="regexp">//dir</span><span class="regexp">/file.flv</span>
-</code></pre>
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
+    <a href="/2015/09/06/rtmp/" class="alignright next" >下一页</a>
     
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
+    <div class="clearfix"></div>
+</nav>
+
+
+
+<section id="comment">
+
+<!-- Duoshuo Comment BEGIN -->
+	<div class="ds-thread"></div>
+<script type="text/javascript">
+var duoshuoQuery = {short_name:"soul11201"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
+<!-- Duoshuo Comment END -->  
+
   
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-08-12T09:20:51.000Z"><a href="/2015/08/12/How-to-set-up-your-own-private-RTMP-server-using-nginx/">2015-08-12</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/08/12/How-to-set-up-your-own-private-RTMP-server-using-nginx/">【译】How to set up your own private RTMP server using nginx</a></h1>
-  
+</section>
 
-    </header>
-    <div class="entry">
-      
-        <h1 id="如何使用nginx搭建一个私有的RTMP服务器">如何使用nginx搭建一个私有的RTMP服务器</h1><blockquote><p>原文地址: <a href="https://obsproject.com/forum/resources/how-to-set-up-your-own-private-rtmp-server-using-nginx.50/" target="_blank" rel="external">https://obsproject.com/forum/resources/how-to-set-up-your-own-private-rtmp-server-using-nginx.50/</a></p>
-</blockquote>
-<p>大多数人喜欢使用Twitch.tv和Ustream这类服务把流视频转播放给用户，并且工作的也非常好。但是有时候你想对你的流视频有更多的控制权，或者你想其他人把视频流转发给你，或者你想转发视频流到多个地方，或者一些事情需要你有权限访问RTMP服务器上的视频流。这篇教程内容非常基础，教你在一台linux服务器上搭建一个简单的RTMP服务器。</p>
-<p>在你自己RTMP服务器上，你可能感兴趣去做的是这两件事情：</p>
-<ul>
-<li>向多个频道播放内容</li>
-<li>由于一些目的，把其他人的多个视频流合成一个（我在多个角度拍摄中使用它，例如像在<a href="https://www.youtube.com/watch?v=6WUU58POsTM" target="_blank" rel="external">这个多个拍摄角度视频中</a>）</li>
-</ul>
-<p>好的，你该怎样做到这些事情呢？</p>
-<h2 id="第一步：获取一个服务器">第一步：获取一个服务器</h2><p>不管你信不信，RTMP 实际上对系统资源要求十分的小。本质上来说，它仅仅是从输入端抓取数据并把数据转发到输出端，简单的数据传输。不相信我？我的运行了很长一段时间的RTMP服务器是一个树莓派,一个价值35美金（月200元人民币）的迷你计算机，就放在我的办公桌上，至少同时处理3个数据输入流是完全没有问题的，我也从来没有对它进行过压力测试去看看到底他能处理多少。因此，我向你保证，即使一个便宜的旧机器也是完全没有问题的。</p>
-<p>加入你没有树莓派，一个vps也是可以的。我推荐Linode服务商，加入你能支付的起服务费用。我现在也在使用，并且到现在为止，它也运行良好。仅仅确保你有足够的带宽。。。记住带宽的使用量是<code>（视频流的大小）* （上传人数+下载人数）</code>。因此当我有两个视频流推送视频流到我的服务器，并且我同时下载他们，两小时消耗了10GB的带宽流量。</p>
-<p>为了方便，我推荐使用Ubuntu作为服务器软件，但是你完全可使用任何你想使用的。只要你能从apt之外其他的地方解决nginx的依赖问题，你就能参考这篇文档。</p>
-<p><strong>Windows 用户注意</strong> 这边教程关注Linux上的使用，加入你想在Windows上使用，你能找到带有RTMP 模块的nginx二进制包，在这个地方： <a href="http://nginx-win.ecsds.eu/" target="_blank" rel="external">http://nginx-win.ecsds.eu/</a></p>
-<p>加入你的服务器在你家里，你需要转发TCP 1935端口数据到这个服务器上。。。不同的路由器有不同的设置，因此你需要根据你自己的路由器，查看怎么设置端口转发。同时，我推荐使用 DynDNS 这类服务去克服家用主机动态IP的问题。</p>
-<h2 id="第二步：安装nginx_和RTMP_模块">第二步：安装nginx 和RTMP 模块</h2><p>登录你的机器，并且确保你有这些必须的工具去编译nginx,执行下面的命令</p>
-<pre><code>$ sudo apt-<span class="built_in">get</span> install build-essential libpcre3 libpcre3-<span class="built_in">dev</span> libssl-<span class="built_in">dev</span>
-</code></pre><p>现在说点关于nginx的一点小知识（发音 “engine-X”）。nginx是个轻量级的web server,<br>但是有些人为它写了一个RTMP模块，因此它能够提供RTMP流相关的服务，为了添加这个RTMP模块，我们必须重新从源码编译nginx 而不是使用apt包。不要担心，它是非常简单的，仅仅执行下面的指令:)</p>
-<p>在你的home目录，下载nginx 源码：</p>
-<pre><code><span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/nginx.org/download</span><span class="regexp">/nginx-1.7.7.tar.gz</span>
-</code></pre><p>在写这篇文章的时候，ngxin 最新的稳定版本是 1.7.7。你可是从(nginx 下载页)[<a href="http://nginx.org/en/download.html]下载最新的包。" target="_blank" rel="external">http://nginx.org/en/download.html]下载最新的包。</a></p>
-<p>接着，从git 获取RTMP 模块的源代码</p>
-<pre><code><span class="variable">$ </span>wget <span class="symbol">https:</span>/<span class="regexp">/github.com/arut</span><span class="regexp">/nginx-rtmp-module/archive</span><span class="regexp">/master.zip</span>
-</code></pre><p>解压开他们，斌且进入nginx 目录：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tar -zxvf nginx-1.7.7.tar.gz&#10;$ unzip master.zip&#10;$ cd nginx-1.7.7</span><br></pre></td></tr></table></figure>
-<p>现在，编译nginx:</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./configure --with-http_ssl_module --add-module=../nginx-rtmp-module-master&#10;$ make&#10;$ sudo make install</span><br></pre></td></tr></table></figure>
-<p>现在nginx 安装完毕了！默认安装在了 <code>/usr/local/nginx</code>,使用下面的命令启动：</p>
-<pre><code>$ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>sbin<span class="regexp">/nginx</span>
-</code></pre><p>现在测试一下确认nginx 正在运行，打开浏览器输入 <code>http://服务器ip/</code> 然后你将看到”Welcome to nginx!”这个页面。</p>
-<h2 id="第三步：配置nginx_启用RTMP">第三步：配置nginx 启用RTMP</h2><p>打开配置文件，默认在 /usr/local/nginx/conf/nginx.conf，在文件的最后添加下面的内容：</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">rtmp</span> &#123;</span><br><span class="line">        <span class="title">server</span> &#123;</span><br><span class="line">                <span class="title">listen</span> <span class="number">1935</span>;</span><br><span class="line">                <span class="title">chunk_size</span> <span class="number">4096</span>;</span><br><span class="line"></span><br><span class="line">                <span class="title">application</span> live &#123;</span><br><span class="line">                        <span class="title">live</span> <span class="built_in">on</span>;</span><br><span class="line">                        <span class="title">record</span> <span class="built_in">off</span>;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这是一个非常简单的基础配置，有一个live应用，它将会把RTMP视频流转发给所有请求这它的用户。你可能过一会才播放这个视频。<a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives" target="_blank" rel="external">这里是所有配置选项</a>，展示了如何转发视频流到其他的地方（像Twitch），保存上传的记录，输出状态，等等。。</p>
-<p>重启nginx:</p>
-<pre><code>$ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>sbin/nginx -s stop
-$ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>sbin/nginx
-</code></pre><h2 id="第四步：测试">第四步：测试</h2><p>你的服务器应该能接受RTMP视频流了。让我们尝试一下吧。<br>创建一个新的工程在OBS,并且更改 Broadcast Settings 为如下：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Streaming Service: Custom&#10;Server: rtmp://&#60;your server ip&#62;/live&#10;Play Path/Stream Key: test</span><br></pre></td></tr></table></figure>
-<p>你可能会对test路径从哪里来的产生疑惑。好吧，我们就是刚刚穿创建的。你能创建任何路径和流，并且把那个路径发到RTMP播放器里面，并且并且它将重放。出于简单的目的，授权是没必要的。然而，授权是可以支持的，后面再做介绍。</p>
-<p>你现在能向你的服务器推送视频流了。你点击了 “Start Streaming”  并且没有报告错误，这是一个好的信号。</p>
-<p>怎么打开观看呢？<br>vMix<br>使用vlc: rtmp://<your server="" ip="">/live/test</your></p>
-<h2 id="现在做什么呢？">现在做什么呢？</h2><p>你能使用使你的服务器转发视频流到其他的流服务和频道。在”record off;”后面添加下面的指令。</p>
-<pre><code><span class="keyword">push </span>rtmp://&lt;other <span class="keyword">streaming </span>service rtmp url&gt;/&lt;<span class="keyword">stream </span>key&gt;
-</code></pre><p>任何视频流都会被转发，同时会转发个客户端，你可以添加多个push指令。</p>
-<h2 id="FAQ">FAQ</h2>
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-08-05T11:07:02.000Z"><a href="/2015/08/05/php-upload-file/">2015-08-05</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/08/05/php-upload-file/">PHP文件上传</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <p>上传一个213M的文件的时候一直报IOerror。首先想到的是php上传文件大小的限制，改为300兆后，不起作用，就感觉是上传的的时候脚本执行的时间太长了，就修改<code>max_input_time</code> 为6000 还是不起作用，琢磨是不是<code>max_input_time</code>解析数据的时间出了问题，最后发现也不是，原来是nginx设置的太小了，改为500m,问题立马解决了。</p>
-<p>php 和 nginx 设置如下</p>
-<p>ngxin server 里面配置如下<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">     ***</span><br><span class="line">     client_max_body_size 1000M;</span><br><span class="line">     ****</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>php.ini 配置如下<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">file_uploads = On ;是否允许通过HTTP上传文件的开关。默认为ON即是开</span><br><span class="line">upload_max_filesize = 500M ;上传文件上限 </span><br><span class="line">upload_tmp_dir ;文件上传至服务器上存储临时文件的地方，如果没指定就会用系统默认的临时文件夹。</span><br><span class="line">如果要上传比较大的文件，仅仅以上两条还不够，必须把服务器缓存上限调大，把脚本最大执行时间变长 </span><br><span class="line">post_max_size = 500M ; POST给PHP的所能接收的最大值</span><br><span class="line">max_execution_time = 30 ; 每个PHP页面运行的最大时间值 Maximum execution time of each script, in seconds脚本最大执行时间 </span><br><span class="line">max_input_time = 60 ; 每个PHP页面接收数据所需的最大时间 解析一次请求时间上线 Maximum amount of time each script may spend parsing request data </span><br><span class="line">memory_limit = 128M ;  每个PHP页面所吃掉的最大内存 内存上限 Maximum amount of memory a script may consume (128MB)</span><br></pre></td></tr></table></figure></p>
-<p>相关参数解释</p>
-<h2 id="参考">参考</h2><p><a href="http://www.jb51.net/article/18975.htm" target="_blank" rel="external">http://www.jb51.net/article/18975.htm</a><br><a href="http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml" target="_blank" rel="external">http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml</a></p>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-  <article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-08-04T10:14:42.000Z"><a href="/2015/08/04/linux-cmd/">2015-08-04</a></time>
-      
-      
-  
-    <h1 class="title"><a href="/2015/08/04/linux-cmd/">linux 下工具命令</a></h1>
-  
-
-    </header>
-    <div class="entry">
-      
-        <h1 id="sort">sort</h1><table>
-<thead>
-<tr>
-<th>参数</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>-kx</code></td>
-<td>按照第x列的大小进行排序</td>
-</tr>
-<tr>
-<td><code>-n</code></td>
-<td>按照数字比较，默认字典序排序</td>
-</tr>
-</tbody>
-</table>
-<h1 id="du">du</h1><ul>
-<li><code>du -sh *</code><br>统计当前文件夹下各个文件的大小</li>
-<li><code>du -shm *</code><br>统计当前文件夹下各个文件的大小,以<code>M</code> 为单位。<code>-shk</code> 以 <code>KB</code>为单位</li>
-</ul>
-<h1 id="locate">locate</h1><blockquote><p>linux 下可以使用 locate 和 find 来查找文件,但是 locate 在定位时要比 find 快.</p>
-<p>locate 并不是穿梭于档案文件中查找,而是在<strong>数据库</strong>查找文件.find 正好相反,他的查找要穿梭于档案文件中.</p>
-</blockquote>
-<p><code>locate [-ir] keyword</code><br>更新数据库<br><del><code>locate -u</code></del><br><code>updatedb</code></p>
-<p><strong>命令选项</strong></p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>含义</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>i</td>
-<td>不区分大小写</td>
-</tr>
-<tr>
-<td>r</td>
-<td>后面可以接收正则表达式</td>
-</tr>
-</tbody>
-</table>
-<p><strong>参考</strong></p>
-<ul>
-<li><a href="http://yijiebuyi.com/blog/58d0b9eec7f18769439f388a8037c151.html" target="_blank" rel="external">locate 在linux下快速定位文档</a></li>
-</ul>
-<h1 id="问题总结_FAQ">问题总结 FAQ</h1><ol>
-<li><p>crontab不执行问题</p>
-<blockquote><p>今天有个服务不能使用了，查来查去，原来 <code>crontab</code> 被干掉了。装上后还是无法运行，原来还要依赖 <code>crond</code> 这个服务</p>
-</blockquote>
-<ul>
-<li>检查文件具有可执行权限 <code>chmod a+x</code></li>
-<li>crond服务是否启动。查看及启动方式 <code>service crond start</code> <code>service crond status</code></li>
-</ul>
-</li>
-</ol>
-<p><strong>参考</strong></p>
-<ul>
-<li><a href="http://www.nginx.cn/2451.html" target="_blank" rel="external">crontab不执行问题</a></li>
-<li><a href="http://baike.baidu.com/link?url=4A3zDEAEGxKEkZV0GihvwInk1Rx9lCsJEZTeBUCgZq6a_h519pBSgCaCynxbiURbpXFUZ7Qqn-iF2Pj6Wp58Bq" target="_blank" rel="external">crond</a></li>
-</ul>
-
-      
-    </div>
-    <footer>
-      
-        
-        
-      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
-
-
-
-
-
-<nav id="pagination">
-  
-  
-  <div class="clearfix"></div>
-</nav></div></div>
+</div></div>
     <aside id="sidebar" class="alignright">
   <div class="search">
   <form action="//google.com/search" method="get" accept-charset="utf-8">
