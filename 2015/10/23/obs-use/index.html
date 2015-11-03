@@ -1,0 +1,67 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+    
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+
+    
+      <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2"/>
+    
+
+    
+    <title>obs简单使用</title>
+</head>
+
+<body>
+
+<h2 id="obs_是什么">obs 是什么</h2><p><a href="https://obsproject.com/" target="_blank" rel="external">官网</a>标题有这么一句话，</p>
+<blockquote><p>Free, open source software for live streaming and recording</p>
+</blockquote>
+<p>简单来说就是一个视频直播推流器，并且还能同时录制视频。作为推流器还有一些非常有意思的功能。例如，调节推送的比特率，对视频做一些简单的处理往视频中插入文字、图像，从摄像机等外设设备中捕获音视频,捕获窗口等功能。 最重要的是这些功能组合的方式基本没有限制。</p>
+<p><img src="/imgs/obs-use.png" alt=""></p>
+<h2 id="测试视频直播的时间延迟">测试视频直播的时间延迟</h2><p>视频直播测试的时候需要简单的测试一下视频的延迟时间。怎么测试呢？</p>
+<p>其实最简单的方法就是查看视频播放到什么时间点了，客户端和obs的一对比就知道延迟了，可惜obs不显示，只能更换其他方式。利用obs的窗口捕获功能，把浏览器窗口和媒体源内容拼合到一起，浏览器中的时间就可以起到一个时间基准的作用，对比视频中和实际中浏览器的时间就可以得出时间延迟。</p>
+<p><img src="/imgs/obs-1.png" alt=""></p>
+<h2 id="一个简单的推送流程">一个简单的推送流程</h2><ul>
+<li>打开软件</li>
+<li>点击 <code>档案</code> - <code>新建</code>  随意起个名字就可以，主要作用就是表示一个独立推送相关的参数设置，包括目标服务器和推送码率。</li>
+<li>点击 右下角的设置 - 串流 - 自定义流媒体服务器 </li>
+<li>填写 URL 和流密钥 <code>rtmp://192.168.1.183/live</code> 、<code>ted</code>,观看的时候需要把两者拼接起来，播放地址即为<code>rtmp://192.168.1.183/live/ted</code></li>
+<li>点击<code>开始串流</code>，如果没有报错视频就推送成功了，可以使用播放器，如vlc、ffplay、potplayer，直接观看了。</li>
+</ul>
+<h2 id="update">update</h2><p><strong>更新情况</strong><br>2015-10-23 16:55:27<br>2015-10-26 15:04:27</p>
+
+
+<!--<a href="http://yangzz0.github.io/2015/10/23/obs-use/#disqus_thread" class="article-comment-link">Comments</a>-->
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'soul11201'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div style="display:none">
+<script src="http://s4.cnzz.com/stat.php?id=undefined&web_id=undefined" language="JavaScript"></script>script>
+</div>
+
+
+
+
+
+
+
+</body>
+</html>

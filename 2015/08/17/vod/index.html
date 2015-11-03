@@ -1,253 +1,85 @@
-
-
-<!DOCTYPE HTML>
 <html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>使用nginx实现视频点播 | 焖</title>
-  <meta name="author" content="yangzz">
-  
-  <meta name="description" content="文档
-使用 play 相关的指令可以实现点播功能。相关命令:
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-play
-play_temp_path
-play_local_path
+    
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+    
 
-配置使用play命令可以点播mp4和flv文件。文件路径支持本地目录和http指定的url路径。
-1#&amp;#26412;&amp;#22320;&amp;#25991;&amp;#2021">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
 
-  <meta property="og:title" content="使用nginx实现视频点播"/>
-  <meta property="og:site_name" content="焖"/>
+    
+      <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2"/>
+    
 
-  
-    <meta property="og:image" content="undefined"/>
-  
-
-  <link href="/favicon.ico" rel="icon" type="image/x-ico">
-  <link rel="alternate" href="/atom.xml" title="焖" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  <script src="//libs.baidu.com/jquery/1.8.0/jquery.min.js"></script>
+    
+    <title>nginx 点播</title>
 </head>
 
-
 <body>
-  <header id="header" class="inner">
-<div class="alignleft">
-  <h1><a href="/">焖</a></h1>
-  <h2><a href="/">好习惯受益终生</a></h2>
-</div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">首页</a></li>
-    
-      <li><a href="/archives">归档</a></li>
-    
-      <li><a href="/about">关于</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-<div class="clearfix"></div></header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-08-17T06:54:36.000Z"><a href="/2015/08/17/vod/">2015-08-17</a></time>
-      
-      
-  
-    <h1 class="title">使用nginx实现视频点播</h1>
-  
 
-    </header>
-    <div class="entry">
-      
-        <p><a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#video-on-demand" target="_blank" rel="external">文档</a></p>
-<p>使用 play 相关的指令可以实现点播功能。相关命令:</p>
+<p>对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求:</p>
+<blockquote>
 <ul>
 <li>play</li>
 <li>play_temp_path</li>
 <li>play_local_path</li>
 </ul>
-<h2 id="配置">配置</h2><p>使用play命令可以点播mp4和flv文件。文件路径支持<code>本地目录</code>和http指定的<code>url</code>路径。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#26412;&#22320;&#25991;&#20214;&#10;application vod &#123;&#10;    play /var/flvs;&#10;&#125;&#10;&#10;#&#32593;&#32476;&#20013;&#30340;&#25991;&#20214;&#10;application vod_http &#123;&#10;    play http://myserver.com/vod;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>play 指令中可以指定多个文件路径</p>
-</li>
-<li><p>多个play指令的时候，会合并指令中的位置。在播放的时候会在这些路径列表中的文件夹下依次查找，查不到，就会给前端返回一个错误。</p>
-</li>
-<li><p>mp4 文件需要 采用 H.264 和 AAC 格式编码。</p>
-</li>
-<li><p>flv文件点播需要添加关键帧（可以使用yamdi添加），<code>record</code> 指令生成的文件没有关键帧。</p>
-</li>
+</blockquote>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#26412;&#22320;&#25991;&#20214;&#10;application vod &#123;&#10;    play /var/flvs;&#10;&#125;&#10;&#10;#&#32593;&#32476;&#20013;&#30340;&#25991;&#20214;&#10;application vod_http &#123;&#10;    play_temp_path /var/flvs;&#10;    play_local_path /var/flvs;&#10;    play /var/flvs http://myserver.com/vod;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="play">play</h2><ul>
+<li>文件格式是<code>mp4</code>和<code>flv</code>。</li>
+<li>文件可以是本地的，也可以是网络上http可以访问到的。</li>
+<li>play 指令中可以指定多个文件路径</li>
+<li>多个play指令的时候，会合并指令中的位置。在播放的时候会在这些路径列表中的文件夹下依次查找，查不到，就会给前端返回一个错误。</li>
+<li>mp4 文件需要 采用 H.264 和 AAC 格式编码。</li>
+<li>flv文件点播需要添加关键帧（可以使用yamdi添加），否则没有暂停功能。</li>
+<li>如果点播<code>record</code> 指令生成的文件，记住视频文件没有关键帧。</li>
 </ul>
-<p>当播放一个网络文件时，nginx会先把文件下载完，然后才播放。下载文件临时存放的位置由<code>play_temp_path</code>指定，默认是存在<code>/tmp</code>文件夹下。另外，可以使用 <code>play_local_path</code>指令，把下载的文件复制到本地，配合play指令可以指定多个路径列表的特点，提高性能，不用是ngx每次都去下载网络视频资源。</p>
-<p>配置更改如下即可实现点播url指定的文件，同时可以将文件缓存再本地，提高性能。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#32593;&#32476;&#20013;&#30340;&#25991;&#20214;&#10;application vod_http &#123;&#10;    play_local_path /tmp/videos;&#10;    play /tmp/videos http://example.com/videos;&#10;&#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="添加关键帧">添加关键帧</h2><pre><code>yamdi –<span class="tag">i</span> src<span class="class">.flv</span> –o dst.flv
+<h2 id="播放网络文件">播放网络文件</h2><p>当播放一个网络文件时，nginx会先把文件下载完，然后才播放。下载文件时临时存放的位置由<code>play_temp_path</code>指定，其默认值是 <code>/tmp</code>，播放完毕后就会丢弃。如果<code>play_local_path</code>指定其值，就会先把拷贝到这个位置。这两条指令配合play指令可以提升一些性能。</p>
+<h2 id="一些_tips">一些 tips</h2><p><strong> 三条命令 </strong></p>
+<p>如果每次点播文件每次都去下载,一是会浪费带宽，二是浪费时间，每次都必须等待下载完成才能播放。如果能下载的文件复制到本地，那么就可以结合play指令，使本地磁盘就可以起到缓存网络数据功能了。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#30913;&#30424;&#32531;&#23384;&#32593;&#32476;&#25968;&#25454;&#10;application vod_http &#123;&#10;    play_temp_path  /var/flvs;&#10;    play_local_path /var/flvs;&#10;    play /var/flvs http://example.com/videos;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>添加关键帧</strong></p>
+<pre><code>yamdi –<span class="tag">i</span> src<span class="class">.flv</span> –o dst.flv
 </code></pre><p><a href="http://yamdi.sourceforge.net/" target="_blank" rel="external">yamdi 文档</a></p>
-<h2 id="点播视频">点播视频</h2><p>可以使用ffmpeg自带的ffplay</p>
+<p><strong>播放rtmp视频</strong></p>
+<p>可以使用ffmpeg自带的ffplay</p>
 <pre><code>ffplay <span class="symbol">rtmp:</span>/<span class="regexp">/localhost/vod</span><span class="regexp">//dir</span><span class="regexp">/file.flv</span>
-</code></pre>
-      
-    </div>
-    <footer>
-      
-        
-        
-  
-  <div class="tags">
-    <a href="/tags/nginx/">nginx</a>, <a href="/tags/nginx-rtmp-module/">nginx-rtmp-module</a>, <a href="/tags/rtmp/">rtmp</a>
-  </div>
+</code></pre><p>一个网络工具</p>
+<pre><code>&lt;<span class="string">http:</span><span class="comment">//www.cutv.com/demo/live_test.swf&gt;</span>
+</code></pre><h2 id="参考">参考</h2><ol>
+<li><a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#video-on-demand" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module/wiki/Directives#video-on-demand</a></li>
+<li><a href="http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html" target="_blank" rel="external">http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html</a></li>
+</ol>
 
-<!-- Baidu Button BEGIN -->
-<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
-<a class="bds_qzone"></a>
-<a class="bds_tsina"></a>
-<a class="bds_tqq"></a>
-<a class="bds_renren"></a>
-<a class="bds_t163"></a>
-<span class="bds_more"></span>
-<a class="shareCount"></a>
-</div>
-<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=3326447" ></script>
-<script type="text/javascript" id="bdshell_js"></script>
+
+<!--<a href="http://yangzz0.github.io/2015/08/17/vod/#disqus_thread" class="article-comment-link">Comments</a>-->
+<div id="disqus_thread"></div>
 <script type="text/javascript">
-document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'soul11201'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
 </script>
-<!-- Baidu Button END -->      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
-
-
- <nav id="pagination" >
-    
-    <a href="/2015/09/06/rtmp/" class="alignleft prev" >上一页</a>
-    
-    
-    <a href="/2015/08/12/How-to-set-up-your-own-private-RTMP-server-using-nginx/" class="alignright next" >下一页</a>
-    
-    <div class="clearfix"></div>
-</nav>
-
-
-
-<section id="comment">
-
-<!-- Duoshuo Comment BEGIN -->
-	<div class="ds-thread"></div>
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"soul11201"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = 'http://static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		|| document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-<!-- Duoshuo Comment END -->  
-
-  
-</section>
-
-</div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="搜索">
-    <input type="hidden" name="q" value="site:yangzz0.github.io">
-  </form>
+<div style="display:none">
+<script src="http://s4.cnzz.com/stat.php?id=undefined&web_id=undefined" language="JavaScript"></script>script>
 </div>
 
-  
-<div class="widget tagcloud">
-  <h3 class="title">标签云</h3>
-  <div class="entry">
-    <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/lua/" style="font-size: 10px;">lua</a> <a href="/tags/nginx/" style="font-size: 20px;">nginx</a> <a href="/tags/nginx-rtmp/" style="font-size: 10px;">nginx-rtmp</a> <a href="/tags/nginx-rtmp-module/" style="font-size: 10px;">nginx-rtmp-module</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/rtmp/" style="font-size: 15px;">rtmp</a> <a href="/tags/元方法/" style="font-size: 10px;">元方法</a> <a href="/tags/元表/" style="font-size: 10px;">元表</a> <a href="/tags/翻译/" style="font-size: 10px;">翻译</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a>
-  </div>
-</div>
-
-</aside>
-    <div class="clearfix"></div>
-  </div>
-  <footer id="footer" class="inner"><section>
-Theme of <a href="https://github.com/zippera/lightum">Lightum</a>, Improved from <a href="https://github.com/hexojs/hexo-theme-light">Light</a>, by <a href="/">zippera</a> 
-</section>
-<div class="clearfix"></div>
-</footer>
-  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
 
 
 
 
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
 
 
-<!-- mathjax config similar to math.stackexchange -->
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 </body>
 </html>
-
-

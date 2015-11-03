@@ -1,94 +1,26 @@
-
-
-<!DOCTYPE HTML>
 <html>
 <head>
-  <meta charset="utf-8">
-  
-  <title>元表、元方法 | 焖</title>
-  <meta name="author" content="yangzz">
-  
-  <meta name="description" content="每一个值都有一个元表。table和userdata可以有各自独立的元表，其他类型的值则共享其类型所属的单一元表
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-表是lua中非常重要的基本数据类型，实现其他的一些编程技术概念的基础，如模块、包、类。通过语言提供的元表和元方法可以更改表的表现行为。
-☆ 元方法
+    
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+    
 
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
 
-元方法
-简单描述
+    
+      <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2"/>
+    
 
-
-
-
-__me">
-  
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-  <meta property="og:title" content="元表、元方法"/>
-  <meta property="og:site_name" content="焖"/>
-
-  
-    <meta property="og:image" content="undefined"/>
-  
-
-  <link href="/favicon.ico" rel="icon" type="image/x-ico">
-  <link rel="alternate" href="/atom.xml" title="焖" type="application/atom+xml">
-  <link rel="stylesheet" href="/css/style.css" media="screen" type="text/css">
-  <!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-  <script src="//libs.baidu.com/jquery/1.8.0/jquery.min.js"></script>
+    
+    <title>元表、元方法</title>
 </head>
 
-
 <body>
-  <header id="header" class="inner">
-<div class="alignleft">
-  <h1><a href="/">焖</a></h1>
-  <h2><a href="/">好习惯受益终生</a></h2>
-</div>
-<nav id="main-nav" class="alignright">
-  <ul>
-    
-      <li><a href="/">首页</a></li>
-    
-      <li><a href="/archives">归档</a></li>
-    
-      <li><a href="/about">关于</a></li>
-    
-  </ul>
-  <div class="clearfix"></div>
-</nav>
-<div class="clearfix"></div></header>
-  <div id="content" class="inner">
-    <div id="main-col" class="alignleft"><div id="wrapper"><article class="post">
-  
-    <div class="gallery">
-  <div class="photoset">
-    
-      <img src="">
-    
-  </div>
-  <div class="control">
-    <div class="prev"></div>
-    <div class="next"></div>
-  </div>
-</div>
-  
-  <div class="post-content">
-    <header>
-      
-        <div class="icon"></div>
-        <time datetime="2015-09-18T09:47:00.000Z"><a href="/2015/09/18/lua-metatable/">2015-09-18</a></time>
-      
-      
-  
-    <h1 class="title">元表、元方法</h1>
-  
 
-    </header>
-    <div class="entry">
-      
-        <blockquote><p>每一个值都有一个元表。table和userdata可以有各自独立的元表，其他类型的值则共享其类型所属的单一元表</p>
+<blockquote><p>每一个值都有一个元表。table和userdata可以有各自独立的元表，其他类型的值则共享其类型所属的单一元表</p>
 </blockquote>
 <p>表是lua中非常重要的基本数据类型，实现其他的一些编程技术概念的基础，如模块、包、类。通过语言提供的元表和元方法可以更改表的表现行为。</p>
 <h3 id="☆_元方法">☆ 元方法</h3><table>
@@ -183,142 +115,31 @@ __me">
 <h3 id="☆只读的table">☆只读的table</h3><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">make_read_only_table</span><span class="params">(t)</span></span> </span><br><span class="line">    <span class="keyword">local</span> read_only = &#123;&#125; <span class="comment">-- 重要的一步</span></span><br><span class="line">    <span class="keyword">local</span> mt = &#123;</span><br><span class="line">        __index = t,</span><br><span class="line">        __newindex = <span class="function"><span class="keyword">function</span> <span class="params">(t,k,v)</span></span></span><br><span class="line">            <span class="built_in">error</span>(<span class="string">"attemp to update a read-only table"</span>)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">setmetatable</span>(read_only, mt)</span><br><span class="line">    <span class="keyword">return</span> read_only</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">'test'</span></span><br><span class="line"></span><br><span class="line">t = make_read_only_table&#123;<span class="number">13</span>,<span class="number">4</span>,<span class="number">6</span>,name=<span class="string">'webapp'</span>,temp=a&#125;</span><br><span class="line"></span><br><span class="line">a = <span class="string">'dd'</span></span><br><span class="line"><span class="built_in">print</span>(t.temp)</span><br><span class="line"></span><br><span class="line">t.temp = <span class="number">1111</span></span><br></pre></td></tr></table></figure>
 <p><strong>方案二</strong></p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> index = &#123;&#125; <span class="comment">-- 防止key 冲突</span></span><br><span class="line"><span class="keyword">local</span> _mt = &#123;</span><br><span class="line">    __index = <span class="function"><span class="keyword">function</span><span class="params">(t,k)</span></span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">'access to element '</span>..<span class="built_in">tostring</span>(k))</span><br><span class="line">        <span class="keyword">return</span> t[index][k]</span><br><span class="line">    <span class="keyword">end</span>,</span><br><span class="line">    __newindex = <span class="function"><span class="keyword">function</span><span class="params">(t,k,v)</span></span></span><br><span class="line">        <span class="built_in">error</span>(<span class="string">"attemp to update a read-only table"</span>)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">make_read_only_table</span><span class="params">(t)</span></span> </span><br><span class="line">    <span class="keyword">local</span> read_only = &#123;&#125;</span><br><span class="line">    read_only[index] = t</span><br><span class="line">    <span class="built_in">setmetatable</span>(read_only, _mt)</span><br><span class="line">    <span class="keyword">return</span> read_only</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">'test'</span></span><br><span class="line"></span><br><span class="line">t = make_read_only_table&#123;<span class="number">13</span>,<span class="number">4</span>,<span class="number">6</span>,name=<span class="string">'webapp'</span>,temp=a&#125;</span><br><span class="line"></span><br><span class="line">a = <span class="string">'dd'</span></span><br><span class="line"><span class="built_in">print</span>(t.temp)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- t.temp = 1111</span></span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer>
-      
-        
-        
-  
-  <div class="tags">
-    <a href="/tags/lua/">lua</a>, <a href="/tags/元方法/">元方法</a>, <a href="/tags/元表/">元表</a>
-  </div>
 
-<!-- Baidu Button BEGIN -->
-<div id="bdshare" class="bdshare_t bds_tools_32 get-codes-bdshare">
-<a class="bds_qzone"></a>
-<a class="bds_tsina"></a>
-<a class="bds_tqq"></a>
-<a class="bds_renren"></a>
-<a class="bds_t163"></a>
-<span class="bds_more"></span>
-<a class="shareCount"></a>
-</div>
-<script type="text/javascript" id="bdshare_js" data="type=tools&amp;uid=3326447" ></script>
-<script type="text/javascript" id="bdshell_js"></script>
+<!--<a href="http://yangzz0.github.io/2015/09/18/lua-metatable/#disqus_thread" class="article-comment-link">Comments</a>-->
+<div id="disqus_thread"></div>
 <script type="text/javascript">
-document.getElementById("bdshell_js").src = "http://bdimg.share.baidu.com/static/js/shell_v2.js?cdnversion=" + Math.ceil(new Date()/3600000)
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'soul11201'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
 </script>
-<!-- Baidu Button END -->      
-      <div class="clearfix"></div>
-    </footer>
-  </div>
-</article>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
-
-
- <nav id="pagination" >
-    
-    
-    <a href="/2015/09/06/rtmp/" class="alignright next" >下一页</a>
-    
-    <div class="clearfix"></div>
-</nav>
-
-
-
-<section id="comment">
-
-<!-- Duoshuo Comment BEGIN -->
-	<div class="ds-thread"></div>
-<script type="text/javascript">
-var duoshuoQuery = {short_name:"soul11201"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = 'http://static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		|| document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-	</script>
-<!-- Duoshuo Comment END -->  
-
-  
-</section>
-
-</div></div>
-    <aside id="sidebar" class="alignright">
-  <div class="search">
-  <form action="//google.com/search" method="get" accept-charset="utf-8">
-    <input type="search" name="q" results="0" placeholder="搜索">
-    <input type="hidden" name="q" value="site:yangzz0.github.io">
-  </form>
+<div style="display:none">
+<script src="http://s4.cnzz.com/stat.php?id=undefined&web_id=undefined" language="JavaScript"></script>script>
 </div>
 
-  
-<div class="widget tagcloud">
-  <h3 class="title">标签云</h3>
-  <div class="entry">
-    <a href="/tags/linux/" style="font-size: 10px;">linux</a> <a href="/tags/lua/" style="font-size: 10px;">lua</a> <a href="/tags/nginx/" style="font-size: 20px;">nginx</a> <a href="/tags/nginx-rtmp/" style="font-size: 10px;">nginx-rtmp</a> <a href="/tags/nginx-rtmp-module/" style="font-size: 10px;">nginx-rtmp-module</a> <a href="/tags/php/" style="font-size: 10px;">php</a> <a href="/tags/rtmp/" style="font-size: 15px;">rtmp</a> <a href="/tags/元方法/" style="font-size: 10px;">元方法</a> <a href="/tags/元表/" style="font-size: 10px;">元表</a> <a href="/tags/翻译/" style="font-size: 10px;">翻译</a> <a href="/tags/配置/" style="font-size: 10px;">配置</a>
-  </div>
-</div>
-
-</aside>
-    <div class="clearfix"></div>
-  </div>
-  <footer id="footer" class="inner"><section>
-Theme of <a href="https://github.com/zippera/lightum">Lightum</a>, Improved from <a href="https://github.com/hexojs/hexo-theme-light">Light</a>, by <a href="/">zippera</a> 
-</section>
-<div class="clearfix"></div>
-</footer>
-  <script src="//libs.baidu.com/jquery/2.0.3/jquery.min.js"></script>
-<script src="/js/jquery.imagesloaded.min.js"></script>
-<script src="/js/gallery.js"></script>
 
 
 
 
-<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
-<script src="/fancybox/jquery.fancybox.pack.js"></script>
-<script type="text/javascript">
-(function($){
-  $('.fancybox').fancybox();
-})(jQuery);
-</script>
 
 
-<!-- mathjax config similar to math.stackexchange -->
-
-<script type="text/x-mathjax-config">
-  MathJax.Hub.Config({
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      processEscapes: true
-    }
-  });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({
-      tex2jax: {
-        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
-      }
-    });
-</script>
-
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
 </body>
 </html>
-
-
