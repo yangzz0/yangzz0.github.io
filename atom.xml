@@ -4,7 +4,7 @@
   <subtitle><![CDATA[好习惯受益终生]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangzz0.github.io/"/>
-  <updated>2015-10-30T06:14:20.311Z</updated>
+  <updated>2015-11-11T12:54:59.236Z</updated>
   <id>http://yangzz0.github.io/</id>
   
   <author>
@@ -13,6 +13,64 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[MonaServer 使用笔记]]></title>
+    <link href="http://yangzz0.github.io/2015/11/11/MonaServer/"/>
+    <id>http://yangzz0.github.io/2015/11/11/MonaServer/</id>
+    <published>2015-11-11T11:54:48.000Z</published>
+    <updated>2015-11-11T12:54:59.236Z</updated>
+    <content type="html"><![CDATA[<h2 id="安装">安装</h2><p><strong>windows</strong></p>
+<ol>
+<li><a href="http://sourceforge.net/projects/monaserver/files/MonaServer_Windows_32.zip/download" target="_blank" rel="external">点击下载运行包</a></li>
+<li>依赖环境：<strong><a href="http://www.microsoft.com/en-us/download/details.aspx?id=40784" target="_blank" rel="external">Visual Studio 2013 redistributable packages</a></strong></li>
+<li>双击运行 <strong>MonaServer.exe</strong>，同级目录下会生成<code>logs/</code>和<code>www/</code>两个文件夹，然后重新运行 <strong>MonaServer.exe</strong>。</li>
+<li>配置obs推流。</li>
+</ol>
+<p><img src="/imgs/MonaServer-1.png" alt=""><br><img src="/imgs/MonaServer-2.png" alt=""></p>
+<h2 id="参考链接">参考链接</h2><ol>
+<li><a href="https://obsproject.com/forum/resources/how-to-set-up-your-own-private-rtmfp-server-using-monaserver.153/" target="_blank" rel="external">How to set up your own private RTMFP server using MonaServer</a></li>
+<li><a href="http://www.monaserver.ovh/quickstart.html" target="_blank" rel="external">Quick Start</a></li>
+<li><a href="http://www.monaserver.ovh/manual.html" target="_blank" rel="external">手册</a></li>
+</ol>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="安装">安装</h2><p><strong>windows</strong></p>
+<ol>
+<li><a href="http://sourceforge.net/projects/monaserver/files/MonaServer_Windows_32.]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[ngx-lua 笔记总计]]></title>
+    <link href="http://yangzz0.github.io/2015/11/10/ngx-lua/"/>
+    <id>http://yangzz0.github.io/2015/11/10/ngx-lua/</id>
+    <published>2015-11-10T12:27:52.000Z</published>
+    <updated>2015-11-10T13:05:13.236Z</updated>
+    <content type="html"><![CDATA[<h2 id="跟ngx有关的函数、变量">跟ngx有关的函数、变量</h2><h3 id="ngx-header">ngx.header</h3><p>响应头设置</p>
+<p>重定向:<code>ngx.header.Location</code></p>
+<h3 id="ngx-exit(404)">ngx.exit(404)</h3><p>断开连接，同时设置响应的状态码</p>
+<h3 id="ngx-log(log_level,log_info1,log_info2,…-)">ngx.log(log_level,log_info1,log_info2,….)</h3><p>打印日志到ngx日志。第一个是日志级别如<code>ngx.ERR</code></p>
+<h2 id="应用">应用</h2><h3 id="获取post和get中的参数">获取post和get中的参数</h3><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> args = &#123;&#125;</span><br><span class="line"><span class="keyword">if</span> <span class="string">"GET"</span> == r_m <span class="keyword">or</span> <span class="string">"HEAD"</span> == r_m <span class="keyword">then</span></span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"GET============"</span>)</span><br><span class="line">    args = ngx.req.get_uri_args()</span><br><span class="line"><span class="keyword">elseif</span> <span class="string">"POST"</span> == r_m <span class="keyword">then</span></span><br><span class="line">    ngx.req.read_body()</span><br><span class="line">    args = ngx.req.get_post_args()</span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"POSTD-----------"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<!-- ##细节 -->
+<!-- ## -->
+<h3 id="遍历出来请求中的数据并打印到日志">遍历出来请求中的数据并打印到日志</h3><p>pairs — table</p>
+<p>ipairs — 数组</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">pairs</span>(args) <span class="keyword">do</span></span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"=====k=====&gt;"</span>,<span class="built_in">type</span>(k),<span class="string">":"</span>,k, <span class="string">" ====v===&gt;"</span>,<span class="built_in">type</span>(v),<span class="string">":"</span>,v)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<h2 id="ngx_指令">ngx 指令</h2><h3 id="rewrite">rewrite</h3><p><code>rewrite reg new flag</code></p>
+<p>匹配失败，则继续往下执行，就当什么都没发生过</p>
+<p>具体使用 <a href="http://www.nginx.cn/216.html" target="_blank" rel="external">http://www.nginx.cn/216.html</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="跟ngx有关的函数、变量">跟ngx有关的函数、变量</h2><h3 id="ngx-header">ngx.header</h3><p>响应头设置</p>
+<p>重定向:<code>ngx.header.Location</code></p>
+<h3 id="n]]>
+    </summary>
+    
+      <category term="ngx-lua" scheme="http://yangzz0.github.io/tags/ngx-lua/"/>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[http 请求调试]]></title>
