@@ -1,0 +1,72 @@
+<html>
+<head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    
+    <link rel="stylesheet" href="/css/main.css" type="text/css">
+    <link rel="stylesheet" href="/css/style.css" type="text/css">
+    
+
+    <link rel="alternate" type="application/atom+xml" href="/atom.xml" title="Atom feed">
+
+    
+      <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=2"/>
+    
+
+    
+    <title>lnmp 环境 搭建</title>
+</head>
+
+<body>
+
+<h2 id="整体结构">整体结构</h2><p><img src="http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg" alt="盗用一张图"></p>
+<h2 id="安装">安装</h2><p><strong>nginx</strong></p>
+<p>可以手动编译安装，也可以是使用<code>apt-get</code>方式安装。第二种方式版本较低。</p>
+<p><strong>fpm、mysql</strong></p>
+<p>荐<code>apt-get</code>方式安装，便捷。</p>
+<h2 id="配置">配置</h2><p><strong>nginx </strong></p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> <span class="title">server</span> &#123;</span><br><span class="line">    <span class="title">listen</span> <span class="number">8082</span>;</span><br><span class="line">    <span class="comment">#server_name localhost;</span></span><br><span class="line"></span><br><span class="line">    <span class="title">root</span> /data/codes/sevenga_tuitui/backend;</span><br><span class="line">    <span class="title">index</span> index.php;</span><br><span class="line"></span><br><span class="line">    <span class="title">location</span> / &#123; </span><br><span class="line">        <span class="title">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php?<span class="variable">$args</span>;</span><br><span class="line">        <span class="comment"># upload_limit_rate 1m;</span></span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    <span class="title">location</span> <span class="regexp">~ \.php$</span> &#123;</span><br><span class="line">        <span class="title">try_files</span> <span class="variable">$uri</span> =<span class="number">404</span>;</span><br><span class="line">        <span class="title">include</span> fastcgi_params;</span><br><span class="line">        <span class="title">fastcgi_pass</span> <span class="number">127.0.0.1:9000</span>;</span><br><span class="line">        <span class="title">fastcgi_index</span> index.php;</span><br><span class="line">        <span class="title">fastcgi_param</span> SCRIPT_FILENAME <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">        <span class="title">fastcgi_param</span> PATH_INFO <span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    <span class="title">error_page</span> <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> /50x.html;</span><br><span class="line">    <span class="title">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="title">root</span> html;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>fpm</strong></p>
+<p>配置文件 <code>/etc/php5/fpm/pool.d/www.conf</code>,设置fpm监听端口和nginx配置一致</p>
+<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">listen</span> =<span class="number">127.0.0.1:9000</span></span><br></pre></td></tr></table></figure>
+<h2 id="FAQ">FAQ</h2><h3 id="mysql_安装过程未设置密码，用root，空密码登陆_报_ERROR_1045_(28000)_错误。">mysql 安装过程未设置密码，用root，空密码登陆  报 <code>ERROR 1045 (28000)</code> 错误。</h3><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">sudo</span> <span class="comment">/etc/init</span><span class="string">.</span><span class="comment">d/mysql</span> <span class="comment">stop</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysqld_safe</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">user=mysql</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">grant</span><span class="literal">-</span><span class="comment">tables</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">networking&amp;</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysql</span> <span class="literal">-</span><span class="comment">u</span> <span class="comment">root</span> <span class="comment">mysql</span></span><br></pre></td></tr></table></figure>
+<p><strong>重设秘密</strong></p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">UPDATE</span> <span class="keyword">user</span> <span class="keyword">SET</span> <span class="keyword">Password</span>=<span class="keyword">PASSWORD</span>(<span class="string">'newpassword'</span>) whereUSER=<span class="string">'root'</span>;</span></span><br><span class="line"><span class="operator"><span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span></span><br><span class="line">quit;</span><br></pre></td></tr></table></figure>
+<p><strong>重启数据库：</strong></p>
+<p><code>/etc/init.d/mysql restart</code></p>
+<ol>
+<li></li>
+</ol>
+<h2 id="参考">参考</h2><ol>
+<li><a href="http://laokaddk.blog.51cto.com/368606/1323292" target="_blank" rel="external">ubuntu 系统解决mysql连接问题（ERROR 1045 (28000): Access denied for user ‘root’@’localhost’ (using password: NO)）</a></li>
+</ol>
+
+
+<!--<a href="http://yangzz0.github.io/2015/11/17/lnmp-环境-搭建/#disqus_thread" class="article-comment-link">Comments</a>-->
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+    var disqus_shortname = 'soul11201'; // required: replace example with your forum shortname
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+<div style="display:none">
+<script src="http://s4.cnzz.com/stat.php?id=undefined&web_id=undefined" language="JavaScript"></script>script>
+</div>
+
+
+
+
+
+
+
+</body>
+</html>
