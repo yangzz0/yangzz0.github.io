@@ -116,24 +116,22 @@
 <p><strong>方案二</strong></p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> index = &#123;&#125; <span class="comment">-- 防止key 冲突</span></span><br><span class="line"><span class="keyword">local</span> _mt = &#123;</span><br><span class="line">    __index = <span class="function"><span class="keyword">function</span><span class="params">(t,k)</span></span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">'access to element '</span>..<span class="built_in">tostring</span>(k))</span><br><span class="line">        <span class="keyword">return</span> t[index][k]</span><br><span class="line">    <span class="keyword">end</span>,</span><br><span class="line">    __newindex = <span class="function"><span class="keyword">function</span><span class="params">(t,k,v)</span></span></span><br><span class="line">        <span class="built_in">error</span>(<span class="string">"attemp to update a read-only table"</span>)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">make_read_only_table</span><span class="params">(t)</span></span> </span><br><span class="line">    <span class="keyword">local</span> read_only = &#123;&#125;</span><br><span class="line">    read_only[index] = t</span><br><span class="line">    <span class="built_in">setmetatable</span>(read_only, _mt)</span><br><span class="line">    <span class="keyword">return</span> read_only</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">'test'</span></span><br><span class="line"></span><br><span class="line">t = make_read_only_table&#123;<span class="number">13</span>,<span class="number">4</span>,<span class="number">6</span>,name=<span class="string">'webapp'</span>,temp=a&#125;</span><br><span class="line"></span><br><span class="line">a = <span class="string">'dd'</span></span><br><span class="line"><span class="built_in">print</span>(t.temp)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- t.temp = 1111</span></span><br></pre></td></tr></table></figure>
 
-<!--<a href="http://yangzz0.github.io/2015/09/18/lua-metatable/#disqus_thread" class="article-comment-link">Comments</a>-->
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    var disqus_shortname = 'soul11201'; // required: replace example with your forum shortname
+	<div class="ds-thread" data-thread-key="2015/09/18/lua-metatable/" data-title="元表、元方法" data-url="2015/09/18/lua-metatable/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"soul11201"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
 
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
-<div style="display:none">
-<script src="http://s4.cnzz.com/stat.php?id=undefined&web_id=undefined" language="JavaScript"></script>script>
-</div>
 
 
 

@@ -30,37 +30,32 @@
 <p><strong>fpm</strong></p>
 <p>配置文件 <code>/etc/php5/fpm/pool.d/www.conf</code>,设置fpm监听端口和nginx配置一致</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">listen</span> =<span class="number">127.0.0.1:9000</span></span><br></pre></td></tr></table></figure>
-<h2 id="FAQ">FAQ</h2><h3 id="mysql_安装过程未设置密码，用root，空密码登陆_报_ERROR_1045_(28000)_错误。">mysql 安装过程未设置密码，用root，空密码登陆  报 <code>ERROR 1045 (28000)</code> 错误。</h3><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">sudo</span> <span class="comment">/etc/init</span><span class="string">.</span><span class="comment">d/mysql</span> <span class="comment">stop</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysqld_safe</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">user=mysql</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">grant</span><span class="literal">-</span><span class="comment">tables</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">networking&amp;</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysql</span> <span class="literal">-</span><span class="comment">u</span> <span class="comment">root</span> <span class="comment">mysql</span></span><br></pre></td></tr></table></figure>
-<p><strong>重设秘密</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">UPDATE</span> <span class="keyword">user</span> <span class="keyword">SET</span> <span class="keyword">Password</span>=<span class="keyword">PASSWORD</span>(<span class="string">'newpassword'</span>) whereUSER=<span class="string">'root'</span>;</span></span><br><span class="line"><span class="operator"><span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span></span><br><span class="line">quit;</span><br></pre></td></tr></table></figure>
-<p><strong>重启数据库：</strong></p>
+<h2 id="FAQ">FAQ</h2><h4 id="mysql_安装过程未设置密码-。用root、空密码登陆报_ERROR_1045_(28000)_错误。">mysql 安装过程未设置密码.。用root、空密码登陆报 <code>ERROR 1045 (28000)</code> 错误。</h4><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">sudo</span> <span class="comment">/etc/init</span><span class="string">.</span><span class="comment">d/mysql</span> <span class="comment">stop</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysqld_safe</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">user=mysql</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">grant</span><span class="literal">-</span><span class="comment">tables</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">networking&amp;</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysql</span> <span class="literal">-</span><span class="comment">u</span> <span class="comment">root</span> <span class="comment">mysql</span></span><br></pre></td></tr></table></figure>
+<p>更改sql用户密码</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">update</span> mysql.<span class="keyword">user</span> <span class="keyword">set</span> <span class="keyword">password</span>=<span class="keyword">PASSWORD</span>（<span class="string">'新密码'</span>） <span class="keyword">where</span> <span class="keyword">User</span>=<span class="string">'root'</span></span><br><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span></span></span><br></pre></td></tr></table></figure>
+<p>重启数据库：</p>
 <p><code>/etc/init.d/mysql restart</code></p>
-<ol>
-<li></li>
-</ol>
 <h2 id="参考">参考</h2><ol>
 <li><a href="http://laokaddk.blog.51cto.com/368606/1323292" target="_blank" rel="external">ubuntu 系统解决mysql连接问题（ERROR 1045 (28000): Access denied for user ‘root’@’localhost’ (using password: NO)）</a></li>
 </ol>
 
 
-<!--<a href="http://yangzz0.github.io/2015/11/17/lnmp-环境-搭建/#disqus_thread" class="article-comment-link">Comments</a>-->
-<div id="disqus_thread"></div>
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-    var disqus_shortname = 'soul11201'; // required: replace example with your forum shortname
+	<div class="ds-thread" data-thread-key="2015/11/17/lnmp-环境-搭建/" data-title="lnmp 环境 搭建" data-url="2015/11/17/lnmp-环境-搭建/"></div>
+	<!-- 多说评论框 end -->
+	<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+	<script type="text/javascript">
+	var duoshuoQuery = {short_name:"soul11201"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		 || document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+	</script>
 
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
 
-<div style="display:none">
-<script src="http://s4.cnzz.com/stat.php?id=undefined&web_id=undefined" language="JavaScript"></script>script>
-</div>
 
 
 

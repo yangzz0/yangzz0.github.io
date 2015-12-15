@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title><![CDATA[焖]]></title>
+  <title><![CDATA[coder 随想录]]></title>
   <subtitle><![CDATA[好习惯受益终生]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangzz0.github.io/"/>
-  <updated>2015-11-17T12:54:00.378Z</updated>
+  <updated>2015-12-08T06:13:35.908Z</updated>
   <id>http://yangzz0.github.io/</id>
   
   <author>
@@ -15,11 +15,121 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title><![CDATA[eclipse-mars-php 自动补全提示]]></title>
+    <link href="http://yangzz0.github.io/2015/12/07/eclipse-mars-php%20%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E6%8F%90%E7%A4%BA/"/>
+    <id>http://yangzz0.github.io/2015/12/07/eclipse-mars-php 自动补全提示/</id>
+    <published>2015-12-07T12:43:44.000Z</published>
+    <updated>2015-12-08T06:13:35.908Z</updated>
+    <content type="html"></content>
+    <summary type="html">
+    
+    </summary>
+    
+      <category term="eclipse" scheme="http://yangzz0.github.io/tags/eclipse/"/>
+    
+      <category term="工具" scheme="http://yangzz0.github.io/tags/%E5%B7%A5%E5%85%B7/"/>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[awk 处理日志]]></title>
+    <link href="http://yangzz0.github.io/2015/12/07/awk-%E5%A4%84%E7%90%86%E6%97%A5%E5%BF%97/"/>
+    <id>http://yangzz0.github.io/2015/12/07/awk-处理日志/</id>
+    <published>2015-12-07T11:36:31.000Z</published>
+    <updated>2015-12-07T12:36:34.408Z</updated>
+    <content type="html"><![CDATA[<!-- ## 问题 -->
+<blockquote>
+<p>提取一段时间内的日志</p>
+</blockquote>
+<pre><code><span class="attr_selector">[2015-12-07 03:16:49]</span> <span class="tag">DataHandlerUtils</span><span class="class">.Thread-0</span> <span class="tag">-</span> <span class="tag">INFO</span>  <span class="tag">-</span> 1449429345<span class="pseudo">:12D2300A13CA</span><span class="pseudo">:0BBA2D85CD31</span><span class="pseudo">:49</span><span class="pseudo">:4</span>
+</code></pre><p>在群里一位朋友提出的问题，原先他想用正则提取。看到这个日志格式感觉用awk也能搞定这件事情。更让我感觉awk有戏能完成这件事情，有时候自己也需要类似的功能，顺道写了下面一段awk代码。思路大致是，首先是利用分隔符提取到时间，然后根据时间判断改行打不打印。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F&#34;[ :]&#34; &#10;&#39;&#10;BEGIN&#123;&#10;    PRINT_INFO=0;&#10;    LINE_NUM = 0&#10;&#125; &#10;&#10;&#123; &#10;    CON_VAR = $11;&#10;&#10;    if(CON_VAR &#62; 1449459202)&#123; &#10;        PRINT_INFO = 1;&#10;    &#125;&#10;&#10;    if(CON_VAR &#62; 1449459219)&#123;&#10;        PRINT_INFO = 0;&#10;    &#125;&#10;&#10;    if(PRINT_INFO == 1)&#123;&#10;        print CON_VAR,&#34; &#34;$0;&#10;        LINE_NUM += 1&#10;    &#125;&#10;&#125;&#10;&#10;END&#123;&#10;    print &#34;TOTAL : &#34;,LINE_NUM,&#34;lines.&#34;&#10;&#125;&#10;&#39;</span><br></pre></td></tr></table></figure>
+<hr>
+<p><strong>PRINT_INFO 的使用</strong><br>某些行需要显示，某些不要显示，这样就需要一个<code>控制标志</code>，最简单的方式是使用一个变量。其实也是可以不使用这个变量，把 前两个if合并到最后一个if中，这样就可以去掉 PRINT_INFO 这个变量，但是为什么不这样做呢？</p>
+<ul>
+<li>首先，这样写让我感觉易读，结构清晰。</li>
+<li>其次，如果影响PRINT_INFO值改变的原因改变了呢？这样修改就不必影响第三个if块。另外这种写法只需要关注要修改的if，是1个点。而如果三个合并在一块，没修改1个数字，自己无形中就会去关注的三个点，无形中给自己省了很多精力。</li>
+</ul>
+<hr>
+<p><strong>CON_VAR 的使用</strong><br>一开始没有使用这个变量而是直接使用的<code>$11</code>，如果时间戳编一个位置额所有出现的地方都需要修改，针对这种易变地方使用变量做了一层抽象。</p>
+<hr>
+]]></content>
+    <summary type="html">
+    <![CDATA[<!-- ## 问题 -->
+<blockquote>
+<p>提取一段时间内的日志</p>
+</blockquote>
+<pre><code><span class="attr_selector">[2015-12-07 03:16:49]</span> <span class=]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[mathjax && hexo]]></title>
+    <link href="http://yangzz0.github.io/2015/12/06/mathjax/"/>
+    <id>http://yangzz0.github.io/2015/12/06/mathjax/</id>
+    <published>2015-12-06T05:02:37.000Z</published>
+    <updated>2015-12-07T10:43:49.107Z</updated>
+    <content type="html"><![CDATA[<h2 id="安装">安装</h2><p>在hexo安装使用mathjax的方式不外乎那么几种，具体的可以参见 <a href="http://lukang.me/2014/mathjax-for-hexo.html" target="_blank" rel="external">在 Hexo 中完美使用 Mathjax 输出数学公式</a>。原本想使用hexo 插件的方式安装，比较方便，也省去维护的负担，实现一个松耦合的组织状态，并且插件作者给出的一篇简易的文档<a href="http://catx.me/2014/03/09/hexo-mathjax-plugin/" target="_blank" rel="external">Hexo MathJax插件</a>。使用插件的时候会遇到了下面的问题：</p>
+<ul>
+<li><code>hexo math install</code>命令在本地无法运行，跳过也没出现什么太大的问题。</li>
+<li><code>Tag inline</code>方式也是无法使用，</li>
+<li>并且运行的时候命令行会报一堆的日志</li>
+</ul>
+<p>看来不是那么的简便、稳定，丧失了信心，最后使用最暴力的方式解决掉了。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/x-mathjax-config"</span>&gt;</span><span class="groovy"></span><br><span class="line">    MathJax.Hub.Config(&#123;<span class="string">"HTML-CSS"</span>: &#123; <span class="string">preferredFont:</span> <span class="string">"TeX"</span>, <span class="string">availableFonts:</span> [<span class="string">"STIX"</span>,<span class="string">"TeX"</span>], <span class="string">linebreaks:</span> &#123; <span class="string">automatic:</span><span class="literal">true</span> &#125;, <span class="string">EqnChunk:</span> (MathJax.Hub.Browser.isMobile ? 10 : <span class="number">50</span>) &#125;,</span><br><span class="line"><span class="label">        tex2jax:</span> &#123; <span class="string">inlineMath:</span> [ [<span class="string">"$"</span>, <span class="string">"$"</span>], [<span class="string">"\\("</span>,<span class="string">"\\)"</span>] ], <span class="string">processEscapes:</span> <span class="literal">true</span>, <span class="string">ignoreClass:</span> <span class="string">"tex2jax_ignore|dno"</span>,<span class="string">skipTags:</span> [<span class="string">'script'</span>, <span class="string">'noscript'</span>, <span class="string">'style'</span>, <span class="string">'textarea'</span>, <span class="string">'pre'</span>, <span class="string">'code'</span>]&#125;,</span><br><span class="line"><span class="label">        TeX:</span> &#123;  <span class="string">noUndefined:</span> &#123; <span class="string">attributes:</span> &#123; <span class="string">mathcolor:</span> <span class="string">"red"</span>, <span class="string">mathbackground:</span> <span class="string">"#FFEEEE"</span>, <span class="string">mathsize:</span> <span class="string">"90%"</span> &#125; &#125;, <span class="string">Macros:</span> &#123; <span class="string">href:</span> <span class="string">"&#123;&#125;"</span> &#125; &#125;,</span><br><span class="line"><span class="label">        messageStyle:</span> <span class="string">"none"</span></span><br><span class="line">    &#125;); </span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/x-mathjax-config"</span>&gt;</span><span class="matlab"></span><br><span class="line">    MathJax.Hub.Queue(<span class="function"><span class="keyword">function</span><span class="params">()</span> &#123;</span></span><br><span class="line">        var all = MathJax.Hub.getAllJax(), <span class="built_in">i</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">i</span>=<span class="number">0</span>; <span class="built_in">i</span> &lt; all.<span class="built_in">length</span>; <span class="built_in">i</span> += <span class="number">1</span>) <span class="cell">&#123;</span><br><span class="line">            all[i].SourceElement().parentNode.className += <span class="string">' has-jax'</span>;</span><br><span class="line">        &#125;</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"</span>&gt;</span><span class="undefined"></span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Latex_基本语法">Latex 基本语法</h2><p>关于latex的基本语法，<a href="http://mlworks.cn/posts/introduction-to-mathjax-and-latex-expression/" target="_blank" rel="external">http://mlworks.cn/posts/introduction-to-mathjax-and-latex-expression/</a> 这篇文档写的是在太好了，也没必要重复再造一遍轮子，故只记录一些自己常用的用法。</p>
+<h2 id="其他参考">其他参考</h2><p><a href="http://www.catxue.com/2015/03/20/MathJax/" target="_blank" rel="external">MathJax插件在hexo中的应用</a><br><a href="http://mlworks.cn/posts/introduction-to-mathjax-and-latex-expression/" target="_blank" rel="external">Mathjax与LaTex公式简介</a></p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="安装">安装</h2><p>在hexo安装使用mathjax的方式不外乎那么几种，具体的可以参见 <a href="http://lukang.me/2014/mathjax-for-hexo.html" target="_blank" rel="external]]>
+    </summary>
+    
+  </entry>
+  
+  <entry>
+    <title><![CDATA[碎语]]></title>
+    <link href="http://yangzz0.github.io/2015/11/22/2015.11.22.7/"/>
+    <id>http://yangzz0.github.io/2015/11/22/2015.11.22.7/</id>
+    <published>2015-11-22T13:09:37.000Z</published>
+    <updated>2015-12-07T10:43:49.107Z</updated>
+    <content type="html"><![CDATA[<h2 id="一些问题">一些问题</h2><h3 id="内容选择困难症">内容选择困难症</h3><blockquote>
+<p>做ppt演讲的时候，该讲什么内容。自己会的感觉太简单，那就是1+1，别人应该都会，讲出来没意思，要么不懂感觉这个好像才有讲的价值。</p>
+</blockquote>
+<p>内容选取的标准搞错了，不应该根据自己感觉是什么就是什么来作为取舍标准。应根据内容及其结构、 <del>是什么</del>，<del>有哪些基本问题，基本问题应该勾勒出基本的框架结构。以及每个问题所需的</del> 为了描述清楚这个结构而应说明的基本概念、术语、公理等最小基本元素集合来作为取舍标准。</p>
+<h3 id="关联困难">关联困难</h3><blockquote>
+<p>不能理解句子在说什么</p>
+</blockquote>
+<p>实则是未能理解句子所表达的含义，理解透要表达的内容。可能是关联思维不好</p>
+<ul>
+<li>要解决的问题</li>
+<li>相关内容</li>
+<li>图形</li>
+</ul>
+<h2 id="如何提高效率？">如何提高效率？</h2><ul>
+<li>与人交流</li>
+<li>信息获取的技巧</li>
+<li>使用工具</li>
+<li>避免副作用</li>
+</ul>
+<h2 id="碎碎念">碎碎念</h2><p>思绪来的也快去的也快，想的很明白的二次探测定理现在也忘记是怎么回事了，记一记笔记，把当时相关的一些原理梳理一下，总结一下自己的感悟还是很有必要的。</p>
+]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="一些问题">一些问题</h2><h3 id="内容选择困难症">内容选择困难症</h3><blockquote>
+<p>做ppt演讲的时候，该讲什么内容。自己会的感觉太简单，那就是1+1，别人应该都会，讲出来没意思，要么不懂感觉这个好像才有讲的价值。</p>
+</]]>
+    </summary>
+    
+      <category term="杂记" scheme="http://yangzz0.github.io/tags/%E6%9D%82%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
     <title><![CDATA[lnmp 环境 搭建]]></title>
     <link href="http://yangzz0.github.io/2015/11/17/lnmp-%E7%8E%AF%E5%A2%83-%E6%90%AD%E5%BB%BA/"/>
     <id>http://yangzz0.github.io/2015/11/17/lnmp-环境-搭建/</id>
     <published>2015-11-17T12:08:24.000Z</published>
-    <updated>2015-11-17T12:54:00.378Z</updated>
+    <updated>2015-12-07T10:43:19.052Z</updated>
     <content type="html"><![CDATA[<h2 id="整体结构">整体结构</h2><p><img src="http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg" alt="盗用一张图"></p>
 <h2 id="安装">安装</h2><p><strong>nginx</strong></p>
 <p>可以手动编译安装，也可以是使用<code>apt-get</code>方式安装。第二种方式版本较低。</p>
@@ -30,14 +140,11 @@
 <p><strong>fpm</strong></p>
 <p>配置文件 <code>/etc/php5/fpm/pool.d/www.conf</code>,设置fpm监听端口和nginx配置一致</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">listen</span> =<span class="number">127.0.0.1:9000</span></span><br></pre></td></tr></table></figure>
-<h2 id="FAQ">FAQ</h2><h3 id="mysql_安装过程未设置密码，用root，空密码登陆_报_ERROR_1045_(28000)_错误。">mysql 安装过程未设置密码，用root，空密码登陆  报 <code>ERROR 1045 (28000)</code> 错误。</h3><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">sudo</span> <span class="comment">/etc/init</span><span class="string">.</span><span class="comment">d/mysql</span> <span class="comment">stop</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysqld_safe</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">user=mysql</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">grant</span><span class="literal">-</span><span class="comment">tables</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">networking&amp;</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysql</span> <span class="literal">-</span><span class="comment">u</span> <span class="comment">root</span> <span class="comment">mysql</span></span><br></pre></td></tr></table></figure>
-<p><strong>重设秘密</strong></p>
-<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">UPDATE</span> <span class="keyword">user</span> <span class="keyword">SET</span> <span class="keyword">Password</span>=<span class="keyword">PASSWORD</span>(<span class="string">'newpassword'</span>) whereUSER=<span class="string">'root'</span>;</span></span><br><span class="line"><span class="operator"><span class="keyword">FLUSH</span> <span class="keyword">PRIVILEGES</span>;</span></span><br><span class="line">quit;</span><br></pre></td></tr></table></figure>
-<p><strong>重启数据库：</strong></p>
+<h2 id="FAQ">FAQ</h2><h4 id="mysql_安装过程未设置密码-。用root、空密码登陆报_ERROR_1045_(28000)_错误。">mysql 安装过程未设置密码.。用root、空密码登陆报 <code>ERROR 1045 (28000)</code> 错误。</h4><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">sudo</span> <span class="comment">/etc/init</span><span class="string">.</span><span class="comment">d/mysql</span> <span class="comment">stop</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysqld_safe</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">user=mysql</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">grant</span><span class="literal">-</span><span class="comment">tables</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">networking&amp;</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysql</span> <span class="literal">-</span><span class="comment">u</span> <span class="comment">root</span> <span class="comment">mysql</span></span><br></pre></td></tr></table></figure>
+<p>更改sql用户密码</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">update</span> mysql.<span class="keyword">user</span> <span class="keyword">set</span> <span class="keyword">password</span>=<span class="keyword">PASSWORD</span>（<span class="string">'新密码'</span>） <span class="keyword">where</span> <span class="keyword">User</span>=<span class="string">'root'</span></span><br><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span></span></span><br></pre></td></tr></table></figure>
+<p>重启数据库：</p>
 <p><code>/etc/init.d/mysql restart</code></p>
-<ol>
-<li></li>
-</ol>
 <h2 id="参考">参考</h2><ol>
 <li><a href="http://laokaddk.blog.51cto.com/368606/1323292" target="_blank" rel="external">ubuntu 系统解决mysql连接问题（ERROR 1045 (28000): Access denied for user ‘root’@’localhost’ (using password: NO)）</a></li>
 </ol>
@@ -58,7 +165,7 @@
     <link href="http://yangzz0.github.io/2015/11/11/MonaServer/"/>
     <id>http://yangzz0.github.io/2015/11/11/MonaServer/</id>
     <published>2015-11-11T11:54:48.000Z</published>
-    <updated>2015-11-11T12:54:59.236Z</updated>
+    <updated>2015-12-07T10:43:19.031Z</updated>
     <content type="html"><![CDATA[<h2 id="安装">安装</h2><p><strong>windows</strong></p>
 <ol>
 <li><a href="http://sourceforge.net/projects/monaserver/files/MonaServer_Windows_32.zip/download" target="_blank" rel="external">点击下载运行包</a></li>
@@ -86,7 +193,7 @@
     <link href="http://yangzz0.github.io/2015/11/10/ngx-lua/"/>
     <id>http://yangzz0.github.io/2015/11/10/ngx-lua/</id>
     <published>2015-11-10T12:27:52.000Z</published>
-    <updated>2015-11-10T13:05:13.236Z</updated>
+    <updated>2015-12-07T10:43:19.077Z</updated>
     <content type="html"><![CDATA[<h2 id="跟ngx有关的函数、变量">跟ngx有关的函数、变量</h2><h3 id="ngx-header">ngx.header</h3><p>响应头设置</p>
 <p>重定向:<code>ngx.header.Location</code></p>
 <h3 id="ngx-exit(404)">ngx.exit(404)</h3><p>断开连接，同时设置响应的状态码</p>
@@ -116,7 +223,7 @@
     <link href="http://yangzz0.github.io/2015/10/30/http-debug/"/>
     <id>http://yangzz0.github.io/2015/10/30/http-debug/</id>
     <published>2015-10-30T05:08:18.000Z</published>
-    <updated>2015-10-30T06:14:20.311Z</updated>
+    <updated>2015-12-07T10:43:19.033Z</updated>
     <content type="html"><![CDATA[<h3 id="查看请求响应头信息">查看请求响应头信息</h3><ul>
 <li>curl</li>
 </ul>
@@ -188,7 +295,7 @@
     <link href="http://yangzz0.github.io/2015/10/25/prime-linear-time/"/>
     <id>http://yangzz0.github.io/2015/10/25/prime-linear-time/</id>
     <published>2015-10-25T05:49:37.000Z</published>
-    <updated>2015-10-26T02:21:31.354Z</updated>
+    <updated>2015-12-07T10:43:49.108Z</updated>
     <content type="html"><![CDATA[<h2 id="背景">背景</h2><p>我每过段时间，就会兴趣大发，噼里啪啦加上一堆qq群，一般就是最近在做相关的工作，或者想了解学习相关的知识，到现在已经加了几十群了。qq群对于我来说，一是看大家伙的讨论一些专业技术问题，一是从共享里面下载一些书籍资料，当然一般一个群建立的比较久了，群里活跃成员达到一定的数目，一个群也会有适当的灌水，娱乐一下，好像有点一个小社会的那么点意思。昨天加一个计算机相关的群，它设置了一个问题：</p>
 <pre><code>小于<span class="number">899808659</span>的最大质数是？
 </code></pre><h2 id="低头做事">低头做事</h2><p>第一感觉是<code>简单，应该能很快做出来</code>，但随后也感觉<code>这个数稍微有点大，会不会没自己想想的这么简单</code>，也想到了三种可能能解决这个问题的方案：试除法（复杂度约为n^1.5）、欧拉筛法 和 Miller–Rabin素性检测，前两种解决方案以前都写过对应的C代码,第三种也就是知道名字能做什么而已。决定试一把前两种解决方案，感觉以前写过怎也能做出来。前两种选哪一种呢？我也说不太清楚，带着复杂的的心情写完了第一个方案的<a href="">程序</a>，</p>
@@ -201,7 +308,7 @@
 <p>反正离899808659挺近的，就枚举一下（899808619，899808659）区间的数吧，实在折腾的够呛了，最后真正的结果是下面这个数，也就这一个。</p>
 <pre><code><span class="number">899808641</span>
 </code></pre><h2 id="抬头看路">抬头看路</h2><p>反思整个过程，自己曝露出很多缺点。</p>
-<p>有句话说心中有数，手上不乱。看到问题没有好好的分析问题，有什么解决方案，有多少，分析每个方案的特点、所能解决的问题。上来就凭感觉做，然后想大力出奇迹，简直是痴人说梦，事倍功半，过程中老感觉不踏实，那里怪怪的。那每种方案的复杂度是多少呢，能解决的问题能力多大呢？试除法的时间复杂度我起初一直错误的以为是 sqrt x ,实际应该为 sqrtx，那其实是遍历区间内所有素数筛法的时间复杂度，而 sqrt x  才是 筛选一个数的时间复杂度。虽然感觉也怪怪的，但是没有细心的想想为什么感觉怪怪的。错误的时间复杂度估计，粗心大意，也是过于快放弃这种方案的原因。有句话还是挺有道理的，对感觉奇怪的地方进行深入的思考，查找资料求证，就可能会发现一些令人吃惊的与设想不同的结果。</p>
+<p>有句话说心中有数，手上不乱。看到问题没有好好的分析问题，有什么解决方案，有多少，分析每个方案的特点、所能解决的问题。上来就凭感觉做，然后想大力出奇迹，简直是痴人说梦，事倍功半，过程中老感觉不踏实，那里怪怪的。那每种方案的复杂度是多少呢，能解决的问题能力多大呢？试除法的时间复杂度我起初一直错误的以为是 $O(n^{1.5})$,实际应该为 $O(n^{0.5})$，那其实是遍历区间内所有素数筛法的时间复杂度，而$O(n^{0.5})$ 才是 筛选一个数的时间复杂度。虽然感觉也怪怪的，但是没有细心的想想为什么感觉怪怪的。错误的时间复杂度估计，粗心大意，也是过于快放弃这种方案的原因。有句话还是挺有道理的，对感觉奇怪的地方进行深入的思考，查找资料求证，就可能会发现一些令人吃惊的与设想不同的结果。</p>
 <p>其次，调试程序大意，主观臆断。代码没进行单元测试，试除法程序运行时间过长，没有具体分析原因就直接尝试第二种方案。</p>
 <p>第三，偏离主目标，这是严重的路线方向问题。明显发现欧拉筛法行不通的时候，仍花费不少时间在上面，这个事情应该放到延迟重要的事情。</p>
 <h2 id="总结">总结</h2><p>对于这个事情的结果是，一个一小时内可以解决的问题终于在几个小时候后把问题解决了。顺利的进入了群，自豪骄傲。</p>
@@ -220,7 +327,7 @@
     <link href="http://yangzz0.github.io/2015/10/23/obs-use/"/>
     <id>http://yangzz0.github.io/2015/10/23/obs-use/</id>
     <published>2015-10-23T08:55:27.000Z</published>
-    <updated>2015-11-19T06:20:47.205Z</updated>
+    <updated>2015-12-07T10:43:19.119Z</updated>
     <content type="html"><![CDATA[<h2 id="obs_是什么">obs 是什么</h2><p><a href="https://obsproject.com/" target="_blank" rel="external">官网</a>标题有这么一句话，</p>
 <blockquote><p>Free, open source software for live streaming and recording</p>
 </blockquote>
@@ -252,7 +359,7 @@
     <link href="http://yangzz0.github.io/2015/10/14/linux-net-programming-dig/"/>
     <id>http://yangzz0.github.io/2015/10/14/linux-net-programming-dig/</id>
     <published>2015-10-14T09:40:49.000Z</published>
-    <updated>2015-10-15T03:44:39.688Z</updated>
+    <updated>2015-12-07T10:43:19.051Z</updated>
     <content type="html"><![CDATA[<h2 id="IO_复用函数">IO 复用函数</h2><h2 id="定时器">定时器</h2><p><strong>定时方法</strong></p>
 <ul>
 <li>socket 选项 SO_RCVTIMEO 和SO_SNDTIMEO</li>
@@ -283,7 +390,7 @@
     <link href="http://yangzz0.github.io/2015/10/13/c-incldue/"/>
     <id>http://yangzz0.github.io/2015/10/13/c-incldue/</id>
     <published>2015-10-13T11:12:04.000Z</published>
-    <updated>2015-11-03T07:14:31.983Z</updated>
+    <updated>2015-12-07T10:43:19.032Z</updated>
     <content type="html"><![CDATA[<h2 id="引言">引言</h2><p>前段时间看lua的时候，书中提到标准C是没有定义查找路径的，回想起来C的书籍中确实没有过多实没有提及文件包含的问题。在看linux网络编程的时候一些文件包含格式，以前也见过但是不理解为什么这么写，自己也没深入关注过这方面的问题。在配置eclipse,sublime,vs的文件包含、库文件、动态链接库相关的配置的时候，感觉配置参数和这些文件包含他们之间有那么一些隐隐约约的联系，<code>感觉配置的这些参数，就是编译器，链接器相关命令行参数</code>，也确实是如此。</p>
 <p>如何包含文件的问题其实是一个文件查找的问题。例如php中对文件包含的规则就比较简单<code>require</code>或者<code>include</code> 后面加上文件路径，但是C语言中在自己的印象中一直好像没有相关的说法，于是翻了一下C程序语言设计这本书，呵呵。。果然是阳春白雪。。就那么一点点。。。不留心可能就忽略了，在工程之中却又是一个非常重要的问题。比如可以利用文件把一个大的工程分开，有利于<code>模块化</code>开发设计。</p>
 <p>随即查阅了一些资料做个简单的小结。</p>
@@ -385,7 +492,7 @@
     <link href="http://yangzz0.github.io/2015/09/23/debug-tools/"/>
     <id>http://yangzz0.github.io/2015/09/23/debug-tools/</id>
     <published>2015-09-23T10:22:00.000Z</published>
-    <updated>2015-10-29T09:03:40.295Z</updated>
+    <updated>2015-12-07T10:43:19.032Z</updated>
     <content type="html"><![CDATA[<h2 id="☆_gdb">☆ gdb</h2><p>启动gdb后</p>
 <p>b breakpoint 断点<br>p print 打印<br>r<br>attach<br>watch<br>c<br>bt<br>up<br>list<br>info macro NGX_OK<br>macro expand</p>
 <h2 id="☆_ulimit">☆ ulimit</h2><p>-c<br>unlimited</p>
@@ -447,7 +554,7 @@
     <link href="http://yangzz0.github.io/2015/09/18/lua-metatable/"/>
     <id>http://yangzz0.github.io/2015/09/18/lua-metatable/</id>
     <published>2015-09-18T09:47:00.000Z</published>
-    <updated>2015-09-21T12:07:35.740Z</updated>
+    <updated>2015-12-07T10:43:19.052Z</updated>
     <content type="html"><![CDATA[<blockquote><p>每一个值都有一个元表。table和userdata可以有各自独立的元表，其他类型的值则共享其类型所属的单一元表</p>
 </blockquote>
 <p>表是lua中非常重要的基本数据类型，实现其他的一些编程技术概念的基础，如模块、包、类。通过语言提供的元表和元方法可以更改表的表现行为。</p>
@@ -562,7 +669,7 @@
     <link href="http://yangzz0.github.io/2015/09/06/rtmp/"/>
     <id>http://yangzz0.github.io/2015/09/06/rtmp/</id>
     <published>2015-09-05T16:00:00.000Z</published>
-    <updated>2015-11-02T11:18:00.302Z</updated>
+    <updated>2015-12-07T10:43:19.122Z</updated>
     <content type="html"><![CDATA[<h2 id="一些参数及其含义">一些参数及其含义</h2><table>
 <thead>
 <tr>
@@ -666,7 +773,7 @@
     <link href="http://yangzz0.github.io/2015/08/17/vod/"/>
     <id>http://yangzz0.github.io/2015/08/17/vod/</id>
     <published>2015-08-17T06:54:36.000Z</published>
-    <updated>2015-11-02T11:16:53.799Z</updated>
+    <updated>2015-12-07T10:43:19.123Z</updated>
     <content type="html"><![CDATA[<p>对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求:</p>
 <blockquote>
 <ul>
@@ -725,7 +832,7 @@
     <link href="http://yangzz0.github.io/2015/08/12/How-to-set-up-your-own-private-RTMP-server-using-nginx/"/>
     <id>http://yangzz0.github.io/2015/08/12/How-to-set-up-your-own-private-RTMP-server-using-nginx/</id>
     <published>2015-08-12T09:20:51.000Z</published>
-    <updated>2015-11-02T09:29:22.172Z</updated>
+    <updated>2015-12-07T10:43:19.015Z</updated>
     <content type="html"><![CDATA[<blockquote><p>原文地址: <a href="https://obsproject.com/forum/resources/how-to-set-up-your-own-private-rtmp-server-using-nginx.50/" target="_blank" rel="external">https://obsproject.com/forum/resources/how-to-set-up-your-own-private-rtmp-server-using-nginx.50/</a></p>
 </blockquote>
 <p>大多数人喜欢使用Twitch.tv和Ustream这类服务把流视频转播放给用户，并且工作的也非常好。但是有时候你想对你的流视频有更多的控制权，或者你想其他人把视频流转发给你，或者你想转发视频流到多个地方，或者一些事情需要你有权限访问RTMP服务器上的视频流。这篇教程内容非常基础，教你在一台linux服务器上搭建一个简单的RTMP服务器。</p>
@@ -793,7 +900,7 @@ $ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>
     <link href="http://yangzz0.github.io/2015/08/05/php-upload-file/"/>
     <id>http://yangzz0.github.io/2015/08/05/php-upload-file/</id>
     <published>2015-08-05T11:07:02.000Z</published>
-    <updated>2015-08-21T13:39:08.365Z</updated>
+    <updated>2015-12-07T10:43:19.120Z</updated>
     <content type="html"><![CDATA[<p>上传一个213M的文件的时候一直报IOerror。首先想到的是php上传文件大小的限制，改为300兆后，不起作用，就感觉是上传的的时候脚本执行的时间太长了，就修改<code>max_input_time</code> 为6000 还是不起作用，琢磨是不是<code>max_input_time</code>解析数据的时间出了问题，最后发现也不是，原来是nginx设置的太小了，改为500m,问题立马解决了。</p>
 <p>php 和 nginx 设置如下</p>
 <p>ngxin server 里面配置如下<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">     ***</span><br><span class="line">     client_max_body_size 1000M;</span><br><span class="line">     ****</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -818,7 +925,7 @@ $ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>
     <link href="http://yangzz0.github.io/2015/08/04/linux-cmd/"/>
     <id>http://yangzz0.github.io/2015/08/04/linux-cmd/</id>
     <published>2015-08-04T10:14:42.000Z</published>
-    <updated>2015-09-21T06:35:29.297Z</updated>
+    <updated>2015-12-07T10:43:19.051Z</updated>
     <content type="html"><![CDATA[<h1 id="sort">sort</h1><table>
 <thead>
 <tr>
