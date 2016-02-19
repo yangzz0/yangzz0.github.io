@@ -4,7 +4,7 @@
   <subtitle><![CDATA[好习惯受益终生]]></subtitle>
   <link href="/atom.xml" rel="self"/>
   <link href="http://yangzz0.github.io/"/>
-  <updated>2015-12-08T06:13:35.908Z</updated>
+  <updated>2015-12-21T13:00:53.546Z</updated>
   <id>http://yangzz0.github.io/</id>
   
   <author>
@@ -13,6 +13,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title><![CDATA[yii2 GridView 使用]]></title>
+    <link href="http://yangzz0.github.io/2015/12/21/yii2-GridView-%E4%BD%BF%E7%94%A8/"/>
+    <id>http://yangzz0.github.io/2015/12/21/yii2-GridView-使用/</id>
+    <published>2015-12-21T12:09:41.000Z</published>
+    <updated>2015-12-21T13:00:53.546Z</updated>
+    <content type="html"><![CDATA[<h2 id="GridView是什么？能做什么？">GridView是什么？能做什么？</h2><p><code>GridView</code>是一个用于把数据显示在一个表格中的<code>yii2</code> <code>widget</code></p>
+<p>提供的功能，主要包括下面几种对数据的操作</p>
+<ul>
+<li>使用表格显示数据</li>
+<li>对表格中的列进行<code>排序</code>显示</li>
+<li><code>分页</code>显示数据</li>
+<li><code>过滤</code>显示那些数据</li>
+</ul>
+<h2 id="GridView_怎么使用？">GridView 怎么使用？</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="preprocessor">&lt;?</span>= GridView::widget([</span><br><span class="line">    <span class="string">'dataProvider'</span> =&gt; <span class="variable">$dataProvider</span>,</span><br><span class="line">    <span class="string">'columns'</span> =&gt; [</span><br><span class="line">        <span class="string">'id'</span>,</span><br><span class="line">        <span class="string">'name'</span>,</span><br><span class="line">        <span class="string">'created_at:datetime'</span>,</span><br><span class="line">    ],</span><br><span class="line">])<span class="preprocessor">?&gt;</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>columns 配置项中的缩写</li>
+<li>组合模式+依赖注入</li>
+</ul>
+<h2 id="GridView_源码分析">GridView 源码分析</h2>]]></content>
+    <summary type="html">
+    <![CDATA[<h2 id="GridView是什么？能做什么？">GridView是什么？能做什么？</h2><p><code>GridView</code>是一个用于把数据显示在一个表格中的<code>yii2</code> <code>widget</code></p>
+<p>提供的功能]]>
+    </summary>
+    
+  </entry>
   
   <entry>
     <title><![CDATA[eclipse-mars-php 自动补全提示]]></title>
