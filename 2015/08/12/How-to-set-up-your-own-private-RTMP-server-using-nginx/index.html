@@ -150,43 +150,46 @@ var _hmt = _hmt || [];
 <li>由于一些目的，把其他人的多个视频流合成一个（我在多个角度拍摄中使用它，例如像在<a href="https://www.youtube.com/watch?v=6WUU58POsTM" target="_blank" rel="external">这个多个拍摄角度视频中</a>）</li>
 </ul>
 <p>好的，你该怎样做到这些事情呢？</p>
-<h2 id="第一步：获取一个服务器">第一步：获取一个服务器</h2><p>不管你信不信，RTMP 实际上对系统资源要求十分的小。本质上来说，它仅仅是从输入端抓取数据并把数据转发到输出端，简单的数据传输。不相信我？我的运行了很长一段时间的RTMP服务器是一个树莓派,一个价值35美金（月200元人民币）的迷你计算机，就放在我的办公桌上，至少同时处理3个数据输入流是完全没有问题的，我也从来没有对它进行过压力测试去看看到底他能处理多少。因此，我向你保证，即使一个便宜的旧机器也是完全没有问题的。</p>
+<p>##第一步：获取一个服务器<br>不管你信不信，RTMP 实际上对系统资源要求十分的小。本质上来说，它仅仅是从输入端抓取数据并把数据转发到输出端，简单的数据传输。不相信我？我的运行了很长一段时间的RTMP服务器是一个树莓派,一个价值35美金（月200元人民币）的迷你计算机，就放在我的办公桌上，至少同时处理3个数据输入流是完全没有问题的，我也从来没有对它进行过压力测试去看看到底他能处理多少。因此，我向你保证，即使一个便宜的旧机器也是完全没有问题的。</p>
 <p>假如你没有树莓派，一个vps也是可以的。我推荐Linode服务商，如果你能支付的起服务费用。我现在也在使用，并且到现在为止，它也运行良好。仅仅确保你有足够的带宽。。。记住带宽的使用量是<code>（视频流的大小）* （上传人数+下载人数）</code>。因此当我有两个视频流推送视频流到我的服务器，并且我同时下载他们，两小时消耗了10GB的带宽流量。</p>
 <p>为了方便，我推荐使用Ubuntu作为服务器软件，但是你完全可使用任何你想使用的。只要你能从apt之外其他的地方解决nginx的依赖问题，你就能参考这篇文档。</p>
 <p><strong>Windows 用户注意</strong> 这边教程关注Linux上的使用，假如你想在Windows上使用，你能找到带有RTMP 模块的nginx二进制包，在这个地方： <a href="http://nginx-win.ecsds.eu/" target="_blank" rel="external">http://nginx-win.ecsds.eu/</a></p>
 <p>假如你的服务器在你家里，你需要转发TCP 1935端口数据到这个服务器上。。。不同的路由器有不同的设置，因此你需要根据你自己的路由器，查看怎么设置端口转发。同时，我推荐使用 DynDNS 这类服务去克服家用主机动态IP的问题。</p>
-<h2 id="第二步：安装nginx_和RTMP_模块">第二步：安装nginx 和RTMP 模块</h2><p>登录你的机器，并且确保你有这些必须的工具去编译nginx,执行下面的命令</p>
-<pre><code>$ sudo apt-<span class="built_in">get</span> install build-essential libpcre3 libpcre3-<span class="built_in">dev</span> libssl-<span class="built_in">dev</span>
+<p>##第二步：安装nginx 和RTMP 模块<br>登录你的机器，并且确保你有这些必须的工具去编译nginx,执行下面的命令</p>
+<pre><code>$ sudo apt-get install build-essential libpcre3 libpcre3-dev libssl-dev
 </code></pre><p>现在说点关于nginx的一点小知识（发音 “engine-X”）。nginx是个轻量级的web server，但是有些人为它写了一个RTMP模块，因此它能够提供RTMP流相关的服务，为了添加这个RTMP模块，我们必须重新从源码编译nginx 而不是使用apt包。不要担心，它是非常简单的，仅仅执行下面的指令:)</p>
 <p>在你的home目录，下载nginx 源码：</p>
-<pre><code><span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/nginx.org/download</span><span class="regexp">/nginx-1.7.7.tar.gz</span>
+<pre><code>$ wget http://nginx.org/download/nginx-1.7.7.tar.gz
 </code></pre><p>在写这篇文章的时候，ngxin 最新的稳定版本是 1.7.7。你可是从<a href="http://nginx.org/en/download.html" target="_blank" rel="external">nginx 下载页</a>下载最新的包。</p>
 <p>接着，从git 获取RTMP 模块的源代码</p>
-<pre><code><span class="variable">$ </span>wget <span class="symbol">https:</span>/<span class="regexp">/github.com/arut</span><span class="regexp">/nginx-rtmp-module/archive</span><span class="regexp">/master.zip</span>
+<pre><code>$ wget https://github.com/arut/nginx-rtmp-module/archive/master.zip
 </code></pre><p>解压开他们，斌且进入nginx 目录：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tar -zxvf nginx-1.7.7.tar.gz&#10;$ unzip master.zip&#10;$ cd nginx-1.7.7</span><br></pre></td></tr></table></figure>
 <p>现在，编译nginx:</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./configure --with-http_ssl_module --add-module=../nginx-rtmp-module-master&#10;$ make&#10;$ sudo make install</span><br></pre></td></tr></table></figure>
 <p>现在nginx 安装完毕了！默认安装在了 <code>/usr/local/nginx</code>,使用下面的命令启动：</p>
-<pre><code>$ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>sbin<span class="regexp">/nginx</span>
+<pre><code>$ sudo /usr/local/nginx/sbin/nginx
 </code></pre><p>现在测试一下确认nginx 正在运行，打开浏览器输入 <code>http://服务器ip/</code> 然后你将看到”Welcome to nginx!”这个页面。</p>
-<h2 id="第三步：配置nginx_启用RTMP">第三步：配置nginx 启用RTMP</h2><p>打开配置文件，默认是 <code>/usr/local/nginx/conf/nginx.conf</code>，在文件的最后添加下面的内容：</p>
+<p>##第三步：配置nginx 启用RTMP<br>打开配置文件，默认是 <code>/usr/local/nginx/conf/nginx.conf</code>，在文件的最后添加下面的内容：</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">rtmp</span> &#123;</span><br><span class="line">        <span class="title">server</span> &#123;</span><br><span class="line">                <span class="title">listen</span> <span class="number">1935</span>;</span><br><span class="line">                <span class="title">chunk_size</span> <span class="number">4096</span>;</span><br><span class="line"></span><br><span class="line">                <span class="title">application</span> live &#123;</span><br><span class="line">                        <span class="title">live</span> <span class="built_in">on</span>;</span><br><span class="line">                        <span class="title">record</span> <span class="built_in">off</span>;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这是一个非常简单的基础配置，有一个live应用，它将会把RTMP视频流转发给所有请求这它的用户。你可能过一会才播放这个视频。<a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives" target="_blank" rel="external">这里是所有配置选项</a>，展示了如何转发视频流到其他的地方（像Twitch），保存上传的记录，输出状态等等。</p>
 <p>重启nginx:</p>
-<pre><code>$ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>sbin/nginx -s stop
-$ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>sbin/nginx
-</code></pre><h2 id="第四步：测试">第四步：测试</h2><p>你的服务器应该能接收RTMP视频流了。让我们尝试一下吧。</p>
+<pre><code>$ sudo /usr/local/nginx/sbin/nginx -s stop
+$ sudo /usr/local/nginx/sbin/nginx
+</code></pre><p>##第四步：测试</p>
+<p>你的服务器应该能接收RTMP视频流了。让我们尝试一下吧。</p>
 <p>创建一个新的工程在OBS,并且更改 Broadcast Settings 为如下：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Streaming Service: Custom&#10;Server: rtmp://&#60;your server ip&#62;/live&#10;Play Path/Stream Key: test</span><br></pre></td></tr></table></figure>
 <p>你可能会疑惑test路径从哪里来。好吧，我们就是刚刚创建的。你能创建任何路径和流，把那个路径发到RTMP播放器里面，就可以播放了。对于简单的应用，没必要授权。</p>
 <p>你现在能向你的服务器推送视频流了。当你点击了 “Start Streaming” ，没有报告错误，这是一个好的信号。</p>
 <p>怎么打开观看呢？就我个人来说，我使用<a href="http://vmix.com.au/" target="_blank" rel="external">vMix</a>播放RTMP流并且将多个视频流合并成一个我自己的流。如果你仅仅想播放一个正在上传的视频流，可以使用<code>VLC 2.1.0</code>或者更新的版本。打开一个网络流，输入<code>rtmp://&lt;your server ip&gt;/live/test</code>作为url。如果没有报什么错误的话，现在你就能在VLC里面看到流里面的内容了。</p>
 <p>现在你有一个能工作的视频流了，欢呼吧:)</p>
-<h2 id="现在做什么呢？">现在做什么呢？</h2><p>你能使用使你的服务器转发视频流到其他的流服务和频道。在”record off;”后面添加下面的指令。</p>
-<pre><code><span class="keyword">push </span>rtmp://&lt;other <span class="keyword">streaming </span>service rtmp url&gt;/&lt;<span class="keyword">stream </span>key&gt;
+<p>##现在做什么呢？</p>
+<p>你能使用使你的服务器转发视频流到其他的流服务和频道。在”record off;”后面添加下面的指令。</p>
+<pre><code>push rtmp://&lt;other streaming service rtmp url&gt;/&lt;stream key&gt;
 </code></pre><p>任何视频流都会被转发，同时客户端也能使用这个地址播放视频。你可以添加多个push指令，把这个视频转发到多个位置。</p>
-<h2 id="FAQ">FAQ</h2><p>Q:为什么使用nginx?不使用crtmpserver/Red5/Wowza?</p>
+<p>##FAQ</p>
+<p>Q:为什么使用nginx?不使用crtmpserver/Red5/Wowza?</p>
 <p>A:先前用过crtmpserver，并且也能工作，但是太难用了。如果需要RTSP服务代替RTMP服务，我推荐使用它，因为nginx RTMP模块不支持RTSP。对于我来说Red5看起来太重，太复杂了，并且是用java写的。。。如果你想使用它就是用它吧。我没有在这上面投资很多精力。Wowza不是免费的。你能使用它完成你想的功能，但是nginx是更轻量级的，易于使用，并且免费。</p>
 <p>Q:X怎么做?</p>
 <p>A:FAQ会保持更新。。问一些问题，我将把答案写在这里。</p>
@@ -220,6 +223,9 @@ $ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>
 <section id="comment">
     <h2 class="title">留言</h2>
 
+    
+    <div class="ds-thread" data-thread-key="2015/08/12/How-to-set-up-your-own-private-RTMP-server-using-nginx/" data-title="【译】How to set up your own private RTMP server using nginx"
+         data-url="http://yangzz0.github.io/2015/08/12/How-to-set-up-your-own-private-RTMP-server-using-nginx/"></div>
     
 </section>
 
@@ -266,6 +272,18 @@ $ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>
 
 </div><!-- row -->
 
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'soul11201' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
 
 
 	</div>
@@ -292,23 +310,7 @@ $ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
 <script src="/js/search.js"></script> 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
-        messageStyle: "none"
-    }); 
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+
 
 <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
 <script src="/fancybox/jquery.fancybox.pack.js"></script>
@@ -329,5 +331,22 @@ $ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>
      searchFunc(path, 'local-search-input', 'local-search-result');
    </script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    }); 
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 </body>
    </html>

@@ -141,7 +141,8 @@ var _hmt = _hmt || [];
 	<div class="mypage">		
 	  		
 
-	  <h1 id="sort">sort</h1><table>
+	  <p>#sort</p>
+<table>
 <thead>
 <tr>
 <th>参数</th>
@@ -159,14 +160,14 @@ var _hmt = _hmt || [];
 </tr>
 </tbody>
 </table>
-<h1 id="du">du</h1><ul>
+<p>#du </p>
+<ul>
 <li><code>du -sh *</code><br>统计当前文件夹下各个文件的大小</li>
 <li><code>du -shm *</code><br>统计当前文件夹下各个文件的大小,以<code>M</code> 为单位。<code>-shk</code> 以 <code>KB</code>为单位</li>
 </ul>
-<h1 id="locate">locate</h1><blockquote><p>linux 下可以使用 locate 和 find 来查找文件,但是 locate 在定位时要比 find 快.</p>
+<p>#locate<br><blockquote><p>linux 下可以使用 locate 和 find 来查找文件,但是 locate 在定位时要比 find 快.</p>
 <p>locate 并不是穿梭于档案文件中查找,而是在<strong>数据库</strong>查找文件.find 正好相反,他的查找要穿梭于档案文件中.</p>
-</blockquote>
-<p><code>locate [-ir] keyword</code><br>更新数据库<br><del><code>locate -u</code></del><br><code>updatedb</code></p>
+</blockquote><br><code>locate [-ir] keyword</code><br>更新数据库<br><del><code>locate -u</code></del><br><code>updatedb</code></p>
 <p><strong>命令选项</strong></p>
 <table>
 <thead>
@@ -190,7 +191,8 @@ var _hmt = _hmt || [];
 <ul>
 <li><a href="http://yijiebuyi.com/blog/58d0b9eec7f18769439f388a8037c151.html" target="_blank" rel="external">locate 在linux下快速定位文档</a></li>
 </ul>
-<h1 id="问题总结_FAQ">问题总结 FAQ</h1><ol>
+<p>#问题总结 FAQ</p>
+<ol>
 <li><p>crontab不执行问题</p>
 <blockquote><p>今天有个服务不能使用了，查来查去，原来 <code>crontab</code> 被干掉了。装上后还是无法运行，原来还要依赖 <code>crond</code> 这个服务</p>
 </blockquote>
@@ -234,6 +236,9 @@ var _hmt = _hmt || [];
 <section id="comment">
     <h2 class="title">留言</h2>
 
+    
+    <div class="ds-thread" data-thread-key="2015/08/04/linux-cmd/" data-title="linux 下工具命令"
+         data-url="http://yangzz0.github.io/2015/08/04/linux-cmd/"></div>
     
 </section>
 
@@ -280,6 +285,18 @@ var _hmt = _hmt || [];
 
 </div><!-- row -->
 
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'soul11201' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
 
 
 	</div>
@@ -306,23 +323,7 @@ var _hmt = _hmt || [];
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
 <script src="/js/search.js"></script> 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
-        messageStyle: "none"
-    }); 
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+
 
 <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
 <script src="/fancybox/jquery.fancybox.pack.js"></script>
@@ -343,5 +344,22 @@ var _hmt = _hmt || [];
      searchFunc(path, 'local-search-input', 'local-search-result');
    </script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    }); 
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 </body>
    </html>

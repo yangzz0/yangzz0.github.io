@@ -141,22 +141,26 @@ var _hmt = _hmt || [];
 	<div class="mypage">		
 	  		
 
-	  <h2 id="整体结构">整体结构</h2><p><img src="http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg" alt="盗用一张图"></p>
-<h2 id="安装">安装</h2><p><strong>nginx</strong></p>
+	  <p>##整体结构<br><img src="http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg" alt="盗用一张图"></p>
+<p>##安装</p>
+<p><strong>nginx</strong></p>
 <p>可以手动编译安装，也可以是使用<code>apt-get</code>方式安装。第二种方式版本较低。</p>
 <p><strong>fpm、mysql</strong></p>
 <p>荐<code>apt-get</code>方式安装，便捷。</p>
-<h2 id="配置">配置</h2><p><strong>nginx </strong></p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> <span class="title">server</span> &#123;</span><br><span class="line">    <span class="title">listen</span> <span class="number">8082</span>;</span><br><span class="line">    <span class="comment">#server_name localhost;</span></span><br><span class="line"></span><br><span class="line">    <span class="title">root</span> /data/codes/sevenga_tuitui/backend;</span><br><span class="line">    <span class="title">index</span> index.php;</span><br><span class="line"></span><br><span class="line">    <span class="title">location</span> / &#123; </span><br><span class="line">        <span class="title">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php?<span class="variable">$args</span>;</span><br><span class="line">        <span class="comment"># upload_limit_rate 1m;</span></span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    <span class="title">location</span> <span class="regexp">~ \.php$</span> &#123;</span><br><span class="line">        <span class="title">try_files</span> <span class="variable">$uri</span> =<span class="number">404</span>;</span><br><span class="line">        <span class="title">include</span> fastcgi_params;</span><br><span class="line">        <span class="title">fastcgi_pass</span> <span class="number">127.0.0.1:9000</span>;</span><br><span class="line">        <span class="title">fastcgi_index</span> index.php;</span><br><span class="line">        <span class="title">fastcgi_param</span> SCRIPT_FILENAME <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">        <span class="title">fastcgi_param</span> PATH_INFO <span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    <span class="title">error_page</span> <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> /50x.html;</span><br><span class="line">    <span class="title">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="title">root</span> html;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>##配置</p>
+<p><strong>nginx </strong></p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">    listen <span class="number">8082</span>;</span><br><span class="line">    #server_name localhost;</span><br><span class="line"></span><br><span class="line">    root /data/codes/sevenga_tuitui/backend;</span><br><span class="line">    index index.php;</span><br><span class="line"></span><br><span class="line">    location / &#123; </span><br><span class="line">        try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php?<span class="variable">$args</span>;</span><br><span class="line">        # upload_limit_rate <span class="number">1</span>m;</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">        try_files <span class="variable">$uri</span> =<span class="number">404</span>;</span><br><span class="line">        include fastcgi_params;</span><br><span class="line">        fastcgi_pass <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">9000</span>;</span><br><span class="line">        fastcgi_index index.php;</span><br><span class="line">        fastcgi_param SCRIPT_FILENAME <span class="variable">$document</span>_root<span class="variable">$fastcgi</span>_script_name;</span><br><span class="line">        fastcgi_param PATH_INFO <span class="variable">$fastcgi</span>_script_name;</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    error_page <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> /<span class="number">50</span>x.html;</span><br><span class="line">    location = /<span class="number">50</span>x.html &#123;</span><br><span class="line">        root html;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>fpm</strong></p>
 <p>配置文件 <code>/etc/php5/fpm/pool.d/www.conf</code>,设置fpm监听端口和nginx配置一致</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">listen</span> =<span class="number">127.0.0.1:9000</span></span><br></pre></td></tr></table></figure>
-<h2 id="FAQ">FAQ</h2><h4 id="mysql_安装过程未设置密码-。用root、空密码登陆报_ERROR_1045_(28000)_错误。">mysql 安装过程未设置密码.。用root、空密码登陆报 <code>ERROR 1045 (28000)</code> 错误。</h4><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">sudo</span> <span class="comment">/etc/init</span><span class="string">.</span><span class="comment">d/mysql</span> <span class="comment">stop</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysqld_safe</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">user=mysql</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">grant</span><span class="literal">-</span><span class="comment">tables</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">networking&amp;</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysql</span> <span class="literal">-</span><span class="comment">u</span> <span class="comment">root</span> <span class="comment">mysql</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">listen =<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">9000</span></span><br></pre></td></tr></table></figure>
+<p>##FAQ</p>
+<h4 id="mysql-安装过程未设置密码-。用root、空密码登陆报-ERROR-1045-28000-错误。"><a href="#mysql-安装过程未设置密码-。用root、空密码登陆报-ERROR-1045-28000-错误。" class="headerlink" title="mysql 安装过程未设置密码.。用root、空密码登陆报 ERROR 1045 (28000) 错误。"></a>mysql 安装过程未设置密码.。用root、空密码登陆报 <code>ERROR 1045 (28000)</code> 错误。</h4><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">sudo</span> <span class="comment">/etc/init</span><span class="string">.</span><span class="comment">d/mysql</span> <span class="comment">stop</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysqld_safe</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">user=mysql</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">grant</span><span class="literal">-</span><span class="comment">tables</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">networking&amp;</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysql</span> <span class="literal">-</span><span class="comment">u</span> <span class="comment">root</span> <span class="comment">mysql</span></span><br></pre></td></tr></table></figure>
 <p>更改sql用户密码</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">update</span> mysql.<span class="keyword">user</span> <span class="keyword">set</span> <span class="keyword">password</span>=<span class="keyword">PASSWORD</span>（<span class="string">'新密码'</span>） <span class="keyword">where</span> <span class="keyword">User</span>=<span class="string">'root'</span></span><br><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span></span></span><br></pre></td></tr></table></figure>
 <p>重启数据库：</p>
 <p><code>/etc/init.d/mysql restart</code></p>
-<h2 id="参考">参考</h2><ol>
+<p>##参考</p>
+<ol>
 <li><a href="http://laokaddk.blog.51cto.com/368606/1323292" target="_blank" rel="external">ubuntu 系统解决mysql连接问题（ERROR 1045 (28000): Access denied for user ‘root’@’localhost’ (using password: NO)）</a></li>
 </ol>
 	  
@@ -189,6 +193,9 @@ var _hmt = _hmt || [];
 <section id="comment">
     <h2 class="title">留言</h2>
 
+    
+    <div class="ds-thread" data-thread-key="2015/11/17/lnmp-环境-搭建/" data-title="lnmp 环境 搭建"
+         data-url="http://yangzz0.github.io/2015/11/17/lnmp-环境-搭建/"></div>
     
 </section>
 
@@ -235,6 +242,18 @@ var _hmt = _hmt || [];
 
 </div><!-- row -->
 
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'soul11201' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
 
 
 	</div>
@@ -261,23 +280,7 @@ var _hmt = _hmt || [];
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
 <script src="/js/search.js"></script> 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
-        messageStyle: "none"
-    }); 
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+
 
 <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
 <script src="/fancybox/jquery.fancybox.pack.js"></script>
@@ -298,5 +301,22 @@ var _hmt = _hmt || [];
      searchFunc(path, 'local-search-input', 'local-search-result');
    </script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    }); 
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 </body>
    </html>

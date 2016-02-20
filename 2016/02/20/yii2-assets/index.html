@@ -141,16 +141,16 @@ var _hmt = _hmt || [];
 	<div class="mypage">		
 	  		
 
-	  <h2 id="资源是什么？">资源是什么？</h2><p>Yii中的资源是 <code>和Web页面相关的文件</code> ，可为CSS文件，JavaScript文件，图片或视频等，资源放在Web可访问的目录下，直接被Web服务器调用。在yii中实现了使用程序自动管理资源。</p>
-<h2 id="管理方式">管理方式</h2><p>Yii在资源包中管理资源，<code>资源包</code>简单的说就是<code>放在一个目录下的资源集合</code>，在视图中注册一个资源包，在渲染Web页面时会包含包中的CSS和JavaScript文件</p>
-<h2 id="资源包管理类">资源包管理类</h2><p>继承于<code>yii\web\AssetBundle</code>的类,类名可自动加载。在类中要指定：</p>
+	  <h2 id="资源是什么？"><a href="#资源是什么？" class="headerlink" title="资源是什么？"></a>资源是什么？</h2><p>Yii中的资源是 <code>和Web页面相关的文件</code> ，可为CSS文件，JavaScript文件，图片或视频等，资源放在Web可访问的目录下，直接被Web服务器调用。在yii中实现了使用程序自动管理资源。</p>
+<h2 id="管理方式"><a href="#管理方式" class="headerlink" title="管理方式"></a>管理方式</h2><p>Yii在资源包中管理资源，<code>资源包</code>简单的说就是<code>放在一个目录下的资源集合</code>，在视图中注册一个资源包，在渲染Web页面时会包含包中的CSS和JavaScript文件</p>
+<h2 id="资源包管理类"><a href="#资源包管理类" class="headerlink" title="资源包管理类"></a>资源包管理类</h2><p>继承于<code>yii\web\AssetBundle</code>的类,类名可自动加载。在类中要指定：</p>
 <ol>
 <li>资源所在位置，</li>
 <li>要包含的css、js文件</li>
 <li>依赖的包</li>
 </ol>
 <p>如下，<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">&lt;?php</span></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     - <span class="doctag">@link</span> http://www.yiiframework.com/</span><br><span class="line">     - <span class="doctag">@copyright</span> Copyright (c) 2008 Yii Software LLC</span><br><span class="line">     - <span class="doctag">@license</span> http://www.yiiframework.com/license/</span><br><span class="line">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">namespace</span> <span class="title">app</span>\<span class="title">assets</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">use</span> <span class="title">yii</span>\<span class="title">web</span>\<span class="title">AssetBundle</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     - <span class="doctag">@author</span> Qiang Xue &lt;qiang.xue<span class="doctag">@gmail</span>.com&gt;</span><br><span class="line">     - <span class="doctag">@since</span> 2.0</span><br><span class="line">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">AppAsset</span> <span class="keyword">extends</span> <span class="title">AssetBundle</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$basePath</span> = <span class="string">'@webroot'</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$baseUrl</span> = <span class="string">'@web'</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$css</span> = [</span><br><span class="line">            <span class="string">'css/site.css'</span>,</span><br><span class="line">        ];</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$js</span> = [</span><br><span class="line">        ];</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$depends</span> = [</span><br><span class="line">            <span class="string">'yii\web\YiiAsset'</span>,</span><br><span class="line">            <span class="string">'yii\bootstrap\BootstrapAsset'</span>,</span><br><span class="line">        ];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="资源分类_—_根据资源所在的位置">资源分类 — 根据资源所在的位置</h2><ol>
+<h2 id="资源分类-–-根据资源所在的位置"><a href="#资源分类-–-根据资源所在的位置" class="headerlink" title="资源分类 – 根据资源所在的位置"></a>资源分类 – 根据资源所在的位置</h2><ol>
 <li><p>源资源  </p>
 </li>
 <li><p>发布资源 </p>
@@ -158,12 +158,12 @@ var _hmt = _hmt || [];
 <li><p>外部资源</p>
 </li>
 </ol>
-<h2 id="使用资源包">使用资源包</h2><ol>
+<h2 id="使用资源包"><a href="#使用资源包" class="headerlink" title="使用资源包"></a>使用资源包</h2><ol>
 <li>视图中</li>
 <li>小部件类中<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">&lt;?php</span></span><br><span class="line">    <span class="keyword">use</span> <span class="title">app</span>\<span class="title">assets</span>\<span class="title">AppAsset</span>;</span><br><span class="line">    AppAsset::register(<span class="variable">$this</span>);  <span class="comment">// $this 代表视图对象</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<h2 id="参考">参考</h2><p><a href="http://www.yiichina.com/doc/guide/2.0/structure-assets" target="_blank" rel="external">http://www.yiichina.com/doc/guide/2.0/structure-assets</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://www.yiichina.com/doc/guide/2.0/structure-assets" target="_blank" rel="external">http://www.yiichina.com/doc/guide/2.0/structure-assets</a></p>
 	  
 	</div>
 
@@ -193,6 +193,9 @@ var _hmt = _hmt || [];
 <section id="comment">
     <h2 class="title">留言</h2>
 
+    
+    <div class="ds-thread" data-thread-key="2016/02/20/yii2-assets/" data-title="yii2 前端资源管理笔记"
+         data-url="http://yangzz0.github.io/2016/02/20/yii2-assets/"></div>
     
 </section>
 
@@ -228,6 +231,12 @@ var _hmt = _hmt || [];
 	<!-- toc -->
 	<div class="meta-widget">
 	
+	   <a data-toggle="collapse" data-target="#toc"><i class="fa fa-bars"></i></a>
+	   <div id="toc" class="toc collapse in">
+		   <span class="toc-title">Contents</span>
+			<ol class="toc-article"><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#资源是什么？"><span class="toc-article-text">资源是什么？</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#管理方式"><span class="toc-article-text">管理方式</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#资源包管理类"><span class="toc-article-text">资源包管理类</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#资源分类-–-根据资源所在的位置"><span class="toc-article-text">资源分类 – 根据资源所在的位置</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#使用资源包"><span class="toc-article-text">使用资源包</span></a></li><li class="toc-article-item toc-article-level-2"><a class="toc-article-link" href="#参考"><span class="toc-article-text">参考</span></a></li></ol>
+		</div>
+	
 	</div>
 	
     <hr>
@@ -238,6 +247,18 @@ var _hmt = _hmt || [];
 		
 
 </div><!-- row -->
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'soul11201' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
 
 
 
@@ -265,23 +286,7 @@ var _hmt = _hmt || [];
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
 <script src="/js/search.js"></script> 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
-        messageStyle: "none"
-    }); 
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+
 
 <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
 <script src="/fancybox/jquery.fancybox.pack.js"></script>
@@ -302,5 +307,22 @@ var _hmt = _hmt || [];
      searchFunc(path, 'local-search-input', 'local-search-result');
    </script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    }); 
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 </body>
    </html>

@@ -145,7 +145,7 @@ var _hmt = _hmt || [];
 <blockquote>
 <p>提取一段时间内的日志</p>
 </blockquote>
-<pre><code><span class="attr_selector">[2015-12-07 03:16:49]</span> <span class="tag">DataHandlerUtils</span><span class="class">.Thread-0</span> <span class="tag">-</span> <span class="tag">INFO</span>  <span class="tag">-</span> 1449429345<span class="pseudo">:12D2300A13CA</span><span class="pseudo">:0BBA2D85CD31</span><span class="pseudo">:49</span><span class="pseudo">:4</span>
+<pre><code>[2015-12-07 03:16:49] DataHandlerUtils.Thread-0 - INFO  - 1449429345:12D2300A13CA:0BBA2D85CD31:49:4
 </code></pre><p>在群里一位朋友提出的问题，原先他想用正则提取。看到这个日志格式感觉用awk也能搞定这件事情。更让我感觉awk有戏能完成这件事情，有时候自己也需要类似的功能，顺道写了下面一段awk代码。思路大致是，首先是利用分隔符提取到时间，然后根据时间判断改行打不打印。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F&#34;[ :]&#34; &#10;&#39;&#10;BEGIN&#123;&#10;    PRINT_INFO=0;&#10;    LINE_NUM = 0&#10;&#125; &#10;&#10;&#123; &#10;    CON_VAR = $11;&#10;&#10;    if(CON_VAR &#62; 1449459202)&#123; &#10;        PRINT_INFO = 1;&#10;    &#125;&#10;&#10;    if(CON_VAR &#62; 1449459219)&#123;&#10;        PRINT_INFO = 0;&#10;    &#125;&#10;&#10;    if(PRINT_INFO == 1)&#123;&#10;        print CON_VAR,&#34; &#34;$0;&#10;        LINE_NUM += 1&#10;    &#125;&#10;&#125;&#10;&#10;END&#123;&#10;    print &#34;TOTAL : &#34;,LINE_NUM,&#34;lines.&#34;&#10;&#125;&#10;&#39;</span><br></pre></td></tr></table></figure>
 <hr>
@@ -188,6 +188,9 @@ var _hmt = _hmt || [];
     <h2 class="title">留言</h2>
 
     
+    <div class="ds-thread" data-thread-key="2015/12/07/awk-处理日志/" data-title="awk 处理日志"
+         data-url="http://yangzz0.github.io/2015/12/07/awk-处理日志/"></div>
+    
 </section>
 
 
@@ -209,6 +212,14 @@ var _hmt = _hmt || [];
     
 
 	<!-- tags -->
+	
+	<div class="meta-widget">
+	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
+    <ul id="tags" class="tag_box list-unstyled collapse in">	  
+	    
+  <li><a href="/tags/awk/">awk<span>1</span></a></li>
+    </ul>
+	</div>
 		
 
 	<!-- toc -->
@@ -224,6 +235,18 @@ var _hmt = _hmt || [];
 		
 
 </div><!-- row -->
+
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'soul11201' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
 
 
 
@@ -251,23 +274,7 @@ var _hmt = _hmt || [];
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
 <script src="/js/search.js"></script> 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
-        messageStyle: "none"
-    }); 
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+
 
 <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
 <script src="/fancybox/jquery.fancybox.pack.js"></script>
@@ -288,5 +295,22 @@ var _hmt = _hmt || [];
      searchFunc(path, 'local-search-input', 'local-search-result');
    </script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    }); 
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 </body>
    </html>

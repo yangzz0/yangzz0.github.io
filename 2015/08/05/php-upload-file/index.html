@@ -146,7 +146,8 @@ var _hmt = _hmt || [];
 <p>ngxin server 里面配置如下<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">     ***</span><br><span class="line">     client_max_body_size 1000M;</span><br><span class="line">     ****</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>php.ini 配置如下<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">file_uploads = On ;是否允许通过HTTP上传文件的开关。默认为ON即是开</span><br><span class="line">upload_max_filesize = 500M ;上传文件上限 </span><br><span class="line">upload_tmp_dir ;文件上传至服务器上存储临时文件的地方，如果没指定就会用系统默认的临时文件夹。</span><br><span class="line">如果要上传比较大的文件，仅仅以上两条还不够，必须把服务器缓存上限调大，把脚本最大执行时间变长 </span><br><span class="line">post_max_size = 500M ; POST给PHP的所能接收的最大值</span><br><span class="line">max_execution_time = 30 ; 每个PHP页面运行的最大时间值 Maximum execution time of each script, in seconds脚本最大执行时间 </span><br><span class="line">max_input_time = 60 ; 每个PHP页面接收数据所需的最大时间 解析一次请求时间上线 Maximum amount of time each script may spend parsing request data </span><br><span class="line">memory_limit = 128M ;  每个PHP页面所吃掉的最大内存 内存上限 Maximum amount of memory a script may consume (128MB)</span><br></pre></td></tr></table></figure></p>
 <p>相关参数解释</p>
-<h2 id="参考">参考</h2><p><a href="http://www.jb51.net/article/18975.htm" target="_blank" rel="external">http://www.jb51.net/article/18975.htm</a><br><a href="http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml" target="_blank" rel="external">http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml</a></p>
+<p>##参考</p>
+<p><a href="http://www.jb51.net/article/18975.htm" target="_blank" rel="external">http://www.jb51.net/article/18975.htm</a><br><a href="http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml" target="_blank" rel="external">http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml</a></p>
 	  
 	</div>
 
@@ -177,6 +178,9 @@ var _hmt = _hmt || [];
 <section id="comment">
     <h2 class="title">留言</h2>
 
+    
+    <div class="ds-thread" data-thread-key="2015/08/05/php-upload-file/" data-title="PHP文件上传"
+         data-url="http://yangzz0.github.io/2015/08/05/php-upload-file/"></div>
     
 </section>
 
@@ -223,6 +227,18 @@ var _hmt = _hmt || [];
 
 </div><!-- row -->
 
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'soul11201' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
 
 
 	</div>
@@ -249,23 +265,7 @@ var _hmt = _hmt || [];
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
 <script src="/js/search.js"></script> 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
-        messageStyle: "none"
-    }); 
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+
 
 <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
 <script src="/fancybox/jquery.fancybox.pack.js"></script>
@@ -286,5 +286,22 @@ var _hmt = _hmt || [];
      searchFunc(path, 'local-search-input', 'local-search-result');
    </script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    }); 
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 </body>
    </html>

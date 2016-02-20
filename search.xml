@@ -6,16 +6,16 @@
     <entry>
       <title><![CDATA[yii2 前端资源管理笔记]]></title>
       <url>http://yangzz0.github.io/2016/02/20/yii2-assets/</url>
-      <content type="html"><![CDATA[<h2 id="资源是什么？">资源是什么？</h2><p>Yii中的资源是 <code>和Web页面相关的文件</code> ，可为CSS文件，JavaScript文件，图片或视频等，资源放在Web可访问的目录下，直接被Web服务器调用。在yii中实现了使用程序自动管理资源。</p>
-<h2 id="管理方式">管理方式</h2><p>Yii在资源包中管理资源，<code>资源包</code>简单的说就是<code>放在一个目录下的资源集合</code>，在视图中注册一个资源包，在渲染Web页面时会包含包中的CSS和JavaScript文件</p>
-<h2 id="资源包管理类">资源包管理类</h2><p>继承于<code>yii\web\AssetBundle</code>的类,类名可自动加载。在类中要指定：</p>
+      <content type="html"><![CDATA[<h2 id="资源是什么？"><a href="#资源是什么？" class="headerlink" title="资源是什么？"></a>资源是什么？</h2><p>Yii中的资源是 <code>和Web页面相关的文件</code> ，可为CSS文件，JavaScript文件，图片或视频等，资源放在Web可访问的目录下，直接被Web服务器调用。在yii中实现了使用程序自动管理资源。</p>
+<h2 id="管理方式"><a href="#管理方式" class="headerlink" title="管理方式"></a>管理方式</h2><p>Yii在资源包中管理资源，<code>资源包</code>简单的说就是<code>放在一个目录下的资源集合</code>，在视图中注册一个资源包，在渲染Web页面时会包含包中的CSS和JavaScript文件</p>
+<h2 id="资源包管理类"><a href="#资源包管理类" class="headerlink" title="资源包管理类"></a>资源包管理类</h2><p>继承于<code>yii\web\AssetBundle</code>的类,类名可自动加载。在类中要指定：</p>
 <ol>
 <li>资源所在位置，</li>
 <li>要包含的css、js文件</li>
 <li>依赖的包</li>
 </ol>
 <p>如下，<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">&lt;?php</span></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     - <span class="doctag">@link</span> http://www.yiiframework.com/</span><br><span class="line">     - <span class="doctag">@copyright</span> Copyright (c) 2008 Yii Software LLC</span><br><span class="line">     - <span class="doctag">@license</span> http://www.yiiframework.com/license/</span><br><span class="line">     */</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">namespace</span> <span class="title">app</span>\<span class="title">assets</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">use</span> <span class="title">yii</span>\<span class="title">web</span>\<span class="title">AssetBundle</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span><br><span class="line">     - <span class="doctag">@author</span> Qiang Xue &lt;qiang.xue<span class="doctag">@gmail</span>.com&gt;</span><br><span class="line">     - <span class="doctag">@since</span> 2.0</span><br><span class="line">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">AppAsset</span> <span class="keyword">extends</span> <span class="title">AssetBundle</span></span><br><span class="line">    </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$basePath</span> = <span class="string">'@webroot'</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$baseUrl</span> = <span class="string">'@web'</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$css</span> = [</span><br><span class="line">            <span class="string">'css/site.css'</span>,</span><br><span class="line">        ];</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$js</span> = [</span><br><span class="line">        ];</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$depends</span> = [</span><br><span class="line">            <span class="string">'yii\web\YiiAsset'</span>,</span><br><span class="line">            <span class="string">'yii\bootstrap\BootstrapAsset'</span>,</span><br><span class="line">        ];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
-<h2 id="资源分类_—_根据资源所在的位置">资源分类 — 根据资源所在的位置</h2><ol>
+<h2 id="资源分类-–-根据资源所在的位置"><a href="#资源分类-–-根据资源所在的位置" class="headerlink" title="资源分类 – 根据资源所在的位置"></a>资源分类 – 根据资源所在的位置</h2><ol>
 <li><p>源资源  </p>
 </li>
 <li><p>发布资源 </p>
@@ -23,19 +23,19 @@
 <li><p>外部资源</p>
 </li>
 </ol>
-<h2 id="使用资源包">使用资源包</h2><ol>
+<h2 id="使用资源包"><a href="#使用资源包" class="headerlink" title="使用资源包"></a>使用资源包</h2><ol>
 <li>视图中</li>
 <li>小部件类中<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">&lt;?php</span></span><br><span class="line">    <span class="keyword">use</span> <span class="title">app</span>\<span class="title">assets</span>\<span class="title">AppAsset</span>;</span><br><span class="line">    AppAsset::register(<span class="variable">$this</span>);  <span class="comment">// $this 代表视图对象</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
-<h2 id="参考">参考</h2><p><a href="http://www.yiichina.com/doc/guide/2.0/structure-assets" target="_blank" rel="external">http://www.yiichina.com/doc/guide/2.0/structure-assets</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://www.yiichina.com/doc/guide/2.0/structure-assets" target="_blank" rel="external">http://www.yiichina.com/doc/guide/2.0/structure-assets</a></p>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[yii2 GridView 使用]]></title>
       <url>http://yangzz0.github.io/2015/12/21/yii2-GridView-%E4%BD%BF%E7%94%A8/</url>
-      <content type="html"><![CDATA[<h2 id="GridView是什么？能做什么？">GridView是什么？能做什么？</h2><p><code>GridView</code>是一个用于把数据显示在一个表格中的<code>yii2</code> <code>widget</code></p>
+      <content type="html"><![CDATA[<h2 id="GridView是什么？能做什么？"><a href="#GridView是什么？能做什么？" class="headerlink" title="GridView是什么？能做什么？"></a>GridView是什么？能做什么？</h2><p><code>GridView</code>是一个用于把数据显示在一个表格中的<code>yii2</code> <code>widget</code></p>
 <p>提供的功能，主要包括下面几种对数据的操作</p>
 <ul>
 <li>使用表格显示数据</li>
@@ -43,12 +43,12 @@
 <li><code>分页</code>显示数据</li>
 <li><code>过滤</code>显示那些数据</li>
 </ul>
-<h2 id="GridView_怎么使用？">GridView 怎么使用？</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="preprocessor">&lt;?</span>= GridView::widget([</span><br><span class="line">    <span class="string">'dataProvider'</span> =&gt; <span class="variable">$dataProvider</span>,</span><br><span class="line">    <span class="string">'columns'</span> =&gt; [</span><br><span class="line">        <span class="string">'id'</span>,</span><br><span class="line">        <span class="string">'name'</span>,</span><br><span class="line">        <span class="string">'created_at:datetime'</span>,</span><br><span class="line">    ],</span><br><span class="line">])<span class="preprocessor">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="GridView-怎么使用？"><a href="#GridView-怎么使用？" class="headerlink" title="GridView 怎么使用？"></a>GridView 怎么使用？</h2><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"> <span class="preprocessor">&lt;?</span>= GridView::widget([</span><br><span class="line">    <span class="string">'dataProvider'</span> =&gt; <span class="variable">$dataProvider</span>,</span><br><span class="line">    <span class="string">'columns'</span> =&gt; [</span><br><span class="line">        <span class="string">'id'</span>,</span><br><span class="line">        <span class="string">'name'</span>,</span><br><span class="line">        <span class="string">'created_at:datetime'</span>,</span><br><span class="line">    ],</span><br><span class="line">])<span class="preprocessor">?&gt;</span></span><br></pre></td></tr></table></figure>
 <ul>
 <li>columns 配置项中的缩写</li>
 <li>组合模式+依赖注入</li>
 </ul>
-<h2 id="GridView_源码分析">GridView 源码分析</h2>]]></content>
+<h2 id="GridView-源码分析"><a href="#GridView-源码分析" class="headerlink" title="GridView 源码分析"></a>GridView 源码分析</h2>]]></content>
     </entry>
     
     <entry>
@@ -64,7 +64,7 @@
 <blockquote>
 <p>提取一段时间内的日志</p>
 </blockquote>
-<pre><code><span class="attr_selector">[2015-12-07 03:16:49]</span> <span class="tag">DataHandlerUtils</span><span class="class">.Thread-0</span> <span class="tag">-</span> <span class="tag">INFO</span>  <span class="tag">-</span> 1449429345<span class="pseudo">:12D2300A13CA</span><span class="pseudo">:0BBA2D85CD31</span><span class="pseudo">:49</span><span class="pseudo">:4</span>
+<pre><code>[2015-12-07 03:16:49] DataHandlerUtils.Thread-0 - INFO  - 1449429345:12D2300A13CA:0BBA2D85CD31:49:4
 </code></pre><p>在群里一位朋友提出的问题，原先他想用正则提取。看到这个日志格式感觉用awk也能搞定这件事情。更让我感觉awk有戏能完成这件事情，有时候自己也需要类似的功能，顺道写了下面一段awk代码。思路大致是，首先是利用分隔符提取到时间，然后根据时间判断改行打不打印。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">awk -F&#34;[ :]&#34; &#10;&#39;&#10;BEGIN&#123;&#10;    PRINT_INFO=0;&#10;    LINE_NUM = 0&#10;&#125; &#10;&#10;&#123; &#10;    CON_VAR = $11;&#10;&#10;    if(CON_VAR &#62; 1449459202)&#123; &#10;        PRINT_INFO = 1;&#10;    &#125;&#10;&#10;    if(CON_VAR &#62; 1449459219)&#123;&#10;        PRINT_INFO = 0;&#10;    &#125;&#10;&#10;    if(PRINT_INFO == 1)&#123;&#10;        print CON_VAR,&#34; &#34;$0;&#10;        LINE_NUM += 1&#10;    &#125;&#10;&#125;&#10;&#10;END&#123;&#10;    print &#34;TOTAL : &#34;,LINE_NUM,&#34;lines.&#34;&#10;&#125;&#10;&#39;</span><br></pre></td></tr></table></figure>
 <hr>
@@ -82,27 +82,27 @@
     <entry>
       <title><![CDATA[mathjax && hexo]]></title>
       <url>http://yangzz0.github.io/2015/12/06/mathjax/</url>
-      <content type="html"><![CDATA[<h2 id="安装">安装</h2><p>在hexo安装使用mathjax的方式不外乎那么几种，具体的可以参见 <a href="http://lukang.me/2014/mathjax-for-hexo.html" target="_blank" rel="external">在 Hexo 中完美使用 Mathjax 输出数学公式</a>。原本想使用hexo 插件的方式安装，比较方便，也省去维护的负担，实现一个松耦合的组织状态，并且插件作者给出的一篇简易的文档<a href="http://catx.me/2014/03/09/hexo-mathjax-plugin/" target="_blank" rel="external">Hexo MathJax插件</a>。使用插件的时候会遇到了下面的问题：</p>
+      <content type="html"><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>在hexo安装使用mathjax的方式不外乎那么几种，具体的可以参见 <a href="http://lukang.me/2014/mathjax-for-hexo.html" target="_blank" rel="external">在 Hexo 中完美使用 Mathjax 输出数学公式</a>。原本想使用hexo 插件的方式安装，比较方便，也省去维护的负担，实现一个松耦合的组织状态，并且插件作者给出的一篇简易的文档<a href="http://catx.me/2014/03/09/hexo-mathjax-plugin/" target="_blank" rel="external">Hexo MathJax插件</a>。使用插件的时候会遇到了下面的问题：</p>
 <ul>
 <li><code>hexo math install</code>命令在本地无法运行，跳过也没出现什么太大的问题。</li>
 <li><code>Tag inline</code>方式也是无法使用，</li>
 <li>并且运行的时候命令行会报一堆的日志</li>
 </ul>
 <p>看来不是那么的简便、稳定，丧失了信心，最后使用最暴力的方式解决掉了。</p>
-<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/x-mathjax-config"</span>&gt;</span><span class="groovy"></span><br><span class="line">    MathJax.Hub.Config(&#123;<span class="string">"HTML-CSS"</span>: &#123; <span class="string">preferredFont:</span> <span class="string">"TeX"</span>, <span class="string">availableFonts:</span> [<span class="string">"STIX"</span>,<span class="string">"TeX"</span>], <span class="string">linebreaks:</span> &#123; <span class="string">automatic:</span><span class="literal">true</span> &#125;, <span class="string">EqnChunk:</span> (MathJax.Hub.Browser.isMobile ? 10 : <span class="number">50</span>) &#125;,</span><br><span class="line"><span class="label">        tex2jax:</span> &#123; <span class="string">inlineMath:</span> [ [<span class="string">"$"</span>, <span class="string">"$"</span>], [<span class="string">"\\("</span>,<span class="string">"\\)"</span>] ], <span class="string">processEscapes:</span> <span class="literal">true</span>, <span class="string">ignoreClass:</span> <span class="string">"tex2jax_ignore|dno"</span>,<span class="string">skipTags:</span> [<span class="string">'script'</span>, <span class="string">'noscript'</span>, <span class="string">'style'</span>, <span class="string">'textarea'</span>, <span class="string">'pre'</span>, <span class="string">'code'</span>]&#125;,</span><br><span class="line"><span class="label">        TeX:</span> &#123;  <span class="string">noUndefined:</span> &#123; <span class="string">attributes:</span> &#123; <span class="string">mathcolor:</span> <span class="string">"red"</span>, <span class="string">mathbackground:</span> <span class="string">"#FFEEEE"</span>, <span class="string">mathsize:</span> <span class="string">"90%"</span> &#125; &#125;, <span class="string">Macros:</span> &#123; <span class="string">href:</span> <span class="string">"&#123;&#125;"</span> &#125; &#125;,</span><br><span class="line"><span class="label">        messageStyle:</span> <span class="string">"none"</span></span><br><span class="line">    &#125;); </span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/x-mathjax-config"</span>&gt;</span><span class="matlab"></span><br><span class="line">    MathJax.Hub.Queue(<span class="function"><span class="keyword">function</span><span class="params">()</span> &#123;</span></span><br><span class="line">        var all = MathJax.Hub.getAllJax(), <span class="built_in">i</span>;</span><br><span class="line">        <span class="keyword">for</span>(<span class="built_in">i</span>=<span class="number">0</span>; <span class="built_in">i</span> &lt; all.<span class="built_in">length</span>; <span class="built_in">i</span> += <span class="number">1</span>) <span class="cell">&#123;</span><br><span class="line">            all[i].SourceElement().parentNode.className += <span class="string">' has-jax'</span>;</span><br><span class="line">        &#125;</span></span><br><span class="line">    &#125;);</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"</span>&gt;</span><span class="undefined"></span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
-<h2 id="Latex_基本语法">Latex 基本语法</h2><p>关于latex的基本语法，<a href="http://mlworks.cn/posts/introduction-to-mathjax-and-latex-expression/" target="_blank" rel="external">http://mlworks.cn/posts/introduction-to-mathjax-and-latex-expression/</a> 这篇文档写的是在太好了，也没必要重复再造一遍轮子，故只记录一些自己常用的用法。</p>
-<h2 id="其他参考">其他参考</h2><p><a href="http://www.catxue.com/2015/03/20/MathJax/" target="_blank" rel="external">MathJax插件在hexo中的应用</a><br><a href="http://mlworks.cn/posts/introduction-to-mathjax-and-latex-expression/" target="_blank" rel="external">Mathjax与LaTex公式简介</a></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/x-mathjax-config"</span>&gt;</span><span class="actionscript"></span><br><span class="line">    MathJax.Hub.Config(&#123;<span class="string">"HTML-CSS"</span>: &#123; preferredFont: <span class="string">"TeX"</span>, availableFonts: [<span class="string">"STIX"</span>,<span class="string">"TeX"</span>], linebreaks: &#123; automatic:<span class="literal">true</span> &#125;, EqnChunk: (MathJax.Hub.Browser.isMobile ? <span class="number">10</span> : <span class="number">50</span>) &#125;,</span><br><span class="line">        tex2jax: &#123; inlineMath: [ [<span class="string">"$"</span>, <span class="string">"$"</span>], [<span class="string">"\\("</span>,<span class="string">"\\)"</span>] ], processEscapes: <span class="literal">true</span>, ignoreClass: <span class="string">"tex2jax_ignore|dno"</span>,skipTags: [<span class="string">'script'</span>, <span class="string">'noscript'</span>, <span class="string">'style'</span>, <span class="string">'textarea'</span>, <span class="string">'pre'</span>, <span class="string">'code'</span>]&#125;,</span><br><span class="line">        TeX: &#123;  noUndefined: &#123; attributes: &#123; mathcolor: <span class="string">"red"</span>, mathbackground: <span class="string">"#FFEEEE"</span>, mathsize: <span class="string">"90%"</span> &#125; &#125;, Macros: &#123; href: <span class="string">"&#123;&#125;"</span> &#125; &#125;,</span><br><span class="line">        messageStyle: <span class="string">"none"</span></span><br><span class="line">    &#125;); </span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/x-mathjax-config"</span>&gt;</span><span class="actionscript"></span><br><span class="line">    MathJax.Hub.Queue(<span class="function"><span class="keyword">function</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">var</span> all = MathJax.Hub.getAllJax(), i;</span><br><span class="line">        <span class="keyword">for</span>(i=<span class="number">0</span>; i &lt; all.length; i += <span class="number">1</span>) &#123;</span><br><span class="line">            all[i].SourceElement().parentNode.className += <span class="string">' has-jax'</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;);</span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">type</span>=<span class="value">"text/javascript"</span> <span class="attribute">src</span>=<span class="value">"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"</span>&gt;</span><span class="undefined"></span><br><span class="line"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h2 id="Latex-基本语法"><a href="#Latex-基本语法" class="headerlink" title="Latex 基本语法"></a>Latex 基本语法</h2><p>关于latex的基本语法，<a href="http://mlworks.cn/posts/introduction-to-mathjax-and-latex-expression/" target="_blank" rel="external">http://mlworks.cn/posts/introduction-to-mathjax-and-latex-expression/</a> 这篇文档写的是在太好了，也没必要重复再造一遍轮子，故只记录一些自己常用的用法。</p>
+<h2 id="其他参考"><a href="#其他参考" class="headerlink" title="其他参考"></a>其他参考</h2><p><a href="http://www.catxue.com/2015/03/20/MathJax/" target="_blank" rel="external">MathJax插件在hexo中的应用</a><br><a href="http://mlworks.cn/posts/introduction-to-mathjax-and-latex-expression/" target="_blank" rel="external">Mathjax与LaTex公式简介</a></p>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[碎语]]></title>
       <url>http://yangzz0.github.io/2015/11/22/2015.11.22.7/</url>
-      <content type="html"><![CDATA[<h2 id="一些问题">一些问题</h2><h3 id="内容选择困难症">内容选择困难症</h3><blockquote>
+      <content type="html"><![CDATA[<h2 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h2><h3 id="内容选择困难症"><a href="#内容选择困难症" class="headerlink" title="内容选择困难症"></a>内容选择困难症</h3><blockquote>
 <p>做ppt演讲的时候，该讲什么内容。自己会的感觉太简单，那就是1+1，别人应该都会，讲出来没意思，要么不懂感觉这个好像才有讲的价值。</p>
 </blockquote>
 <p>内容选取的标准搞错了，不应该根据自己感觉是什么就是什么来作为取舍标准。应根据内容及其结构、 <del>是什么</del>，<del>有哪些基本问题，基本问题应该勾勒出基本的框架结构。以及每个问题所需的</del> 为了描述清楚这个结构而应说明的基本概念、术语、公理等最小基本元素集合来作为取舍标准。</p>
-<h3 id="关联困难">关联困难</h3><blockquote>
+<h3 id="关联困难"><a href="#关联困难" class="headerlink" title="关联困难"></a>关联困难</h3><blockquote>
 <p>不能理解句子在说什么</p>
 </blockquote>
 <p>实则是未能理解句子所表达的含义，理解透要表达的内容。可能是关联思维不好</p>
@@ -111,35 +111,39 @@
 <li>相关内容</li>
 <li>图形</li>
 </ul>
-<h2 id="如何提高效率？">如何提高效率？</h2><ul>
+<h2 id="如何提高效率？"><a href="#如何提高效率？" class="headerlink" title="如何提高效率？"></a>如何提高效率？</h2><ul>
 <li>与人交流</li>
 <li>信息获取的技巧</li>
 <li>使用工具</li>
 <li>避免副作用</li>
 </ul>
-<h2 id="碎碎念">碎碎念</h2><p>思绪来的也快去的也快，想的很明白的二次探测定理现在也忘记是怎么回事了，记一记笔记，把当时相关的一些原理梳理一下，总结一下自己的感悟还是很有必要的。</p>
+<h2 id="碎碎念"><a href="#碎碎念" class="headerlink" title="碎碎念"></a>碎碎念</h2><p>思绪来的也快去的也快，想的很明白的二次探测定理现在也忘记是怎么回事了，记一记笔记，把当时相关的一些原理梳理一下，总结一下自己的感悟还是很有必要的。</p>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[lnmp 环境 搭建]]></title>
       <url>http://yangzz0.github.io/2015/11/17/lnmp-%E7%8E%AF%E5%A2%83-%E6%90%AD%E5%BB%BA/</url>
-      <content type="html"><![CDATA[<h2 id="整体结构">整体结构</h2><p><img src="http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg" alt="盗用一张图"></p>
-<h2 id="安装">安装</h2><p><strong>nginx</strong></p>
+      <content type="html"><![CDATA[<p>##整体结构<br><img src="http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg" alt="盗用一张图"></p>
+<p>##安装</p>
+<p><strong>nginx</strong></p>
 <p>可以手动编译安装，也可以是使用<code>apt-get</code>方式安装。第二种方式版本较低。</p>
 <p><strong>fpm、mysql</strong></p>
 <p>荐<code>apt-get</code>方式安装，便捷。</p>
-<h2 id="配置">配置</h2><p><strong>nginx </strong></p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> <span class="title">server</span> &#123;</span><br><span class="line">    <span class="title">listen</span> <span class="number">8082</span>;</span><br><span class="line">    <span class="comment">#server_name localhost;</span></span><br><span class="line"></span><br><span class="line">    <span class="title">root</span> /data/codes/sevenga_tuitui/backend;</span><br><span class="line">    <span class="title">index</span> index.php;</span><br><span class="line"></span><br><span class="line">    <span class="title">location</span> / &#123; </span><br><span class="line">        <span class="title">try_files</span> <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php?<span class="variable">$args</span>;</span><br><span class="line">        <span class="comment"># upload_limit_rate 1m;</span></span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    <span class="title">location</span> <span class="regexp">~ \.php$</span> &#123;</span><br><span class="line">        <span class="title">try_files</span> <span class="variable">$uri</span> =<span class="number">404</span>;</span><br><span class="line">        <span class="title">include</span> fastcgi_params;</span><br><span class="line">        <span class="title">fastcgi_pass</span> <span class="number">127.0.0.1:9000</span>;</span><br><span class="line">        <span class="title">fastcgi_index</span> index.php;</span><br><span class="line">        <span class="title">fastcgi_param</span> SCRIPT_FILENAME <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">        <span class="title">fastcgi_param</span> PATH_INFO <span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    <span class="title">error_page</span> <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> /50x.html;</span><br><span class="line">    <span class="title">location</span> = /50x.html &#123;</span><br><span class="line">        <span class="title">root</span> html;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>##配置</p>
+<p><strong>nginx </strong></p>
+<figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">    listen <span class="number">8082</span>;</span><br><span class="line">    #server_name localhost;</span><br><span class="line"></span><br><span class="line">    root /data/codes/sevenga_tuitui/backend;</span><br><span class="line">    index index.php;</span><br><span class="line"></span><br><span class="line">    location / &#123; </span><br><span class="line">        try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php?<span class="variable">$args</span>;</span><br><span class="line">        # upload_limit_rate <span class="number">1</span>m;</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">        try_files <span class="variable">$uri</span> =<span class="number">404</span>;</span><br><span class="line">        include fastcgi_params;</span><br><span class="line">        fastcgi_pass <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">9000</span>;</span><br><span class="line">        fastcgi_index index.php;</span><br><span class="line">        fastcgi_param SCRIPT_FILENAME <span class="variable">$document</span>_root<span class="variable">$fastcgi</span>_script_name;</span><br><span class="line">        fastcgi_param PATH_INFO <span class="variable">$fastcgi</span>_script_name;</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    error_page <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> /<span class="number">50</span>x.html;</span><br><span class="line">    location = /<span class="number">50</span>x.html &#123;</span><br><span class="line">        root html;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>fpm</strong></p>
 <p>配置文件 <code>/etc/php5/fpm/pool.d/www.conf</code>,设置fpm监听端口和nginx配置一致</p>
-<figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">listen</span> =<span class="number">127.0.0.1:9000</span></span><br></pre></td></tr></table></figure>
-<h2 id="FAQ">FAQ</h2><h4 id="mysql_安装过程未设置密码-。用root、空密码登陆报_ERROR_1045_(28000)_错误。">mysql 安装过程未设置密码.。用root、空密码登陆报 <code>ERROR 1045 (28000)</code> 错误。</h4><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">sudo</span> <span class="comment">/etc/init</span><span class="string">.</span><span class="comment">d/mysql</span> <span class="comment">stop</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysqld_safe</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">user=mysql</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">grant</span><span class="literal">-</span><span class="comment">tables</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">networking&amp;</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysql</span> <span class="literal">-</span><span class="comment">u</span> <span class="comment">root</span> <span class="comment">mysql</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">listen =<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">9000</span></span><br></pre></td></tr></table></figure>
+<p>##FAQ</p>
+<h4 id="mysql-安装过程未设置密码-。用root、空密码登陆报-ERROR-1045-28000-错误。"><a href="#mysql-安装过程未设置密码-。用root、空密码登陆报-ERROR-1045-28000-错误。" class="headerlink" title="mysql 安装过程未设置密码.。用root、空密码登陆报 ERROR 1045 (28000) 错误。"></a>mysql 安装过程未设置密码.。用root、空密码登陆报 <code>ERROR 1045 (28000)</code> 错误。</h4><figure class="highlight brainfuck"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">sudo</span> <span class="comment">/etc/init</span><span class="string">.</span><span class="comment">d/mysql</span> <span class="comment">stop</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysqld_safe</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">user=mysql</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">grant</span><span class="literal">-</span><span class="comment">tables</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">skip</span><span class="literal">-</span><span class="comment">networking&amp;</span></span><br><span class="line"><span class="comment">sudo</span> <span class="comment">mysql</span> <span class="literal">-</span><span class="comment">u</span> <span class="comment">root</span> <span class="comment">mysql</span></span><br></pre></td></tr></table></figure>
 <p>更改sql用户密码</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="operator"><span class="keyword">update</span> mysql.<span class="keyword">user</span> <span class="keyword">set</span> <span class="keyword">password</span>=<span class="keyword">PASSWORD</span>（<span class="string">'新密码'</span>） <span class="keyword">where</span> <span class="keyword">User</span>=<span class="string">'root'</span></span><br><span class="line"><span class="keyword">flush</span> <span class="keyword">privileges</span></span></span><br></pre></td></tr></table></figure>
 <p>重启数据库：</p>
 <p><code>/etc/init.d/mysql restart</code></p>
-<h2 id="参考">参考</h2><ol>
+<p>##参考</p>
+<ol>
 <li><a href="http://laokaddk.blog.51cto.com/368606/1323292" target="_blank" rel="external">ubuntu 系统解决mysql连接问题（ERROR 1045 (28000): Access denied for user ‘root’@’localhost’ (using password: NO)）</a></li>
 </ol>
 ]]></content>
@@ -148,7 +152,7 @@
     <entry>
       <title><![CDATA[MonaServer 使用笔记]]></title>
       <url>http://yangzz0.github.io/2015/11/11/MonaServer/</url>
-      <content type="html"><![CDATA[<h2 id="安装">安装</h2><p><strong>windows</strong></p>
+      <content type="html"><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><strong>windows</strong></p>
 <ol>
 <li><a href="http://sourceforge.net/projects/monaserver/files/MonaServer_Windows_32.zip/download" target="_blank" rel="external">点击下载运行包</a></li>
 <li>依赖环境：<strong><a href="http://www.microsoft.com/en-us/download/details.aspx?id=40784" target="_blank" rel="external">Visual Studio 2013 redistributable packages</a></strong></li>
@@ -156,7 +160,7 @@
 <li>配置obs推流。</li>
 </ol>
 <p><img src="/imgs/MonaServer-1.png" alt=""><br><img src="/imgs/MonaServer-2.png" alt=""></p>
-<h2 id="参考链接">参考链接</h2><ol>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><ol>
 <li><a href="https://obsproject.com/forum/resources/how-to-set-up-your-own-private-rtmfp-server-using-monaserver.153/" target="_blank" rel="external">How to set up your own private RTMFP server using MonaServer</a></li>
 <li><a href="http://www.monaserver.ovh/quickstart.html" target="_blank" rel="external">Quick Start</a></li>
 <li><a href="http://www.monaserver.ovh/manual.html" target="_blank" rel="external">手册</a></li>
@@ -167,17 +171,24 @@
     <entry>
       <title><![CDATA[ngx-lua 笔记总计]]></title>
       <url>http://yangzz0.github.io/2015/11/10/ngx-lua/</url>
-      <content type="html"><![CDATA[<h2 id="跟ngx有关的函数、变量">跟ngx有关的函数、变量</h2><h3 id="ngx-header">ngx.header</h3><p>响应头设置</p>
+      <content type="html"><![CDATA[<p>##跟ngx有关的函数、变量</p>
+<p>###ngx.header</p>
+<p>响应头设置</p>
 <p>重定向:<code>ngx.header.Location</code></p>
-<h3 id="ngx-exit(404)">ngx.exit(404)</h3><p>断开连接，同时设置响应的状态码</p>
-<h3 id="ngx-log(log_level,log_info1,log_info2,…-)">ngx.log(log_level,log_info1,log_info2,….)</h3><p>打印日志到ngx日志。第一个是日志级别如<code>ngx.ERR</code></p>
-<h2 id="应用">应用</h2><h3 id="获取post和get中的参数">获取post和get中的参数</h3><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> args = &#123;&#125;</span><br><span class="line"><span class="keyword">if</span> <span class="string">"GET"</span> == r_m <span class="keyword">or</span> <span class="string">"HEAD"</span> == r_m <span class="keyword">then</span></span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"GET============"</span>)</span><br><span class="line">    args = ngx.req.get_uri_args()</span><br><span class="line"><span class="keyword">elseif</span> <span class="string">"POST"</span> == r_m <span class="keyword">then</span></span><br><span class="line">    ngx.req.read_body()</span><br><span class="line">    args = ngx.req.get_post_args()</span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"POSTD-----------"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>###ngx.exit(404)<br>断开连接，同时设置响应的状态码</p>
+<p>###ngx.log(log_level,log_info1,log_info2,….)</p>
+<p>打印日志到ngx日志。第一个是日志级别如<code>ngx.ERR</code></p>
+<p>##应用</p>
+<p>###获取post和get中的参数</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> args = &#123;&#125;</span><br><span class="line"><span class="keyword">if</span> <span class="string">"GET"</span> == r_m <span class="keyword">or</span> <span class="string">"HEAD"</span> == r_m <span class="keyword">then</span></span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"GET============"</span>)</span><br><span class="line">    args = ngx.req.get_uri_args()</span><br><span class="line"><span class="keyword">elseif</span> <span class="string">"POST"</span> == r_m <span class="keyword">then</span></span><br><span class="line">    ngx.req.read_body()</span><br><span class="line">    args = ngx.req.get_post_args()</span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"POSTD-----------"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <!-- ##细节 -->
 <!-- ## -->
-<h3 id="遍历出来请求中的数据并打印到日志">遍历出来请求中的数据并打印到日志</h3><p>pairs — table</p>
-<p>ipairs — 数组</p>
+<p>###遍历出来请求中的数据并打印到日志</p>
+<p>pairs – table</p>
+<p>ipairs – 数组</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">pairs</span>(args) <span class="keyword">do</span></span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"=====k=====&gt;"</span>,<span class="built_in">type</span>(k),<span class="string">":"</span>,k, <span class="string">" ====v===&gt;"</span>,<span class="built_in">type</span>(v),<span class="string">":"</span>,v)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<h2 id="ngx_指令">ngx 指令</h2><h3 id="rewrite">rewrite</h3><p><code>rewrite reg new flag</code></p>
+<p>##ngx 指令</p>
+<p>###rewrite<br><code>rewrite reg new flag</code></p>
 <p>匹配失败，则继续往下执行，就当什么都没发生过</p>
 <p>具体使用 <a href="http://www.nginx.cn/216.html" target="_blank" rel="external">http://www.nginx.cn/216.html</a></p>
 ]]></content>
@@ -186,7 +197,7 @@
     <entry>
       <title><![CDATA[http 请求调试]]></title>
       <url>http://yangzz0.github.io/2015/10/30/http-debug/</url>
-      <content type="html"><![CDATA[<h3 id="查看请求响应头信息">查看请求响应头信息</h3><ul>
+      <content type="html"><![CDATA[<h3 id="查看请求响应头信息"><a href="#查看请求响应头信息" class="headerlink" title="查看请求响应头信息"></a>查看请求响应头信息</h3><ul>
 <li>curl</li>
 </ul>
 <table>
@@ -228,7 +239,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="参考">参考</h2><ul>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ul>
 <li><a href="http://www.lenky.info/archives/2012/07/1841" title="wget/curl查看请求响应头信息" target="_blank" rel="external">wget/curl查看请求响应头信息</a><!--  http reference -->
 <!-- [lenky][lenky] -->
 </li>
@@ -239,52 +250,54 @@
     <entry>
       <title><![CDATA[对一次寻找大素数问题的思考]]></title>
       <url>http://yangzz0.github.io/2015/10/25/prime-linear-time/</url>
-      <content type="html"><![CDATA[<h2 id="背景">背景</h2><p>我每过段时间，就会兴趣大发，噼里啪啦加上一堆qq群，一般就是最近在做相关的工作，或者想了解学习相关的知识，到现在已经加了几十群了。qq群对于我来说，一是看大家伙的讨论一些专业技术问题，一是从共享里面下载一些书籍资料，当然一般一个群建立的比较久了，群里活跃成员达到一定的数目，一个群也会有适当的灌水，娱乐一下，好像有点一个小社会的那么点意思。昨天加一个计算机相关的群，它设置了一个问题：</p>
-<pre><code>小于<span class="number">899808659</span>的最大质数是？
-</code></pre><h2 id="低头做事">低头做事</h2><p>第一感觉是<code>简单，应该能很快做出来</code>，但随后也感觉<code>这个数稍微有点大，会不会没自己想想的这么简单</code>，也想到了三种可能能解决这个问题的方案：试除法（复杂度约为n^1.5）、欧拉筛法 和 Miller–Rabin素性检测，前两种解决方案以前都写过对应的C代码,第三种也就是知道名字能做什么而已。决定试一把前两种解决方案，感觉以前写过怎也能做出来。前两种选哪一种呢？我也说不太清楚，带着复杂的的心情写完了第一个方案的<a href="">程序</a>，</p>
+      <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>我每过段时间，就会兴趣大发，噼里啪啦加上一堆qq群，一般就是最近在做相关的工作，或者想了解学习相关的知识，到现在已经加了几十群了。qq群对于我来说，一是看大家伙的讨论一些专业技术问题，一是从共享里面下载一些书籍资料，当然一般一个群建立的比较久了，群里活跃成员达到一定的数目，一个群也会有适当的灌水，娱乐一下，好像有点一个小社会的那么点意思。昨天加一个计算机相关的群，它设置了一个问题：</p>
+<pre><code>小于899808659的最大质数是？
+</code></pre><h2 id="低头做事"><a href="#低头做事" class="headerlink" title="低头做事"></a>低头做事</h2><p>第一感觉是<code>简单，应该能很快做出来</code>，但随后也感觉<code>这个数稍微有点大，会不会没自己想想的这么简单</code>，也想到了三种可能能解决这个问题的方案：试除法（复杂度约为n^1.5）、欧拉筛法 和 Miller–Rabin素性检测，前两种解决方案以前都写过对应的C代码,第三种也就是知道名字能做什么而已。决定试一把前两种解决方案，感觉以前写过怎也能做出来。前两种选哪一种呢？我也说不太清楚，带着复杂的的心情写完了第一个方案的<a href="">程序</a>，</p>
 <p>在写程序的时候发现 899808659 本身就是一个素数，可惜题目要的是比这个数略小的。程序运行了10多分钟发现程序还在跑。感觉糟了<code>要是要找的这个数和这个数差的范围太大怎么办?</code>。然后直接放弃了想着写欧拉筛法吧，屋漏偏逢连阴雨，欧拉筛法忘记怎么写了，当时理解的不是很深刻的<code>判断终止循环</code>地方果然又记不起来原因了。琢磨半天搞明白后，开始写代码，写的时候发现分配数组太多，分配不了，在ruby下数组的大小也就能分配5亿个，在C语言中也是大概这么多个<code>int</code>类型的数组。但这个算法能在线性时间内筛除区间内的所有素数，感觉很有意思、神奇、实用，自己也快忘记具体细节了，就决定花点时间复习一下，顺带用ruby写了一个版本。显然最终还是没能解决最终的问题。</p>
 <p>怎么办呢？怎么办呢？怎么办呢？</p>
 <p>检索了一下，看了几篇文章，发现大素数及其判定问题原来是个国际性的难题。大素数的一个重要应用在RSA加密中。虽然899808659这个素数虽然不小了，但还是挺小的，也有一些ACMer公布了一些判断2^63内数的素性测试的现成程序，但战胜失败的强烈欲望我感觉非得写个程序搞定不可，不然太没面子了。然后开始跳入了一个深坑。参考 <a href="http://www.cnblogs.com/kuangbin/archive/2012/08/19/2646396.html" target="_blank" rel="external">大素数判断和素因子分解（miller-rabin，Pollard_rho算法）</a> 这篇blog，一开始怎么也不找头脑，想放弃，但是感觉放弃可不行啊，遇到困难就放弃怎么能学到东西呢？硬着头皮往前上，发现有段代码不懂，不知怎么脑洞突然大开，直接搜索这段代码，进入<a href="http://www.cnblogs.com/vongang/archive/2012/03/15/2398626.html" target="_blank" rel="external">Miller-Rabin素数测试学习笔记</a>这篇blog发现原来不理解的代码其实是<code>二次探测定理</code>的使用。总结起来这个理解算法的难点就可以归结为 理解代码中溢出的解决，二次探测定理，费马小定理等这些技术和原理。现在就等二次探测定理 归位，开工检索，检索到Matrix67先前有篇blog <a href="http://www.matrix67.com/blog/archives/234" target="_blank" rel="external"> 数论部分第一节：素数与素性测试 </a>里面有这个关键词。Matrix67是第一个让我深刻体会到blog还能这么有意思,细细品读，醍醐灌顶，这篇文章果然有没有失望，深入浅出，又是一片好文。折腾到晚上程序写完了。<a href="">程序连接</a></p>
 <p>程序输出来好多结果，感觉数字8一直没变，坏了，数据太多了。把2改大后结果一下就出来了</p>
-<pre><code><span class="number">899808619</span>
+<pre><code>899808619
 </code></pre><p>验证不过去，额，眼前一黑，Miller–Rabin那么低的概率判断失误的情况居然碰上了。</p>
 <p>反正离899808659挺近的，就枚举一下（899808619，899808659）区间的数吧，实在折腾的够呛了，最后真正的结果是下面这个数，也就这一个。</p>
-<pre><code><span class="number">899808641</span>
-</code></pre><h2 id="抬头看路">抬头看路</h2><p>反思整个过程，自己曝露出很多缺点。</p>
+<pre><code>899808641
+</code></pre><h2 id="抬头看路"><a href="#抬头看路" class="headerlink" title="抬头看路"></a>抬头看路</h2><p>反思整个过程，自己曝露出很多缺点。</p>
 <p>有句话说心中有数，手上不乱。看到问题没有好好的分析问题，有什么解决方案，有多少，分析每个方案的特点、所能解决的问题。上来就凭感觉做，然后想大力出奇迹，简直是痴人说梦，事倍功半，过程中老感觉不踏实，那里怪怪的。那每种方案的复杂度是多少呢，能解决的问题能力多大呢？试除法的时间复杂度我起初一直错误的以为是 $O(n^{1.5})$,实际应该为 $O(n^{0.5})$，那其实是遍历区间内所有素数筛法的时间复杂度，而$O(n^{0.5})$ 才是 筛选一个数的时间复杂度。虽然感觉也怪怪的，但是没有细心的想想为什么感觉怪怪的。错误的时间复杂度估计，粗心大意，也是过于快放弃这种方案的原因。有句话还是挺有道理的，对感觉奇怪的地方进行深入的思考，查找资料求证，就可能会发现一些令人吃惊的与设想不同的结果。</p>
 <p>其次，调试程序大意，主观臆断。代码没进行单元测试，试除法程序运行时间过长，没有具体分析原因就直接尝试第二种方案。</p>
 <p>第三，偏离主目标，这是严重的路线方向问题。明显发现欧拉筛法行不通的时候，仍花费不少时间在上面，这个事情应该放到延迟重要的事情。</p>
-<h2 id="总结">总结</h2><p>对于这个事情的结果是，一个一小时内可以解决的问题终于在几个小时候后把问题解决了。顺利的进入了群，自豪骄傲。</p>
-<h2 id="参考">参考</h2><p><a href="https://zh.wikipedia.org/wiki/%E7%B4%A0%E6%80%A7%E6%B5%8B%E8%AF%95#.E7.A2.BA.E5.AE.9A.E5.9E.8B.E6.BC.94.E7.AE.97.E6.B3.95" target="_blank" rel="external">素性测试</a></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>对于这个事情的结果是，一个一小时内可以解决的问题终于在几个小时候后把问题解决了。顺利的进入了群，自豪骄傲。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://zh.wikipedia.org/wiki/%E7%B4%A0%E6%80%A7%E6%B5%8B%E8%AF%95#.E7.A2.BA.E5.AE.9A.E5.9E.8B.E6.BC.94.E7.AE.97.E6.B3.95" target="_blank" rel="external">素性测试</a></p>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[obs简单使用]]></title>
       <url>http://yangzz0.github.io/2015/10/23/obs-use/</url>
-      <content type="html"><![CDATA[<h2 id="obs_是什么">obs 是什么</h2><p><a href="https://obsproject.com/" target="_blank" rel="external">官网</a>标题有这么一句话，</p>
+      <content type="html"><![CDATA[<h2 id="obs-是什么"><a href="#obs-是什么" class="headerlink" title="obs 是什么"></a>obs 是什么</h2><p><a href="https://obsproject.com/" target="_blank" rel="external">官网</a>标题有这么一句话，</p>
 <blockquote><p>Free, open source software for live streaming and recording</p>
 </blockquote>
 <p>简单来说就是一个视频直播推流器，并且还能同时录制视频。作为推流器还有一些非常有意思的功能。例如，调节推送的比特率，对视频做一些简单的处理往视频中插入文字、图像，从摄像机等外设设备中捕获音视频,捕获窗口等功能。 最重要的是这些功能组合的方式基本没有限制。</p>
 <p><img src="/imgs/obs-use.png" alt=""></p>
-<h2 id="测试视频直播的时间延迟">测试视频直播的时间延迟</h2><p>视频直播测试的时候需要简单的测试一下视频的延迟时间。怎么测试呢？</p>
+<h2 id="测试视频直播的时间延迟"><a href="#测试视频直播的时间延迟" class="headerlink" title="测试视频直播的时间延迟"></a>测试视频直播的时间延迟</h2><p>视频直播测试的时候需要简单的测试一下视频的延迟时间。怎么测试呢？</p>
 <p>其实最简单的方法就是查看视频播放到什么时间点了，客户端和obs的一对比就知道延迟了，可惜obs不显示，只能更换其他方式。利用obs的窗口捕获功能，把浏览器窗口和媒体源内容拼合到一起，浏览器中的时间就可以起到一个时间基准的作用，对比视频中和实际中浏览器的时间就可以得出时间延迟。</p>
 <p><img src="/imgs/obs-1.png" alt=""></p>
-<h2 id="一个简单的推送流程">一个简单的推送流程</h2><ul>
+<h2 id="一个简单的推送流程"><a href="#一个简单的推送流程" class="headerlink" title="一个简单的推送流程"></a>一个简单的推送流程</h2><ul>
 <li>打开软件</li>
 <li>点击 <code>档案</code> - <code>新建</code>  随意起个名字就可以，主要作用就是表示一个独立推送相关的参数设置，包括目标服务器和推送码率。</li>
 <li>点击 右下角的设置 - 串流 - 自定义流媒体服务器 </li>
 <li>填写 URL 和流密钥 <code>rtmp://192.168.1.183/live</code> 、<code>ted</code>,观看的时候需要把两者拼接起来，播放地址即为<code>rtmp://192.168.1.183/live/ted</code></li>
 <li>点击<code>开始串流</code>，如果没有报错视频就推送成功了，可以使用播放器，如vlc、ffplay、potplayer，直接观看了。<br><img src="https://raw.githubusercontent.com/noname007/assets/master/obs-use.gif" alt=""></li>
 </ul>
-<h2 id="update">update</h2><p><strong>更新情况</strong><br>2015-10-23 16:55:27<br>2015-10-26 15:04:27<br>2015-11-19 13:33:00  增加图片</p>
+<h2 id="update"><a href="#update" class="headerlink" title="update"></a>update</h2><p><strong>更新情况</strong><br>2015-10-23 16:55:27<br>2015-10-26 15:04:27<br>2015-11-19 13:33:00  增加图片</p>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[Linux 高性能服务器编程]]></title>
       <url>http://yangzz0.github.io/2015/10/14/linux-net-programming-dig/</url>
-      <content type="html"><![CDATA[<h2 id="IO_复用函数">IO 复用函数</h2><h2 id="定时器">定时器</h2><p><strong>定时方法</strong></p>
+      <content type="html"><![CDATA[<p>##IO 复用函数</p>
+<p>##定时器</p>
+<p><strong>定时方法</strong></p>
 <ul>
 <li>socket 选项 SO_RCVTIMEO 和SO_SNDTIMEO</li>
 <li>SIGALRM信号</li>
@@ -297,16 +310,17 @@
     <entry>
       <title><![CDATA[c incldue 文件包含]]></title>
       <url>http://yangzz0.github.io/2015/10/13/c-incldue/</url>
-      <content type="html"><![CDATA[<h2 id="引言">引言</h2><p>前段时间看lua的时候，书中提到标准C是没有定义查找路径的，回想起来C的书籍中确实没有过多实没有提及文件包含的问题。在看linux网络编程的时候一些文件包含格式，以前也见过但是不理解为什么这么写，自己也没深入关注过这方面的问题。在配置eclipse,sublime,vs的文件包含、库文件、动态链接库相关的配置的时候，感觉配置参数和这些文件包含他们之间有那么一些隐隐约约的联系，<code>感觉配置的这些参数，就是编译器，链接器相关命令行参数</code>，也确实是如此。</p>
+      <content type="html"><![CDATA[<p>##引言<br>前段时间看lua的时候，书中提到标准C是没有定义查找路径的，回想起来C的书籍中确实没有过多实没有提及文件包含的问题。在看linux网络编程的时候一些文件包含格式，以前也见过但是不理解为什么这么写，自己也没深入关注过这方面的问题。在配置eclipse,sublime,vs的文件包含、库文件、动态链接库相关的配置的时候，感觉配置参数和这些文件包含他们之间有那么一些隐隐约约的联系，<code>感觉配置的这些参数，就是编译器，链接器相关命令行参数</code>，也确实是如此。</p>
 <p>如何包含文件的问题其实是一个文件查找的问题。例如php中对文件包含的规则就比较简单<code>require</code>或者<code>include</code> 后面加上文件路径，但是C语言中在自己的印象中一直好像没有相关的说法，于是翻了一下C程序语言设计这本书，呵呵。。果然是阳春白雪。。就那么一点点。。。不留心可能就忽略了，在工程之中却又是一个非常重要的问题。比如可以利用文件把一个大的工程分开，有利于<code>模块化</code>开发设计。</p>
 <p>随即查阅了一些资料做个简单的小结。</p>
-<h2 id="查找路径">查找路径</h2><p>按照程序的时段可以划分为三个</p>
+<p>##查找路径</p>
+<p>按照程序的时段可以划分为三个</p>
 <ul>
 <li>编译时的查找</li>
 <li>链接时的查找</li>
 <li>运行时查找</li>
 </ul>
-<h3 id="编译时的查找">编译时的查找</h3><p><strong>include 文件包含格式：</strong></p>
+<p>###编译时的查找<br><strong>include 文件包含格式：</strong></p>
 <hr>
 <ul>
 <li>尖括号<code>&lt;&gt;</code>引起来</li>
@@ -325,12 +339,13 @@
 <li>头文件中不支持通配符，如<code>*</code></li>
 </ol>
 <p><br></p>
-<h3 id="链接时的查找">链接时的查找</h3><p>在命令行下可以使用 <code>-L</code>  <code>-l</code>添加查找路径，也可以使用环境变量添加。含义分别表示</p>
+<p>###链接时的查找</p>
+<p>在命令行下可以使用 <code>-L</code>  <code>-l</code>添加查找路径，也可以使用环境变量添加。含义分别表示</p>
 <ul>
 <li><code>-L</code> 查找的文件夹</li>
 <li><code>-l</code> 静态库文件</li>
 </ul>
-<h3 id="运行时查找">运行时查找</h3><p>查找动态链接库。比如在Windows上运行某个程序的时候，弹出提示说缺少<strong>dll</strong>的情况，就是因为没有在指定的位置找到对应的DLL。一般把对应的DLL放在程序运行的位置，或者放在系统 <code>C:\Windows\System32</code>问题就解决了。</p>
+<p>###运行时查找<br>查找动态链接库。比如在Windows上运行某个程序的时候，弹出提示说缺少<strong>dll</strong>的情况，就是因为没有在指定的位置找到对应的DLL。一般把对应的DLL放在程序运行的位置，或者放在系统 <code>C:\Windows\System32</code>问题就解决了。</p>
 <p><strong><em>部分环境变量的含义</em></strong></p>
 <hr>
 <table>
@@ -379,17 +394,19 @@
 <li>详见 <a href="http://blog.chinaunix.net/uid-22145625-id-1789493.html" target="_blank" rel="external">http://blog.chinaunix.net/uid-22145625-id-1789493.html</a></li>
 </ul>
 <p><br></p>
-<h2 id="参考">参考</h2><p><a href="http://blog.chinaunix.net/uid-22150747-id-189278.html" target="_blank" rel="external">gcc include路径</a><br><a href="http://www.cnblogs.com/zhoug2020/archive/2012/07/04/2576068.html" target="_blank" rel="external">gcc中include文件的搜索路径</a><br><a href="http://blog.csdn.net/ericghw/article/details/38639821" target="_blank" rel="external">c项目中指定头文件目录</a></p>
+<p>##参考</p>
+<p><a href="http://blog.chinaunix.net/uid-22150747-id-189278.html" target="_blank" rel="external">gcc include路径</a><br><a href="http://www.cnblogs.com/zhoug2020/archive/2012/07/04/2576068.html" target="_blank" rel="external">gcc中include文件的搜索路径</a><br><a href="http://blog.csdn.net/ericghw/article/details/38639821" target="_blank" rel="external">c项目中指定头文件目录</a></p>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[调试工具]]></title>
       <url>http://yangzz0.github.io/2015/09/23/debug-tools/</url>
-      <content type="html"><![CDATA[<h2 id="☆_gdb">☆ gdb</h2><p>启动gdb后</p>
+      <content type="html"><![CDATA[<p>##☆ gdb<br>启动gdb后</p>
 <p>b breakpoint 断点<br>p print 打印<br>r<br>attach<br>watch<br>c<br>bt<br>up<br>list<br>info macro NGX_OK<br>macro expand</p>
-<h2 id="☆_ulimit">☆ ulimit</h2><p>-c<br>unlimited</p>
-<h2 id="☆_tcpdump">☆ tcpdump</h2><table>
+<p>##☆ ulimit<br>-c<br>unlimited</p>
+<p>##☆ tcpdump</p>
+<table>
 <thead>
 <tr>
 <th>选项</th>
@@ -441,7 +458,8 @@
       <content type="html"><![CDATA[<blockquote><p>每一个值都有一个元表。table和userdata可以有各自独立的元表，其他类型的值则共享其类型所属的单一元表</p>
 </blockquote>
 <p>表是lua中非常重要的基本数据类型，实现其他的一些编程技术概念的基础，如模块、包、类。通过语言提供的元表和元方法可以更改表的表现行为。</p>
-<h3 id="☆_元方法">☆ 元方法</h3><table>
+<p>###☆ 元方法</p>
+<table>
 <thead>
 <tr>
 <th>元方法</th>
@@ -521,16 +539,18 @@
 <li>更改对表中的元素的访问行为，简单说是重载了，<code>[]</code> ,<code>[]=</code> 运算符</li>
 </ul>
 <p>这两个特性在C++特性中看起来是<code>运算符的重载</code>。与C++相比，Lua本身没有面向对象的支持，但是使用元方法，可以实现其中的继承，还可以实现其他的功能、如返回具有默认值的table、跟踪table访问、只读的table</p>
-<h3 id="☆_继承">☆ 继承</h3><p>从原型窗口继承所有不存在的字段<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Window = &#123;&#125;   <span class="comment">-- 名字空间</span></span><br><span class="line"></span><br><span class="line">Window.prototype = &#123;x = <span class="number">0</span>,y = <span class="number">0</span>,width = <span class="number">300</span>,height = <span class="number">400</span>&#125;</span><br><span class="line"></span><br><span class="line">Window.mt = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Window.new</span><span class="params">(o)</span></span></span><br><span class="line">    <span class="comment">-- body</span></span><br><span class="line">    <span class="built_in">setmetatable</span>(o, Window.mt)</span><br><span class="line">    <span class="keyword">return</span> o</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Window.mt.__index = <span class="function"><span class="keyword">function</span><span class="params">(tabel,key)</span></span></span><br><span class="line">    <span class="built_in">print</span>(key)</span><br><span class="line">    <span class="keyword">return</span> Window.prototype[key]</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">w = Window.new&#123;<span class="number">10</span>,<span class="number">20</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(w.height)</span><br><span class="line">``</span><br></pre></td></tr></table></figure></p>
-<h3 id="☆_返回具有默认值的table">☆ 返回具有默认值的table</h3><p>当访问Lua表中不存在的一个元素的时候默认的返回的是nil,如果不想返回nil,则可以利用使用<code>__index</code> 元方法更改返回值。可以使用下面几种方式</p>
+<p>###☆ 继承<br>从原型窗口继承所有不存在的字段<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">Window = &#123;&#125;   <span class="comment">-- 名字空间</span></span><br><span class="line"></span><br><span class="line">Window.prototype = &#123;x = <span class="number">0</span>,y = <span class="number">0</span>,width = <span class="number">300</span>,height = <span class="number">400</span>&#125;</span><br><span class="line"></span><br><span class="line">Window.mt = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">Window.new</span><span class="params">(o)</span></span></span><br><span class="line">    <span class="comment">-- body</span></span><br><span class="line">    <span class="built_in">setmetatable</span>(o, Window.mt)</span><br><span class="line">    <span class="keyword">return</span> o</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Window.mt.__index = <span class="function"><span class="keyword">function</span><span class="params">(tabel,key)</span></span></span><br><span class="line">    <span class="built_in">print</span>(key)</span><br><span class="line">    <span class="keyword">return</span> Window.prototype[key]</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">w = Window.new&#123;<span class="number">10</span>,<span class="number">20</span>&#125;</span><br><span class="line"><span class="built_in">print</span>(w.height)</span><br><span class="line">``</span><br></pre></td></tr></table></figure></p>
+<p>###☆ 返回具有默认值的table<br>当访问Lua表中不存在的一个元素的时候默认的返回的是nil,如果不想返回nil,则可以利用使用<code>__index</code> 元方法更改返回值。可以使用下面几种方式</p>
 <p><strong>方式一 :</strong>  为每一个需要默认值的表创建一个新的元表</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">set_default</span><span class="params">(t,default)</span></span></span><br><span class="line">    <span class="comment">--todo</span></span><br><span class="line">    <span class="keyword">local</span> mt = &#123;</span><br><span class="line">        __index = <span class="function"><span class="keyword">function</span><span class="params">()</span></span></span><br><span class="line">            <span class="keyword">return</span> default</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">setmetatable</span>(t, mt)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">tab = &#123;x = <span class="number">1</span>,y = <span class="number">2</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(tab.x,tab.y)</span><br><span class="line">set_default(tab,<span class="number">0</span>)</span><br><span class="line"><span class="built_in">print</span>(tab.x,tab.y,tab.z)</span><br></pre></td></tr></table></figure>
 <p><strong>方式二 :</strong>  使用同一个元表，默认值在每个表的各自内部<br>当有很多表需要默认值的时候，方法一会创建大量的元表，降低效率，下面这种方法更合适。所有通过新元表解决方案都会有这个问题<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">local</span> mt = &#123;</span><br><span class="line">    __index = <span class="function"><span class="keyword">function</span><span class="params">(t,key)</span></span></span><br><span class="line">        <span class="keyword">return</span> t.___</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">set_default</span><span class="params">(t,default)</span></span></span><br><span class="line">    t.___ = default</span><br><span class="line">    <span class="built_in">setmetatable</span>(t, mt)</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">tab = &#123;x = <span class="number">1</span>,y = <span class="number">2</span>&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(tab.x,tab.y)</span><br><span class="line">set_default(tab,<span class="number">0</span>)</span><br><span class="line"><span class="built_in">print</span>(tab.x,tab.y,tab.z)</span><br></pre></td></tr></table></figure></p>
 <p>防止索引冲突，可以改进为如下</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> key = &#123;&#125; <span class="comment">---- 防止索引冲突</span></span><br><span class="line"><span class="keyword">local</span> mt = &#123;</span><br><span class="line">    __index = <span class="function"><span class="keyword">function</span><span class="params">(t)</span></span></span><br><span class="line">        <span class="keyword">return</span> t[key]</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">set_default</span><span class="params">(t,default)</span></span></span><br><span class="line">    t[key] = default</span><br><span class="line">    <span class="built_in">setmetatable</span>(t, mt)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<h3 id="☆_跟踪table访问">☆ 跟踪table访问</h3><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">proxy</span><span class="params">(t)</span></span></span><br><span class="line">    <span class="comment">--todo</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">local</span>  _t = t</span><br><span class="line">    <span class="keyword">local</span> _mt = &#123;</span><br><span class="line">        __index = <span class="function"><span class="keyword">function</span><span class="params">(t,k)</span></span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">'access to element'</span>..<span class="built_in">tostring</span>(k))</span><br><span class="line">            <span class="keyword">return</span> _t[k]</span><br><span class="line">        <span class="keyword">end</span>,</span><br><span class="line">        __newindex = <span class="function"><span class="keyword">function</span><span class="params">(t,k,v)</span></span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"update  element "</span>..<span class="built_in">tostring</span>(k)..<span class="string">"to"</span>..<span class="built_in">tostring</span>(v))</span><br><span class="line">            _t[k] = v</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">setmetatable</span>(t, _mt)</span><br><span class="line">    t = &#123;&#125;</span><br><span class="line">    <span class="keyword">return</span> t</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">t = proxy&#123;&#125;</span><br><span class="line">t.k = <span class="number">111</span></span><br><span class="line"><span class="built_in">print</span>(t.k)</span><br></pre></td></tr></table></figure>
+<p>###☆ 跟踪table访问</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">proxy</span><span class="params">(t)</span></span></span><br><span class="line">    <span class="comment">--todo</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">local</span>  _t = t</span><br><span class="line">    <span class="keyword">local</span> _mt = &#123;</span><br><span class="line">        __index = <span class="function"><span class="keyword">function</span><span class="params">(t,k)</span></span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">'access to element'</span>..<span class="built_in">tostring</span>(k))</span><br><span class="line">            <span class="keyword">return</span> _t[k]</span><br><span class="line">        <span class="keyword">end</span>,</span><br><span class="line">        __newindex = <span class="function"><span class="keyword">function</span><span class="params">(t,k,v)</span></span></span><br><span class="line">            <span class="built_in">print</span>(<span class="string">"update  element "</span>..<span class="built_in">tostring</span>(k)..<span class="string">"to"</span>..<span class="built_in">tostring</span>(v))</span><br><span class="line">            _t[k] = v</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">setmetatable</span>(t, _mt)</span><br><span class="line">    t = &#123;&#125;</span><br><span class="line">    <span class="keyword">return</span> t</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">t = proxy&#123;&#125;</span><br><span class="line">t.k = <span class="number">111</span></span><br><span class="line"><span class="built_in">print</span>(t.k)</span><br></pre></td></tr></table></figure>
 <p>可以改进如下：<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> index = &#123;&#125; <span class="comment">-- 防止key 冲突</span></span><br><span class="line"><span class="keyword">local</span> _mt = &#123;</span><br><span class="line">    __index = <span class="function"><span class="keyword">function</span><span class="params">(t,k)</span></span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">'access to element '</span>..<span class="built_in">tostring</span>(k))</span><br><span class="line">        <span class="keyword">return</span> t[index][k]</span><br><span class="line">    <span class="keyword">end</span>,</span><br><span class="line">    __newindex = <span class="function"><span class="keyword">function</span><span class="params">(t,k,v)</span></span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">"update  element "</span>..<span class="built_in">tostring</span>(k)..<span class="string">" to "</span>..<span class="built_in">tostring</span>(v))</span><br><span class="line">        t[index][k] = v</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">proxy</span><span class="params">(t)</span></span></span><br><span class="line">    <span class="comment">--todo</span></span><br><span class="line">    <span class="keyword">local</span>  proxy = &#123;&#125;</span><br><span class="line">    proxy[index] = t</span><br><span class="line">    <span class="built_in">setmetatable</span>(proxy, _mt)</span><br><span class="line">    <span class="comment">-- t = proxy -- 方便 t = proxy(t),proxy(t)两种形式的调用 --- error  已经是局部变量t,和外围t不是一回事，受到名字的影响</span></span><br><span class="line">    <span class="keyword">return</span> proxy</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure></p>
-<h3 id="☆只读的table">☆只读的table</h3><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">make_read_only_table</span><span class="params">(t)</span></span> </span><br><span class="line">    <span class="keyword">local</span> read_only = &#123;&#125; <span class="comment">-- 重要的一步</span></span><br><span class="line">    <span class="keyword">local</span> mt = &#123;</span><br><span class="line">        __index = t,</span><br><span class="line">        __newindex = <span class="function"><span class="keyword">function</span> <span class="params">(t,k,v)</span></span></span><br><span class="line">            <span class="built_in">error</span>(<span class="string">"attemp to update a read-only table"</span>)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">setmetatable</span>(read_only, mt)</span><br><span class="line">    <span class="keyword">return</span> read_only</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">'test'</span></span><br><span class="line"></span><br><span class="line">t = make_read_only_table&#123;<span class="number">13</span>,<span class="number">4</span>,<span class="number">6</span>,name=<span class="string">'webapp'</span>,temp=a&#125;</span><br><span class="line"></span><br><span class="line">a = <span class="string">'dd'</span></span><br><span class="line"><span class="built_in">print</span>(t.temp)</span><br><span class="line"></span><br><span class="line">t.temp = <span class="number">1111</span></span><br></pre></td></tr></table></figure>
+<p>###☆只读的table</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">make_read_only_table</span><span class="params">(t)</span></span> </span><br><span class="line">    <span class="keyword">local</span> read_only = &#123;&#125; <span class="comment">-- 重要的一步</span></span><br><span class="line">    <span class="keyword">local</span> mt = &#123;</span><br><span class="line">        __index = t,</span><br><span class="line">        __newindex = <span class="function"><span class="keyword">function</span> <span class="params">(t,k,v)</span></span></span><br><span class="line">            <span class="built_in">error</span>(<span class="string">"attemp to update a read-only table"</span>)</span><br><span class="line">        <span class="keyword">end</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">setmetatable</span>(read_only, mt)</span><br><span class="line">    <span class="keyword">return</span> read_only</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">'test'</span></span><br><span class="line"></span><br><span class="line">t = make_read_only_table&#123;<span class="number">13</span>,<span class="number">4</span>,<span class="number">6</span>,name=<span class="string">'webapp'</span>,temp=a&#125;</span><br><span class="line"></span><br><span class="line">a = <span class="string">'dd'</span></span><br><span class="line"><span class="built_in">print</span>(t.temp)</span><br><span class="line"></span><br><span class="line">t.temp = <span class="number">1111</span></span><br></pre></td></tr></table></figure>
 <p><strong>方案二</strong></p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">local</span> index = &#123;&#125; <span class="comment">-- 防止key 冲突</span></span><br><span class="line"><span class="keyword">local</span> _mt = &#123;</span><br><span class="line">    __index = <span class="function"><span class="keyword">function</span><span class="params">(t,k)</span></span></span><br><span class="line">        <span class="built_in">print</span>(<span class="string">'access to element '</span>..<span class="built_in">tostring</span>(k))</span><br><span class="line">        <span class="keyword">return</span> t[index][k]</span><br><span class="line">    <span class="keyword">end</span>,</span><br><span class="line">    __newindex = <span class="function"><span class="keyword">function</span><span class="params">(t,k,v)</span></span></span><br><span class="line">        <span class="built_in">error</span>(<span class="string">"attemp to update a read-only table"</span>)</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">make_read_only_table</span><span class="params">(t)</span></span> </span><br><span class="line">    <span class="keyword">local</span> read_only = &#123;&#125;</span><br><span class="line">    read_only[index] = t</span><br><span class="line">    <span class="built_in">setmetatable</span>(read_only, _mt)</span><br><span class="line">    <span class="keyword">return</span> read_only</span><br><span class="line"><span class="keyword">end</span></span><br><span class="line"></span><br><span class="line">a = <span class="string">'test'</span></span><br><span class="line"></span><br><span class="line">t = make_read_only_table&#123;<span class="number">13</span>,<span class="number">4</span>,<span class="number">6</span>,name=<span class="string">'webapp'</span>,temp=a&#125;</span><br><span class="line"></span><br><span class="line">a = <span class="string">'dd'</span></span><br><span class="line"><span class="built_in">print</span>(t.temp)</span><br><span class="line"></span><br><span class="line"><span class="comment">-- t.temp = 1111</span></span><br></pre></td></tr></table></figure>]]></content>
     </entry>
@@ -538,7 +558,7 @@
     <entry>
       <title><![CDATA[nginx-rtmp-module 总结（草稿）]]></title>
       <url>http://yangzz0.github.io/2015/09/06/rtmp/</url>
-      <content type="html"><![CDATA[<h2 id="一些参数及其含义">一些参数及其含义</h2><table>
+      <content type="html"><![CDATA[<h2 id="一些参数及其含义"><a href="#一些参数及其含义" class="headerlink" title="一些参数及其含义"></a>一些参数及其含义</h2><table>
 <thead>
 <tr>
 <th>参数名称</th>
@@ -592,25 +612,26 @@
 </tr>
 </tbody>
 </table>
-<h2 id="rtmp_指令—-中继（relay）">rtmp 指令—-中继（relay）</h2><pre><code><span class="attribute">Syntax</span>: <span class="string">pull url [key=value]*</span>
-<span class="attribute">Context</span>: <span class="string">application</span>
-</code></pre><p>创建pull中继，拉取远程的流放到本地使用，当有播放器连接的时候命令才会生效</p>
+<p>##rtmp 指令—中继（relay）<br>    Syntax: pull url [key=value]*<br>    Context: application</p>
+<p>创建pull中继，拉取远程的流放到本地使用，当有播放器连接的时候命令才会生效</p>
 <p>Url 语法: <code>[rtmp://]host[:port][/app[/playpath]]</code>.</p>
 <p>如果app没有指定，则使用本地请求中的app名字</p>
 <p><strong>Example</strong></p>
-<pre><code><span class="tag">pull</span> <span class="rule"><span class="attribute">rtmp</span>:<span class="value">//<span class="number">192.168</span>.<span class="number">1.129</span>/live/test name=ted</span></span>;
-</code></pre><h2 id="Notify相关指令">Notify相关指令</h2><p>主要用于回调通知</p>
-<h3 id="on_connect">on_connect</h3><pre><code>nginx 块: rtmp, <span class="keyword">server</span>
+<pre><code>pull rtmp://192.168.1.129/live/test name=ted;
+</code></pre><p>##Notify相关指令<br>主要用于回调通知</p>
+<p>###on_connect</p>
+<pre><code>nginx 块: rtmp, server
 </code></pre><p>当客户端发起一个连接的时候，同时将会发起一个异步的http请求，客户端连接将会被挂起等待http请求的结果。根据不同的结果做出不同的响应。</p>
 <p><strong>返回结果</strong></p>
 <ul>
-<li>2xx — 刚才发起的RTMP会话请求继续</li>
-<li>3xx — 重定向到另外一个应用，应用名在<code>Location</code>响应头中</li>
+<li>2xx – 刚才发起的RTMP会话请求继续</li>
+<li>3xx – 重定向到另外一个应用，应用名在<code>Location</code>响应头中</li>
 <li>其他连接将会被丢弃</li>
 </ul>
 <p>应用不能放在<code>application</code>块，连接阶段的时候还不知道具体是请求的哪一个应用。<br>HTTP请求默认使用POST方法。</p>
-<h3 id="on_play">on_play</h3><p>与on_connect 类似，只是返回结果为 <code>3xx</code>的时候需要指定新的流名称</p>
-<h2 id="参考资料">参考资料</h2><ul>
+<p>###on_play<br>与on_connect 类似，只是返回结果为 <code>3xx</code>的时候需要指定新的流名称</p>
+<p>##参考资料</p>
+<ul>
 <li><a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#live" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module/wiki/Directives#live</a></li>
 <li><a href="http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html?utm_source=tuicool" target="_blank" rel="external">http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html?utm_source=tuicool</a></li>
 </ul>
@@ -629,7 +650,7 @@
 </ul>
 </blockquote>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#26412;&#22320;&#25991;&#20214;&#10;application vod &#123;&#10;    play /var/flvs;&#10;&#125;&#10;&#10;#&#32593;&#32476;&#20013;&#30340;&#25991;&#20214;&#10;application vod_http &#123;&#10;    play_temp_path /var/flvs;&#10;    play_local_path /var/flvs;&#10;    play /var/flvs http://myserver.com/vod;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="play">play</h2><ul>
+<h2 id="play"><a href="#play" class="headerlink" title="play"></a>play</h2><ul>
 <li>文件格式是<code>mp4</code>和<code>flv</code>。</li>
 <li>文件可以是本地的，也可以是网络上http可以访问到的。</li>
 <li>play 指令中可以指定多个文件路径</li>
@@ -638,19 +659,19 @@
 <li>flv文件点播需要添加关键帧（可以使用yamdi添加），否则没有暂停功能。</li>
 <li>如果点播<code>record</code> 指令生成的文件，记住视频文件没有关键帧。</li>
 </ul>
-<h2 id="播放网络文件">播放网络文件</h2><p>当播放一个网络文件时，nginx会先把文件下载完，然后才播放。下载文件时临时存放的位置由<code>play_temp_path</code>指定，其默认值是 <code>/tmp</code>，播放完毕后就会丢弃。如果<code>play_local_path</code>指定其值，就会先把拷贝到这个位置。这两条指令配合play指令可以提升一些性能。</p>
-<h2 id="一些_tips">一些 tips</h2><p><strong> 三条命令 </strong></p>
+<h2 id="播放网络文件"><a href="#播放网络文件" class="headerlink" title="播放网络文件"></a>播放网络文件</h2><p>当播放一个网络文件时，nginx会先把文件下载完，然后才播放。下载文件时临时存放的位置由<code>play_temp_path</code>指定，其默认值是 <code>/tmp</code>，播放完毕后就会丢弃。如果<code>play_local_path</code>指定其值，就会先把拷贝到这个位置。这两条指令配合play指令可以提升一些性能。</p>
+<h2 id="一些-tips"><a href="#一些-tips" class="headerlink" title="一些 tips"></a>一些 tips</h2><p><strong> 三条命令 </strong></p>
 <p>如果每次点播文件每次都去下载,一是会浪费带宽，二是浪费时间，每次都必须等待下载完成才能播放。如果能下载的文件复制到本地，那么就可以结合play指令，使本地磁盘就可以起到缓存网络数据功能了。</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#30913;&#30424;&#32531;&#23384;&#32593;&#32476;&#25968;&#25454;&#10;application vod_http &#123;&#10;    play_temp_path  /var/flvs;&#10;    play_local_path /var/flvs;&#10;    play /var/flvs http://example.com/videos;&#10;&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>添加关键帧</strong></p>
-<pre><code>yamdi –<span class="tag">i</span> src<span class="class">.flv</span> –o dst.flv
+<pre><code>yamdi –i src.flv –o dst.flv
 </code></pre><p><a href="http://yamdi.sourceforge.net/" target="_blank" rel="external">yamdi 文档</a></p>
 <p><strong>播放rtmp视频</strong></p>
 <p>可以使用ffmpeg自带的ffplay</p>
-<pre><code>ffplay <span class="symbol">rtmp:</span>/<span class="regexp">/localhost/vod</span><span class="regexp">//dir</span><span class="regexp">/file.flv</span>
+<pre><code>ffplay rtmp://localhost/vod//dir/file.flv
 </code></pre><p>一个网络工具</p>
-<pre><code>&lt;<span class="string">http:</span><span class="comment">//www.cutv.com/demo/live_test.swf&gt;</span>
-</code></pre><h2 id="参考">参考</h2><ol>
+<pre><code>&lt;http://www.cutv.com/demo/live_test.swf&gt;
+</code></pre><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
 <li><a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#video-on-demand" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module/wiki/Directives#video-on-demand</a></li>
 <li><a href="http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html" target="_blank" rel="external">http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html</a></li>
 </ol>
@@ -669,43 +690,46 @@
 <li>由于一些目的，把其他人的多个视频流合成一个（我在多个角度拍摄中使用它，例如像在<a href="https://www.youtube.com/watch?v=6WUU58POsTM" target="_blank" rel="external">这个多个拍摄角度视频中</a>）</li>
 </ul>
 <p>好的，你该怎样做到这些事情呢？</p>
-<h2 id="第一步：获取一个服务器">第一步：获取一个服务器</h2><p>不管你信不信，RTMP 实际上对系统资源要求十分的小。本质上来说，它仅仅是从输入端抓取数据并把数据转发到输出端，简单的数据传输。不相信我？我的运行了很长一段时间的RTMP服务器是一个树莓派,一个价值35美金（月200元人民币）的迷你计算机，就放在我的办公桌上，至少同时处理3个数据输入流是完全没有问题的，我也从来没有对它进行过压力测试去看看到底他能处理多少。因此，我向你保证，即使一个便宜的旧机器也是完全没有问题的。</p>
+<p>##第一步：获取一个服务器<br>不管你信不信，RTMP 实际上对系统资源要求十分的小。本质上来说，它仅仅是从输入端抓取数据并把数据转发到输出端，简单的数据传输。不相信我？我的运行了很长一段时间的RTMP服务器是一个树莓派,一个价值35美金（月200元人民币）的迷你计算机，就放在我的办公桌上，至少同时处理3个数据输入流是完全没有问题的，我也从来没有对它进行过压力测试去看看到底他能处理多少。因此，我向你保证，即使一个便宜的旧机器也是完全没有问题的。</p>
 <p>假如你没有树莓派，一个vps也是可以的。我推荐Linode服务商，如果你能支付的起服务费用。我现在也在使用，并且到现在为止，它也运行良好。仅仅确保你有足够的带宽。。。记住带宽的使用量是<code>（视频流的大小）* （上传人数+下载人数）</code>。因此当我有两个视频流推送视频流到我的服务器，并且我同时下载他们，两小时消耗了10GB的带宽流量。</p>
 <p>为了方便，我推荐使用Ubuntu作为服务器软件，但是你完全可使用任何你想使用的。只要你能从apt之外其他的地方解决nginx的依赖问题，你就能参考这篇文档。</p>
 <p><strong>Windows 用户注意</strong> 这边教程关注Linux上的使用，假如你想在Windows上使用，你能找到带有RTMP 模块的nginx二进制包，在这个地方： <a href="http://nginx-win.ecsds.eu/" target="_blank" rel="external">http://nginx-win.ecsds.eu/</a></p>
 <p>假如你的服务器在你家里，你需要转发TCP 1935端口数据到这个服务器上。。。不同的路由器有不同的设置，因此你需要根据你自己的路由器，查看怎么设置端口转发。同时，我推荐使用 DynDNS 这类服务去克服家用主机动态IP的问题。</p>
-<h2 id="第二步：安装nginx_和RTMP_模块">第二步：安装nginx 和RTMP 模块</h2><p>登录你的机器，并且确保你有这些必须的工具去编译nginx,执行下面的命令</p>
-<pre><code>$ sudo apt-<span class="built_in">get</span> install build-essential libpcre3 libpcre3-<span class="built_in">dev</span> libssl-<span class="built_in">dev</span>
+<p>##第二步：安装nginx 和RTMP 模块<br>登录你的机器，并且确保你有这些必须的工具去编译nginx,执行下面的命令</p>
+<pre><code>$ sudo apt-get install build-essential libpcre3 libpcre3-dev libssl-dev
 </code></pre><p>现在说点关于nginx的一点小知识（发音 “engine-X”）。nginx是个轻量级的web server，但是有些人为它写了一个RTMP模块，因此它能够提供RTMP流相关的服务，为了添加这个RTMP模块，我们必须重新从源码编译nginx 而不是使用apt包。不要担心，它是非常简单的，仅仅执行下面的指令:)</p>
 <p>在你的home目录，下载nginx 源码：</p>
-<pre><code><span class="variable">$ </span>wget <span class="symbol">http:</span>/<span class="regexp">/nginx.org/download</span><span class="regexp">/nginx-1.7.7.tar.gz</span>
+<pre><code>$ wget http://nginx.org/download/nginx-1.7.7.tar.gz
 </code></pre><p>在写这篇文章的时候，ngxin 最新的稳定版本是 1.7.7。你可是从<a href="http://nginx.org/en/download.html" target="_blank" rel="external">nginx 下载页</a>下载最新的包。</p>
 <p>接着，从git 获取RTMP 模块的源代码</p>
-<pre><code><span class="variable">$ </span>wget <span class="symbol">https:</span>/<span class="regexp">/github.com/arut</span><span class="regexp">/nginx-rtmp-module/archive</span><span class="regexp">/master.zip</span>
+<pre><code>$ wget https://github.com/arut/nginx-rtmp-module/archive/master.zip
 </code></pre><p>解压开他们，斌且进入nginx 目录：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tar -zxvf nginx-1.7.7.tar.gz&#10;$ unzip master.zip&#10;$ cd nginx-1.7.7</span><br></pre></td></tr></table></figure>
 <p>现在，编译nginx:</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ./configure --with-http_ssl_module --add-module=../nginx-rtmp-module-master&#10;$ make&#10;$ sudo make install</span><br></pre></td></tr></table></figure>
 <p>现在nginx 安装完毕了！默认安装在了 <code>/usr/local/nginx</code>,使用下面的命令启动：</p>
-<pre><code>$ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>sbin<span class="regexp">/nginx</span>
+<pre><code>$ sudo /usr/local/nginx/sbin/nginx
 </code></pre><p>现在测试一下确认nginx 正在运行，打开浏览器输入 <code>http://服务器ip/</code> 然后你将看到”Welcome to nginx!”这个页面。</p>
-<h2 id="第三步：配置nginx_启用RTMP">第三步：配置nginx 启用RTMP</h2><p>打开配置文件，默认是 <code>/usr/local/nginx/conf/nginx.conf</code>，在文件的最后添加下面的内容：</p>
+<p>##第三步：配置nginx 启用RTMP<br>打开配置文件，默认是 <code>/usr/local/nginx/conf/nginx.conf</code>，在文件的最后添加下面的内容：</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">rtmp</span> &#123;</span><br><span class="line">        <span class="title">server</span> &#123;</span><br><span class="line">                <span class="title">listen</span> <span class="number">1935</span>;</span><br><span class="line">                <span class="title">chunk_size</span> <span class="number">4096</span>;</span><br><span class="line"></span><br><span class="line">                <span class="title">application</span> live &#123;</span><br><span class="line">                        <span class="title">live</span> <span class="built_in">on</span>;</span><br><span class="line">                        <span class="title">record</span> <span class="built_in">off</span>;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这是一个非常简单的基础配置，有一个live应用，它将会把RTMP视频流转发给所有请求这它的用户。你可能过一会才播放这个视频。<a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives" target="_blank" rel="external">这里是所有配置选项</a>，展示了如何转发视频流到其他的地方（像Twitch），保存上传的记录，输出状态等等。</p>
 <p>重启nginx:</p>
-<pre><code>$ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>sbin/nginx -s stop
-$ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>sbin/nginx
-</code></pre><h2 id="第四步：测试">第四步：测试</h2><p>你的服务器应该能接收RTMP视频流了。让我们尝试一下吧。</p>
+<pre><code>$ sudo /usr/local/nginx/sbin/nginx -s stop
+$ sudo /usr/local/nginx/sbin/nginx
+</code></pre><p>##第四步：测试</p>
+<p>你的服务器应该能接收RTMP视频流了。让我们尝试一下吧。</p>
 <p>创建一个新的工程在OBS,并且更改 Broadcast Settings 为如下：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Streaming Service: Custom&#10;Server: rtmp://&#60;your server ip&#62;/live&#10;Play Path/Stream Key: test</span><br></pre></td></tr></table></figure>
 <p>你可能会疑惑test路径从哪里来。好吧，我们就是刚刚创建的。你能创建任何路径和流，把那个路径发到RTMP播放器里面，就可以播放了。对于简单的应用，没必要授权。</p>
 <p>你现在能向你的服务器推送视频流了。当你点击了 “Start Streaming” ，没有报告错误，这是一个好的信号。</p>
 <p>怎么打开观看呢？就我个人来说，我使用<a href="http://vmix.com.au/" target="_blank" rel="external">vMix</a>播放RTMP流并且将多个视频流合并成一个我自己的流。如果你仅仅想播放一个正在上传的视频流，可以使用<code>VLC 2.1.0</code>或者更新的版本。打开一个网络流，输入<code>rtmp://&lt;your server ip&gt;/live/test</code>作为url。如果没有报什么错误的话，现在你就能在VLC里面看到流里面的内容了。</p>
 <p>现在你有一个能工作的视频流了，欢呼吧:)</p>
-<h2 id="现在做什么呢？">现在做什么呢？</h2><p>你能使用使你的服务器转发视频流到其他的流服务和频道。在”record off;”后面添加下面的指令。</p>
-<pre><code><span class="keyword">push </span>rtmp://&lt;other <span class="keyword">streaming </span>service rtmp url&gt;/&lt;<span class="keyword">stream </span>key&gt;
+<p>##现在做什么呢？</p>
+<p>你能使用使你的服务器转发视频流到其他的流服务和频道。在”record off;”后面添加下面的指令。</p>
+<pre><code>push rtmp://&lt;other streaming service rtmp url&gt;/&lt;stream key&gt;
 </code></pre><p>任何视频流都会被转发，同时客户端也能使用这个地址播放视频。你可以添加多个push指令，把这个视频转发到多个位置。</p>
-<h2 id="FAQ">FAQ</h2><p>Q:为什么使用nginx?不使用crtmpserver/Red5/Wowza?</p>
+<p>##FAQ</p>
+<p>Q:为什么使用nginx?不使用crtmpserver/Red5/Wowza?</p>
 <p>A:先前用过crtmpserver，并且也能工作，但是太难用了。如果需要RTSP服务代替RTMP服务，我推荐使用它，因为nginx RTMP模块不支持RTSP。对于我来说Red5看起来太重，太复杂了，并且是用java写的。。。如果你想使用它就是用它吧。我没有在这上面投资很多精力。Wowza不是免费的。你能使用它完成你想的功能，但是nginx是更轻量级的，易于使用，并且免费。</p>
 <p>Q:X怎么做?</p>
 <p>A:FAQ会保持更新。。问一些问题，我将把答案写在这里。</p>
@@ -720,14 +744,16 @@ $ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>
 <p>ngxin server 里面配置如下<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">     ***</span><br><span class="line">     client_max_body_size 1000M;</span><br><span class="line">     ****</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>php.ini 配置如下<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">file_uploads = On ;是否允许通过HTTP上传文件的开关。默认为ON即是开</span><br><span class="line">upload_max_filesize = 500M ;上传文件上限 </span><br><span class="line">upload_tmp_dir ;文件上传至服务器上存储临时文件的地方，如果没指定就会用系统默认的临时文件夹。</span><br><span class="line">如果要上传比较大的文件，仅仅以上两条还不够，必须把服务器缓存上限调大，把脚本最大执行时间变长 </span><br><span class="line">post_max_size = 500M ; POST给PHP的所能接收的最大值</span><br><span class="line">max_execution_time = 30 ; 每个PHP页面运行的最大时间值 Maximum execution time of each script, in seconds脚本最大执行时间 </span><br><span class="line">max_input_time = 60 ; 每个PHP页面接收数据所需的最大时间 解析一次请求时间上线 Maximum amount of time each script may spend parsing request data </span><br><span class="line">memory_limit = 128M ;  每个PHP页面所吃掉的最大内存 内存上限 Maximum amount of memory a script may consume (128MB)</span><br></pre></td></tr></table></figure></p>
 <p>相关参数解释</p>
-<h2 id="参考">参考</h2><p><a href="http://www.jb51.net/article/18975.htm" target="_blank" rel="external">http://www.jb51.net/article/18975.htm</a><br><a href="http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml" target="_blank" rel="external">http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml</a></p>
+<p>##参考</p>
+<p><a href="http://www.jb51.net/article/18975.htm" target="_blank" rel="external">http://www.jb51.net/article/18975.htm</a><br><a href="http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml" target="_blank" rel="external">http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml</a></p>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[linux 下工具命令]]></title>
       <url>http://yangzz0.github.io/2015/08/04/linux-cmd/</url>
-      <content type="html"><![CDATA[<h1 id="sort">sort</h1><table>
+      <content type="html"><![CDATA[<p>#sort</p>
+<table>
 <thead>
 <tr>
 <th>参数</th>
@@ -745,14 +771,14 @@ $ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>
 </tr>
 </tbody>
 </table>
-<h1 id="du">du</h1><ul>
+<p>#du </p>
+<ul>
 <li><code>du -sh *</code><br>统计当前文件夹下各个文件的大小</li>
 <li><code>du -shm *</code><br>统计当前文件夹下各个文件的大小,以<code>M</code> 为单位。<code>-shk</code> 以 <code>KB</code>为单位</li>
 </ul>
-<h1 id="locate">locate</h1><blockquote><p>linux 下可以使用 locate 和 find 来查找文件,但是 locate 在定位时要比 find 快.</p>
+<p>#locate<br><blockquote><p>linux 下可以使用 locate 和 find 来查找文件,但是 locate 在定位时要比 find 快.</p>
 <p>locate 并不是穿梭于档案文件中查找,而是在<strong>数据库</strong>查找文件.find 正好相反,他的查找要穿梭于档案文件中.</p>
-</blockquote>
-<p><code>locate [-ir] keyword</code><br>更新数据库<br><del><code>locate -u</code></del><br><code>updatedb</code></p>
+</blockquote><br><code>locate [-ir] keyword</code><br>更新数据库<br><del><code>locate -u</code></del><br><code>updatedb</code></p>
 <p><strong>命令选项</strong></p>
 <table>
 <thead>
@@ -776,7 +802,8 @@ $ sudo <span class="regexp">/usr/</span>local<span class="regexp">/nginx/</span>
 <ul>
 <li><a href="http://yijiebuyi.com/blog/58d0b9eec7f18769439f388a8037c151.html" target="_blank" rel="external">locate 在linux下快速定位文档</a></li>
 </ul>
-<h1 id="问题总结_FAQ">问题总结 FAQ</h1><ol>
+<p>#问题总结 FAQ</p>
+<ol>
 <li><p>crontab不执行问题</p>
 <blockquote><p>今天有个服务不能使用了，查来查去，原来 <code>crontab</code> 被干掉了。装上后还是无法运行，原来还要依赖 <code>crond</code> 这个服务</p>
 </blockquote>

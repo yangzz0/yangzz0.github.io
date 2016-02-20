@@ -141,17 +141,24 @@ var _hmt = _hmt || [];
 	<div class="mypage">		
 	  		
 
-	  <h2 id="跟ngx有关的函数、变量">跟ngx有关的函数、变量</h2><h3 id="ngx-header">ngx.header</h3><p>响应头设置</p>
+	  <p>##跟ngx有关的函数、变量</p>
+<p>###ngx.header</p>
+<p>响应头设置</p>
 <p>重定向:<code>ngx.header.Location</code></p>
-<h3 id="ngx-exit(404)">ngx.exit(404)</h3><p>断开连接，同时设置响应的状态码</p>
-<h3 id="ngx-log(log_level,log_info1,log_info2,…-)">ngx.log(log_level,log_info1,log_info2,….)</h3><p>打印日志到ngx日志。第一个是日志级别如<code>ngx.ERR</code></p>
-<h2 id="应用">应用</h2><h3 id="获取post和get中的参数">获取post和get中的参数</h3><figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> args = &#123;&#125;</span><br><span class="line"><span class="keyword">if</span> <span class="string">"GET"</span> == r_m <span class="keyword">or</span> <span class="string">"HEAD"</span> == r_m <span class="keyword">then</span></span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"GET============"</span>)</span><br><span class="line">    args = ngx.req.get_uri_args()</span><br><span class="line"><span class="keyword">elseif</span> <span class="string">"POST"</span> == r_m <span class="keyword">then</span></span><br><span class="line">    ngx.req.read_body()</span><br><span class="line">    args = ngx.req.get_post_args()</span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"POSTD-----------"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>###ngx.exit(404)<br>断开连接，同时设置响应的状态码</p>
+<p>###ngx.log(log_level,log_info1,log_info2,….)</p>
+<p>打印日志到ngx日志。第一个是日志级别如<code>ngx.ERR</code></p>
+<p>##应用</p>
+<p>###获取post和get中的参数</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> args = &#123;&#125;</span><br><span class="line"><span class="keyword">if</span> <span class="string">"GET"</span> == r_m <span class="keyword">or</span> <span class="string">"HEAD"</span> == r_m <span class="keyword">then</span></span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"GET============"</span>)</span><br><span class="line">    args = ngx.req.get_uri_args()</span><br><span class="line"><span class="keyword">elseif</span> <span class="string">"POST"</span> == r_m <span class="keyword">then</span></span><br><span class="line">    ngx.req.read_body()</span><br><span class="line">    args = ngx.req.get_post_args()</span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"POSTD-----------"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <!-- ##细节 -->
 <!-- ## -->
-<h3 id="遍历出来请求中的数据并打印到日志">遍历出来请求中的数据并打印到日志</h3><p>pairs — table</p>
-<p>ipairs — 数组</p>
+<p>###遍历出来请求中的数据并打印到日志</p>
+<p>pairs – table</p>
+<p>ipairs – 数组</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">pairs</span>(args) <span class="keyword">do</span></span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"=====k=====&gt;"</span>,<span class="built_in">type</span>(k),<span class="string">":"</span>,k, <span class="string">" ====v===&gt;"</span>,<span class="built_in">type</span>(v),<span class="string">":"</span>,v)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<h2 id="ngx_指令">ngx 指令</h2><h3 id="rewrite">rewrite</h3><p><code>rewrite reg new flag</code></p>
+<p>##ngx 指令</p>
+<p>###rewrite<br><code>rewrite reg new flag</code></p>
 <p>匹配失败，则继续往下执行，就当什么都没发生过</p>
 <p>具体使用 <a href="http://www.nginx.cn/216.html" target="_blank" rel="external">http://www.nginx.cn/216.html</a></p>
 	  
@@ -184,6 +191,9 @@ var _hmt = _hmt || [];
 <section id="comment">
     <h2 class="title">留言</h2>
 
+    
+    <div class="ds-thread" data-thread-key="2015/11/10/ngx-lua/" data-title="ngx-lua 笔记总计"
+         data-url="http://yangzz0.github.io/2015/11/10/ngx-lua/"></div>
     
 </section>
 
@@ -230,6 +240,18 @@ var _hmt = _hmt || [];
 
 </div><!-- row -->
 
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'soul11201' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
 
 
 	</div>
@@ -256,23 +278,7 @@ var _hmt = _hmt || [];
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
 <script src="/js/search.js"></script> 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
-        messageStyle: "none"
-    }); 
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+
 
 <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
 <script src="/fancybox/jquery.fancybox.pack.js"></script>
@@ -293,5 +299,22 @@ var _hmt = _hmt || [];
      searchFunc(path, 'local-search-input', 'local-search-result');
    </script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    }); 
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 </body>
    </html>

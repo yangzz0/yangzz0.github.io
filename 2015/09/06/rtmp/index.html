@@ -141,7 +141,7 @@ var _hmt = _hmt || [];
 	<div class="mypage">		
 	  		
 
-	  <h2 id="一些参数及其含义">一些参数及其含义</h2><table>
+	  <h2 id="一些参数及其含义"><a href="#一些参数及其含义" class="headerlink" title="一些参数及其含义"></a>一些参数及其含义</h2><table>
 <thead>
 <tr>
 <th>参数名称</th>
@@ -195,25 +195,26 @@ var _hmt = _hmt || [];
 </tr>
 </tbody>
 </table>
-<h2 id="rtmp_指令—-中继（relay）">rtmp 指令—-中继（relay）</h2><pre><code><span class="attribute">Syntax</span>: <span class="string">pull url [key=value]*</span>
-<span class="attribute">Context</span>: <span class="string">application</span>
-</code></pre><p>创建pull中继，拉取远程的流放到本地使用，当有播放器连接的时候命令才会生效</p>
+<p>##rtmp 指令—中继（relay）<br>    Syntax: pull url [key=value]*<br>    Context: application</p>
+<p>创建pull中继，拉取远程的流放到本地使用，当有播放器连接的时候命令才会生效</p>
 <p>Url 语法: <code>[rtmp://]host[:port][/app[/playpath]]</code>.</p>
 <p>如果app没有指定，则使用本地请求中的app名字</p>
 <p><strong>Example</strong></p>
-<pre><code><span class="tag">pull</span> <span class="rule"><span class="attribute">rtmp</span>:<span class="value">//<span class="number">192.168</span>.<span class="number">1.129</span>/live/test name=ted</span></span>;
-</code></pre><h2 id="Notify相关指令">Notify相关指令</h2><p>主要用于回调通知</p>
-<h3 id="on_connect">on_connect</h3><pre><code>nginx 块: rtmp, <span class="keyword">server</span>
+<pre><code>pull rtmp://192.168.1.129/live/test name=ted;
+</code></pre><p>##Notify相关指令<br>主要用于回调通知</p>
+<p>###on_connect</p>
+<pre><code>nginx 块: rtmp, server
 </code></pre><p>当客户端发起一个连接的时候，同时将会发起一个异步的http请求，客户端连接将会被挂起等待http请求的结果。根据不同的结果做出不同的响应。</p>
 <p><strong>返回结果</strong></p>
 <ul>
-<li>2xx — 刚才发起的RTMP会话请求继续</li>
-<li>3xx — 重定向到另外一个应用，应用名在<code>Location</code>响应头中</li>
+<li>2xx – 刚才发起的RTMP会话请求继续</li>
+<li>3xx – 重定向到另外一个应用，应用名在<code>Location</code>响应头中</li>
 <li>其他连接将会被丢弃</li>
 </ul>
 <p>应用不能放在<code>application</code>块，连接阶段的时候还不知道具体是请求的哪一个应用。<br>HTTP请求默认使用POST方法。</p>
-<h3 id="on_play">on_play</h3><p>与on_connect 类似，只是返回结果为 <code>3xx</code>的时候需要指定新的流名称</p>
-<h2 id="参考资料">参考资料</h2><ul>
+<p>###on_play<br>与on_connect 类似，只是返回结果为 <code>3xx</code>的时候需要指定新的流名称</p>
+<p>##参考资料</p>
+<ul>
 <li><a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#live" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module/wiki/Directives#live</a></li>
 <li><a href="http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html?utm_source=tuicool" target="_blank" rel="external">http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html?utm_source=tuicool</a></li>
 </ul>
@@ -247,6 +248,9 @@ var _hmt = _hmt || [];
 <section id="comment">
     <h2 class="title">留言</h2>
 
+    
+    <div class="ds-thread" data-thread-key="2015/09/06/rtmp/" data-title="nginx-rtmp-module 总结（草稿）"
+         data-url="http://yangzz0.github.io/2015/09/06/rtmp/"></div>
     
 </section>
 
@@ -293,6 +297,18 @@ var _hmt = _hmt || [];
 
 </div><!-- row -->
 
+<script type="text/javascript">
+  var duoshuoQuery = { short_name: 'soul11201' };
+  (function() {
+    var ds = document.createElement('script');
+    ds.type = 'text/javascript';
+    ds.async = true;
+    ds.src = 'http://static.duoshuo.com/embed.js';
+    ds.charset = 'UTF-8';
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(ds);
+  })();
+</script>
+
 
 
 	</div>
@@ -319,23 +335,7 @@ var _hmt = _hmt || [];
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/main.js"></script>
 <script src="/js/search.js"></script> 
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
-        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
-        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
-        messageStyle: "none"
-    }); 
-</script>
-<script type="text/x-mathjax-config">
-    MathJax.Hub.Queue(function() {
-        var all = MathJax.Hub.getAllJax(), i;
-        for(i=0; i < all.length; i += 1) {
-            all[i].SourceElement().parentNode.className += ' has-jax';
-        }
-    });
-</script>
-<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
-</script>
+
 
 <link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
 <script src="/fancybox/jquery.fancybox.pack.js"></script>
@@ -356,5 +356,22 @@ var _hmt = _hmt || [];
      searchFunc(path, 'local-search-input', 'local-search-result');
    </script>
 
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({"HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"], linebreaks: { automatic:true }, EqnChunk: (MathJax.Hub.Browser.isMobile ? 10 : 50) },
+        tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno",skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']},
+        TeX: {  noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } }, Macros: { href: "{}" } },
+        messageStyle: "none"
+    }); 
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for(i=0; i < all.length; i += 1) {
+            all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+    });
+</script>
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
 </body>
    </html>
