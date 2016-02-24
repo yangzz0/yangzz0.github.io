@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yangzz0.github.io/"/>
-  <updated>2016-02-24T07:45:27.649Z</updated>
+  <updated>2016-02-24T07:55:33.285Z</updated>
   <id>http://yangzz0.github.io/</id>
   
   <author>
@@ -20,9 +20,11 @@
     <link href="http://yangzz0.github.io/2016/02/24/mooc-linux-kernel-1/"/>
     <id>http://yangzz0.github.io/2016/02/24/mooc-linux-kernel-1/</id>
     <published>2016-02-23T23:55:28.000Z</published>
-    <updated>2016-02-24T07:45:27.649Z</updated>
+    <updated>2016-02-24T07:55:33.285Z</updated>
     
-    <content type="html">&lt;h2 id=&quot;一些常识&quot;&gt;&lt;a href=&quot;#一些常识&quot; class=&quot;headerlink&quot; title=&quot;一些常识&quot;&gt;&lt;/a&gt;一些常识&lt;/h2&gt;&lt;p&gt;平时可能见到movb,movw,movl等一些指令，三条指令的意思基本一样，不一样的地方在于，操作的数据是1个字节(1B)，1个字(2B)，1个双字（4B）。&lt;/p&gt;
+    <content type="html">&lt;blockquote&gt;&lt;p&gt;杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 &lt;a href=&quot;http://mooc.study.163.com/course/USTC-1000029000&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://mooc.study.163.com/course/USTC-1000029000&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;一些常识&quot;&gt;&lt;a href=&quot;#一些常识&quot; class=&quot;headerlink&quot; title=&quot;一些常识&quot;&gt;&lt;/a&gt;一些常识&lt;/h2&gt;&lt;p&gt;平时可能见到movb,movw,movl等一些指令，三条指令的意思基本一样，不一样的地方在于，操作的数据是1个字节(1B)，1个字(2B)，1个双字（4B）。&lt;/p&gt;
 &lt;h2 id=&quot;基础知识&quot;&gt;&lt;a href=&quot;#基础知识&quot; class=&quot;headerlink&quot; title=&quot;基础知识&quot;&gt;&lt;/a&gt;基础知识&lt;/h2&gt;&lt;p&gt;汇编语言简单的可以认为是机器语言的一种便记符号，理解体系结构对理解汇编指令集大有裨益。现在的流行计算机体系结构是冯诺依曼体系也即存储程序体系。其结构大致如下:&lt;/p&gt;
 &lt;p&gt;&lt;img src=&quot;/imgs/cpu-arch.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 &lt;p&gt;也决定了指令集设计基本上都是围绕着cpu、存储进行设计的，对于汇编的语法格式，Intel和AT&amp;amp;T汇编之间的区别看以参考文档 &lt;a href=&quot;http://www.ibm.com/developerworks/cn/linux/l-assembly/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Linux 汇编语言开发指南&lt;/a&gt;,这里简要的说一下本文代码中用到的AT&amp;amp;T 32位cpu汇编语言的一些指令。&lt;!-- 说到汇编语言，就离不开了解一点cpu硬件结构的知识， --&gt;汇编中用到的cpu硬件主要是寄存器，它们可用来暂存&lt;code&gt;指令&lt;/code&gt;、&lt;code&gt;数据&lt;/code&gt;和&lt;code&gt;地址&lt;/code&gt;，这里主要用到的寄存器包括通用寄存器中的eax，以及esp（栈顶指针寄存器），ebp（占地指针寄存器）。另外还有一些操作指令，像pushl，popl，movl，leave、enter：&lt;/p&gt;

@@ -158,7 +158,9 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<h2 id="一些常识"><a href="#一些常识" class="headerlink" title="一些常识"></a>一些常识</h2><p>平时可能见到movb,movw,movl等一些指令，三条指令的意思基本一样，不一样的地方在于，操作的数据是1个字节(1B)，1个字(2B)，1个双字（4B）。</p>
+		<blockquote><p>杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 <a href="http://mooc.study.163.com/course/USTC-1000029000" target="_blank" rel="external">http://mooc.study.163.com/course/USTC-1000029000</a></p>
+</blockquote>
+<h2 id="一些常识"><a href="#一些常识" class="headerlink" title="一些常识"></a>一些常识</h2><p>平时可能见到movb,movw,movl等一些指令，三条指令的意思基本一样，不一样的地方在于，操作的数据是1个字节(1B)，1个字(2B)，1个双字（4B）。</p>
 <h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>汇编语言简单的可以认为是机器语言的一种便记符号，理解体系结构对理解汇编指令集大有裨益。现在的流行计算机体系结构是冯诺依曼体系也即存储程序体系。其结构大致如下:</p>
 <p><img src="/imgs/cpu-arch.jpg" alt=""></p>
 <p>也决定了指令集设计基本上都是围绕着cpu、存储进行设计的，对于汇编的语法格式，Intel和AT&amp;T汇编之间的区别看以参考文档 <a href="http://www.ibm.com/developerworks/cn/linux/l-assembly/" target="_blank" rel="external">Linux 汇编语言开发指南</a>,这里简要的说一下本文代码中用到的AT&amp;T 32位cpu汇编语言的一些指令。<!-- 说到汇编语言，就离不开了解一点cpu硬件结构的知识， -->汇编中用到的cpu硬件主要是寄存器，它们可用来暂存<code>指令</code>、<code>数据</code>和<code>地址</code>，这里主要用到的寄存器包括通用寄存器中的eax，以及esp（栈顶指针寄存器），ebp（占地指针寄存器）。另外还有一些操作指令，像pushl，popl，movl，leave、enter：</p>
@@ -1537,45 +1539,45 @@ $ sudo /usr/local/nginx/sbin/nginx
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/rtmp/">rtmp<span>2</span></a></li>
-		
-			<li><a href="/tags/swoole/">swoole<span>0</span></a></li>
-		
-			<li><a href="/tags/读书笔记/">读书笔记<span>0</span></a></li>
-		
-			<li><a href="/tags/draft/">draft<span>0</span></a></li>
-		
-			<li><a href="/tags/元表/">元表<span>1</span></a></li>
+			<li><a href="/tags/工具/">工具<span>1</span></a></li>
 		
 			<li><a href="/tags/ngx-lua/">ngx-lua<span>1</span></a></li>
 		
-			<li><a href="/tags/札记/">札记<span>0</span></a></li>
+			<li><a href="/tags/总结/">总结<span>0</span></a></li>
 		
 			<li><a href="/tags/汇编/">汇编<span>1</span></a></li>
 		
-			<li><a href="/tags/linux/">linux<span>2</span></a></li>
+			<li><a href="/tags/lua/">lua<span>1</span></a></li>
 		
-			<li><a href="/tags/总结/">总结<span>0</span></a></li>
+			<li><a href="/tags/翻译/">翻译<span>1</span></a></li>
 		
-			<li><a href="/tags/assets/">assets<span>2</span></a></li>
-		
-			<li><a href="/tags/erlang/">erlang<span>0</span></a></li>
-		
-			<li><a href="/tags/obs/">obs<span>1</span></a></li>
-		
-			<li><a href="/tags/元方法/">元方法<span>1</span></a></li>
-		
-			<li><a href="/tags/工具/">工具<span>1</span></a></li>
-		
-			<li><a href="/tags/include/">include<span>1</span></a></li>
-		
-			<li><a href="/tags/Linux-内核分析/">Linux 内核分析<span>1</span></a></li>
+			<li><a href="/tags/nginx/">nginx<span>4</span></a></li>
 		
 			<li><a href="/tags/php/">php<span>2</span></a></li>
 		
-			<li><a href="/tags/笔记/">笔记<span>3</span></a></li>
+			<li><a href="/tags/os/">os<span>0</span></a></li>
 		
-			<li><a href="/tags/计算机图形学/">计算机图形学<span>0</span></a></li>
+			<li><a href="/tags/C/">C<span>1</span></a></li>
+		
+			<li><a href="/tags/Linux-内核分析/">Linux 内核分析<span>1</span></a></li>
+		
+			<li><a href="/tags/元表/">元表<span>1</span></a></li>
+		
+			<li><a href="/tags/erlang/">erlang<span>0</span></a></li>
+		
+			<li><a href="/tags/rtmp/">rtmp<span>2</span></a></li>
+		
+			<li><a href="/tags/草稿/">草稿<span>0</span></a></li>
+		
+			<li><a href="/tags/awk/">awk<span>1</span></a></li>
+		
+			<li><a href="/tags/环境搭建/">环境搭建<span>1</span></a></li>
+		
+			<li><a href="/tags/swoole/">swoole<span>0</span></a></li>
+		
+			<li><a href="/tags/配置/">配置<span>1</span></a></li>
+		
+			<li><a href="/tags/linux/">linux<span>2</span></a></li>
 		
 		
 		   <li><a href="/tags">...<span>42</span></a></li>
