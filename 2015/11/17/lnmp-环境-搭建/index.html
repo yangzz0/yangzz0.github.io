@@ -6,7 +6,7 @@
   <meta http-equiv="cache-control" content="no-cache">
   <meta http-equiv="expires" content="0">
   
-  <title>lnmp 环境 搭建 | coder 随想录</title>
+  <title>php 开发环境搭建 | coder 随想录</title>
   <meta name="author" content="yangzz">
   
   <meta name="description" content="blog;笔记;总结;摘抄">
@@ -14,7 +14,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-  <meta property="og:title" content="lnmp 环境 搭建"/>
+  <meta property="og:title" content="php 开发环境搭建"/>
   <meta property="og:site_name" content="coder 随想录"/>
 
   
@@ -124,7 +124,7 @@ var _hmt = _hmt || [];
 
 	
 		<div class="page-header">
-			<h1> lnmp 环境 搭建</h1>
+			<h1> php 开发环境搭建</h1>
 		</div>
 	
 
@@ -141,14 +141,18 @@ var _hmt = _hmt || [];
 	<div class="mypage">		
 	  		
 
-	  <p>##整体结构<br><img src="http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg" alt="盗用一张图"></p>
-<p>##安装</p>
-<p><strong>nginx</strong></p>
+	  <p>个人使用的方式有两种</p>
+<ol>
+<li>lamp/lnmp 环境</li>
+<li>php 自带的webserver</li>
+</ol>
+<h1 id="php-自带的webserver"><a href="#php-自带的webserver" class="headerlink" title="php 自带的webserver"></a>php 自带的webserver</h1><p>配置搭建比较简单，一条命令即可以下实现一个本地server <code>php -S 0.0.0.0:8010</code>。在浏览器中就可以访问。</p>
+<h1 id="lnmp-环境-搭建"><a href="#lnmp-环境-搭建" class="headerlink" title="lnmp 环境 搭建"></a>lnmp 环境 搭建</h1><h2 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h2><p><img src="http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg" alt="盗用一张图"></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><strong>nginx</strong></p>
 <p>可以手动编译安装，也可以是使用<code>apt-get</code>方式安装。第二种方式版本较低。</p>
 <p><strong>fpm、mysql</strong></p>
 <p>荐<code>apt-get</code>方式安装，便捷。</p>
-<p>##配置</p>
-<p><strong>nginx </strong></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p><strong>nginx </strong></p>
 <figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">    listen <span class="number">8082</span>;</span><br><span class="line">    #server_name localhost;</span><br><span class="line"></span><br><span class="line">    root /data/codes/sevenga_tuitui/backend;</span><br><span class="line">    index index.php;</span><br><span class="line"></span><br><span class="line">    location / &#123; </span><br><span class="line">        try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php?<span class="variable">$args</span>;</span><br><span class="line">        # upload_limit_rate <span class="number">1</span>m;</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">        try_files <span class="variable">$uri</span> =<span class="number">404</span>;</span><br><span class="line">        include fastcgi_params;</span><br><span class="line">        fastcgi_pass <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">9000</span>;</span><br><span class="line">        fastcgi_index index.php;</span><br><span class="line">        fastcgi_param SCRIPT_FILENAME <span class="variable">$document</span>_root<span class="variable">$fastcgi</span>_script_name;</span><br><span class="line">        fastcgi_param PATH_INFO <span class="variable">$fastcgi</span>_script_name;</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    error_page <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> /<span class="number">50</span>x.html;</span><br><span class="line">    location = /<span class="number">50</span>x.html &#123;</span><br><span class="line">        root html;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>fpm</strong></p>
 <p>配置文件 <code>/etc/php5/fpm/pool.d/www.conf</code>,设置fpm监听端口和nginx配置一致</p>
@@ -194,7 +198,7 @@ var _hmt = _hmt || [];
     <h2 class="title">留言</h2>
 
     
-    <div class="ds-thread" data-thread-key="2015/11/17/lnmp-环境-搭建/" data-title="lnmp 环境 搭建"
+    <div class="ds-thread" data-thread-key="2015/11/17/lnmp-环境-搭建/" data-title="php 开发环境搭建"
          data-url="http://yangzz0.github.io/2015/11/17/lnmp-环境-搭建/"></div>
     
 </section>
@@ -223,7 +227,7 @@ var _hmt = _hmt || [];
 	<a data-toggle="collapse" data-target="#tags"><i class="fa fa-tags"></i></a>		  
     <ul id="tags" class="tag_box list-unstyled collapse in">	  
 	    
-  <li><a href="/tags/lnmp/">lnmp<span>1</span></a></li> <li><a href="/tags/笔记/">笔记<span>3</span></a></li>
+  <li><a href="/tags/lnmp/">lnmp<span>1</span></a></li> <li><a href="/tags/php/">php<span>2</span></a></li> <li><a href="/tags/环境搭建/">环境搭建<span>1</span></a></li> <li><a href="/tags/笔记/">笔记<span>3</span></a></li>
     </ul>
 	</div>
 		

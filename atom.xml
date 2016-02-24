@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yangzz0.github.io/"/>
-  <updated>2016-02-20T11:55:27.580Z</updated>
+  <updated>2016-02-24T07:45:27.649Z</updated>
   <id>http://yangzz0.github.io/</id>
   
   <author>
@@ -16,13 +16,103 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Linux 内核分析 -- C函数调用栈机制在汇编中的实现</title>
+    <link href="http://yangzz0.github.io/2016/02/24/mooc-linux-kernel-1/"/>
+    <id>http://yangzz0.github.io/2016/02/24/mooc-linux-kernel-1/</id>
+    <published>2016-02-23T23:55:28.000Z</published>
+    <updated>2016-02-24T07:45:27.649Z</updated>
+    
+    <content type="html">&lt;h2 id=&quot;一些常识&quot;&gt;&lt;a href=&quot;#一些常识&quot; class=&quot;headerlink&quot; title=&quot;一些常识&quot;&gt;&lt;/a&gt;一些常识&lt;/h2&gt;&lt;p&gt;平时可能见到movb,movw,movl等一些指令，三条指令的意思基本一样，不一样的地方在于，操作的数据是1个字节(1B)，1个字(2B)，1个双字（4B）。&lt;/p&gt;
+&lt;h2 id=&quot;基础知识&quot;&gt;&lt;a href=&quot;#基础知识&quot; class=&quot;headerlink&quot; title=&quot;基础知识&quot;&gt;&lt;/a&gt;基础知识&lt;/h2&gt;&lt;p&gt;汇编语言简单的可以认为是机器语言的一种便记符号，理解体系结构对理解汇编指令集大有裨益。现在的流行计算机体系结构是冯诺依曼体系也即存储程序体系。其结构大致如下:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/imgs/cpu-arch.jpg&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;也决定了指令集设计基本上都是围绕着cpu、存储进行设计的，对于汇编的语法格式，Intel和AT&amp;amp;T汇编之间的区别看以参考文档 &lt;a href=&quot;http://www.ibm.com/developerworks/cn/linux/l-assembly/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Linux 汇编语言开发指南&lt;/a&gt;,这里简要的说一下本文代码中用到的AT&amp;amp;T 32位cpu汇编语言的一些指令。&lt;!-- 说到汇编语言，就离不开了解一点cpu硬件结构的知识， --&gt;汇编中用到的cpu硬件主要是寄存器，它们可用来暂存&lt;code&gt;指令&lt;/code&gt;、&lt;code&gt;数据&lt;/code&gt;和&lt;code&gt;地址&lt;/code&gt;，这里主要用到的寄存器包括通用寄存器中的eax，以及esp（栈顶指针寄存器），ebp（占地指针寄存器）。另外还有一些操作指令，像pushl，popl，movl，leave、enter：&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;指令&lt;/th&gt;
+&lt;th&gt;含义&lt;/th&gt;
+&lt;th&gt;等价指令&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;pushl&lt;/td&gt;
+&lt;td&gt;入栈指令&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;popl&lt;/td&gt;
+&lt;td&gt;出栈指令&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;movl&lt;/td&gt;
+&lt;td&gt;a,b 数据传送指令,把a—&amp;gt;b&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;leave&lt;/td&gt;
+&lt;td&gt;跟函数调用相关&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;movl   %ebp, %esp&lt;/code&gt;&lt;br&gt;&lt;code&gt;popl   %ebp&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;enter&lt;/td&gt;
+&lt;td&gt;跟函数调用相关&lt;/td&gt;
+&lt;td&gt;&lt;code&gt;pushl   %ebp&lt;/code&gt;&lt;br&gt;&lt;code&gt;movl    %esp, %ebp&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id=&quot;一段代码&quot;&gt;&lt;a href=&quot;#一段代码&quot; class=&quot;headerlink&quot; title=&quot;一段代码&quot;&gt;&lt;/a&gt;一段代码&lt;/h2&gt;&lt;p&gt;首先我们分析一段代码，每个函数都不接受参数。重点分析&lt;code&gt;f()&lt;/code&gt;的汇编代码。其他不相关的干扰信息少。&lt;br&gt;&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;g&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;f&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; g() + &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; f() + &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;使用 &lt;code&gt;gcc -S -o main.s mian.c -m32&lt;/code&gt;指令编译过后，删除了跟链接相关的信息过后的汇编代码。&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;_g:&amp;#10;    pushl   %ebp&amp;#10;    movl    %esp, %ebp&amp;#10;    movl    $4, %eax&amp;#10;    popl    %ebp&amp;#10;    ret&amp;#10;_f:&amp;#10;    pushl   %ebp&amp;#10;    movl    %esp, %ebp&amp;#10;    call    _g&amp;#10;    addl    $2, %eax&amp;#10;    popl    %ebp&amp;#10;    ret&amp;#10;_main:&amp;#10;    pushl   %ebp&amp;#10;    movl    %esp, %ebp&amp;#10;    call    _f&amp;#10;    addl    $1, %eax&amp;#10;    leave&amp;#10;    ret&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;俗话说射人先射马，擒贼先擒王，看上面这坨代码，如果不知道模型是什么确实挺费劲，下面就个人理解说一下这个模型。比如说我们把64KB这么大内存空间分配给&lt;code&gt;_f&lt;/code&gt;使用，初始化的时候，EBP，ESP所指向如图所示的上一个函数的栈基址和栈顶地址。当在f中执行完下面的指令后，ESP,EBP位置如下图所示：&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;pushl   %ebp&amp;#10;movl    %esp, %ebp&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;&lt;img src=&quot;/imgs/stack-asm.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;从图中也就看到，当前函数使用的栈内存为[ESP,EBP)（不是固定的哦，因为，ESP会变化）这段内存空间（它俩指向同一个位置说明函数栈还没有使用），另外[EBP,EBP+4)这段内存空间保存的是调用此函数的函数栈基址。&lt;br&gt;在到&lt;code&gt;popl    %ebp&lt;/code&gt;这条指令之间没有单向操作栈的指令，故可以略去不用考虑，直接看这条指令，此时已经是函数调用完毕，此函数中保存的调用此函数的函数栈机制恢复到ebp寄存器中，到此函数调用栈的建立与销毁已经完毕。再看_g的代码，就会发现同样也是利用这个模型机制，到此内存中程序的函数调用栈机制的整体模型浮现在了面前。至于参数怎么传的，返回值怎么保存的，简单的说在栈和ax寄存器或者内存中，后面再详细说。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about
+    
+    </summary>
+    
+    
+      <category term="C" scheme="http://yangzz0.github.io/tags/C/"/>
+    
+      <category term="Linux 内核分析" scheme="http://yangzz0.github.io/tags/Linux-%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/"/>
+    
+      <category term="mooc 笔记" scheme="http://yangzz0.github.io/tags/mooc-%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="汇编" scheme="http://yangzz0.github.io/tags/%E6%B1%87%E7%BC%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>yii2 前端资源管理代码阅读</title>
+    <link href="http://yangzz0.github.io/2016/02/22/yii2-assets-code-read/"/>
+    <id>http://yangzz0.github.io/2016/02/22/yii2-assets-code-read/</id>
+    <published>2016-02-22T09:05:26.000Z</published>
+    <updated>2016-02-23T02:25:24.390Z</updated>
+    
+    <content type="html"></content>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="assets" scheme="http://yangzz0.github.io/tags/assets/"/>
+    
+      <category term="yii2" scheme="http://yangzz0.github.io/tags/yii2/"/>
+    
+  </entry>
+  
+  <entry>
     <title>yii2 前端资源管理笔记</title>
     <link href="http://yangzz0.github.io/2016/02/20/yii2-assets/"/>
     <id>http://yangzz0.github.io/2016/02/20/yii2-assets/</id>
     <published>2016-02-20T09:32:49.000Z</published>
-    <updated>2016-02-20T11:55:27.580Z</updated>
+    <updated>2016-02-23T03:03:08.175Z</updated>
     
-    <content type="html">&lt;h2 id=&quot;资源是什么？&quot;&gt;&lt;a href=&quot;#资源是什么？&quot; class=&quot;headerlink&quot; title=&quot;资源是什么？&quot;&gt;&lt;/a&gt;资源是什么？&lt;/h2&gt;&lt;p&gt;Yii中的资源是 &lt;code&gt;和Web页面相关的文件&lt;/code&gt; ，可为CSS文件，JavaScript文件，图片或视频等，资源放在Web可访问的目录下，直接被Web服务器调用。在yii中实现了使用程序自动管理资源。&lt;/p&gt;
+    <content type="html">&lt;h1 id=&quot;简单介绍&quot;&gt;&lt;a href=&quot;#简单介绍&quot; class=&quot;headerlink&quot; title=&quot;简单介绍&quot;&gt;&lt;/a&gt;简单介绍&lt;/h1&gt;&lt;h2 id=&quot;资源是什么？&quot;&gt;&lt;a href=&quot;#资源是什么？&quot; class=&quot;headerlink&quot; title=&quot;资源是什么？&quot;&gt;&lt;/a&gt;资源是什么？&lt;/h2&gt;&lt;p&gt;Yii中的资源是 &lt;code&gt;和Web页面相关的文件&lt;/code&gt; ，可为CSS文件，JavaScript文件，图片或视频等，资源放在Web可访问的目录下，直接被Web服务器调用。在yii中实现了使用程序自动管理资源。&lt;/p&gt;
 &lt;h2 id=&quot;管理方式&quot;&gt;&lt;a href=&quot;#管理方式&quot; class=&quot;headerlink&quot; title=&quot;管理方式&quot;&gt;&lt;/a&gt;管理方式&lt;/h2&gt;&lt;p&gt;Yii在资源包中管理资源，&lt;code&gt;资源包&lt;/code&gt;简单的说就是&lt;code&gt;放在一个目录下的资源集合&lt;/code&gt;，在视图中注册一个资源包，在渲染Web页面时会包含包中的CSS和JavaScript文件&lt;/p&gt;
 &lt;h2 id=&quot;资源包管理类&quot;&gt;&lt;a href=&quot;#资源包管理类&quot; class=&quot;headerlink&quot; title=&quot;资源包管理类&quot;&gt;&lt;/a&gt;资源包管理类&lt;/h2&gt;&lt;p&gt;继承于&lt;code&gt;yii\web\AssetBundle&lt;/code&gt;的类,类名可自动加载。在类中要指定：&lt;/p&gt;
 &lt;ol&gt;
@@ -41,15 +131,17 @@
 &lt;/ol&gt;
 &lt;h2 id=&quot;使用资源包&quot;&gt;&lt;a href=&quot;#使用资源包&quot; class=&quot;headerlink&quot; title=&quot;使用资源包&quot;&gt;&lt;/a&gt;使用资源包&lt;/h2&gt;&lt;ol&gt;
 &lt;li&gt;视图中&lt;/li&gt;
-&lt;li&gt;小部件类中&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;preprocessor&quot;&gt;&amp;lt;?php&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;app&lt;/span&gt;\&lt;span class=&quot;title&quot;&gt;assets&lt;/span&gt;\&lt;span class=&quot;title&quot;&gt;AppAsset&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    AppAsset::register(&lt;span class=&quot;variable&quot;&gt;$this&lt;/span&gt;);  &lt;span class=&quot;comment&quot;&gt;// $this 代表视图对象&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;/li&gt;
+&lt;li&gt;小部件类中&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://www.yiichina.com/doc/guide/2.0/structure-assets&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.yiichina.com/doc/guide/2.0/structure-assets&lt;/a&gt;&lt;/p&gt;
+&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;preprocessor&quot;&gt;&amp;lt;?php&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;use&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;app&lt;/span&gt;\&lt;span class=&quot;title&quot;&gt;assets&lt;/span&gt;\&lt;span class=&quot;title&quot;&gt;AppAsset&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    AppAsset::register(&lt;span class=&quot;variable&quot;&gt;$this&lt;/span&gt;);  &lt;span class=&quot;comment&quot;&gt;// $this 代表视图对象&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h1 id=&quot;yii2中的代码实现&quot;&gt;&lt;a href=&quot;#yii2中的代码实现&quot; class=&quot;headerlink&quot; title=&quot;yii2中的代码实现&quot;&gt;&lt;/a&gt;yii2中的代码实现&lt;/h1&gt;&lt;h2 id=&quot;SiteController中怎么加载进来的？在那个位置，怎么调用的代码&quot;&gt;&lt;a href=&quot;#SiteController中怎么加载进来的？在那个位置，怎么调用的代码&quot; class=&quot;headerlink&quot; title=&quot;SiteController中怎么加载进来的？在那个位置，怎么调用的代码?&quot;&gt;&lt;/a&gt;SiteController中怎么加载进来的？在那个位置，怎么调用的代码?&lt;/h2&gt;&lt;p&gt;文件  &lt;code&gt;@app/views/layouts/main.php&lt;/code&gt;&lt;br&gt;调用的代码&lt;code&gt;$this-&amp;gt;endBody()&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&quot;yii-web-View&quot;&gt;&lt;a href=&quot;#yii-web-View&quot; class=&quot;headerlink&quot; title=&quot;yii\web\View&quot;&gt;&lt;/a&gt;&lt;code&gt;yii\web\View&lt;/code&gt;&lt;/h3&gt;&lt;p&gt;&lt;code&gt;registerAssetBundle($name, $position = null)&lt;/code&gt; 注册依赖的资源包，其中&lt;code&gt;$name&lt;/code&gt;是资源包的管理类的类名。&lt;/p&gt;
+&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;http://www.yiichina.com/doc/guide/2.0/structure-assets&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.yiichina.com/doc/guide/2.0/structure-assets&lt;/a&gt;&lt;/p&gt;
 </content>
     
     <summary type="html">
     
-      &lt;h2 id=&quot;资源是什么？&quot;&gt;&lt;a href=&quot;#资源是什么？&quot; class=&quot;headerlink&quot; title=&quot;资源是什么？&quot;&gt;&lt;/a&gt;资源是什么？&lt;/h2&gt;&lt;p&gt;Yii中的资源是 &lt;code&gt;和Web页面相关的文件&lt;/code&gt; ，可为CSS文件，JavaScript文
+      &lt;h1 id=&quot;简单介绍&quot;&gt;&lt;a href=&quot;#简单介绍&quot; class=&quot;headerlink&quot; title=&quot;简单介绍&quot;&gt;&lt;/a&gt;简单介绍&lt;/h1&gt;&lt;h2 id=&quot;资源是什么？&quot;&gt;&lt;a href=&quot;#资源是什么？&quot; class=&quot;headerlink&quot; title=&quot;资源是什么
     
     </summary>
     
@@ -222,20 +314,24 @@
   </entry>
   
   <entry>
-    <title>lnmp 环境 搭建</title>
+    <title>php 开发环境搭建</title>
     <link href="http://yangzz0.github.io/2015/11/17/lnmp-%E7%8E%AF%E5%A2%83-%E6%90%AD%E5%BB%BA/"/>
     <id>http://yangzz0.github.io/2015/11/17/lnmp-环境-搭建/</id>
     <published>2015-11-17T12:08:24.000Z</published>
-    <updated>2015-12-07T10:43:19.052Z</updated>
+    <updated>2016-02-22T06:04:48.215Z</updated>
     
-    <content type="html">&lt;p&gt;##整体结构&lt;br&gt;&lt;img src=&quot;http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg&quot; alt=&quot;盗用一张图&quot;&gt;&lt;/p&gt;
-&lt;p&gt;##安装&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;nginx&lt;/strong&gt;&lt;/p&gt;
+    <content type="html">&lt;p&gt;个人使用的方式有两种&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;lamp/lnmp 环境&lt;/li&gt;
+&lt;li&gt;php 自带的webserver&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;php-自带的webserver&quot;&gt;&lt;a href=&quot;#php-自带的webserver&quot; class=&quot;headerlink&quot; title=&quot;php 自带的webserver&quot;&gt;&lt;/a&gt;php 自带的webserver&lt;/h1&gt;&lt;p&gt;配置搭建比较简单，一条命令即可以下实现一个本地server &lt;code&gt;php -S 0.0.0.0:8010&lt;/code&gt;。在浏览器中就可以访问。&lt;/p&gt;
+&lt;h1 id=&quot;lnmp-环境-搭建&quot;&gt;&lt;a href=&quot;#lnmp-环境-搭建&quot; class=&quot;headerlink&quot; title=&quot;lnmp 环境 搭建&quot;&gt;&lt;/a&gt;lnmp 环境 搭建&lt;/h1&gt;&lt;h2 id=&quot;整体结构&quot;&gt;&lt;a href=&quot;#整体结构&quot; class=&quot;headerlink&quot; title=&quot;整体结构&quot;&gt;&lt;/a&gt;整体结构&lt;/h2&gt;&lt;p&gt;&lt;img src=&quot;http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg&quot; alt=&quot;盗用一张图&quot;&gt;&lt;/p&gt;
+&lt;h2 id=&quot;安装&quot;&gt;&lt;a href=&quot;#安装&quot; class=&quot;headerlink&quot; title=&quot;安装&quot;&gt;&lt;/a&gt;安装&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;nginx&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;可以手动编译安装，也可以是使用&lt;code&gt;apt-get&lt;/code&gt;方式安装。第二种方式版本较低。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;fpm、mysql&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;荐&lt;code&gt;apt-get&lt;/code&gt;方式安装，便捷。&lt;/p&gt;
-&lt;p&gt;##配置&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;nginx &lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id=&quot;配置&quot;&gt;&lt;a href=&quot;#配置&quot; class=&quot;headerlink&quot; title=&quot;配置&quot;&gt;&lt;/a&gt;配置&lt;/h2&gt;&lt;p&gt;&lt;strong&gt;nginx &lt;/strong&gt;&lt;/p&gt;
 &lt;figure class=&quot;highlight xquery&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt; server &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    listen &lt;span class=&quot;number&quot;&gt;8082&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    #server_name localhost;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    root /data/codes/sevenga_tuitui/backend;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    index index.php;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    location / &amp;#123; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        try_files &lt;span class=&quot;variable&quot;&gt;$uri&lt;/span&gt; &lt;span class=&quot;variable&quot;&gt;$uri&lt;/span&gt;/ /index.php?&lt;span class=&quot;variable&quot;&gt;$args&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        # upload_limit_rate &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;m;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    location ~ \.php$ &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        try_files &lt;span class=&quot;variable&quot;&gt;$uri&lt;/span&gt; =&lt;span class=&quot;number&quot;&gt;404&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        include fastcgi_params;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        fastcgi_pass &lt;span class=&quot;number&quot;&gt;127.0&lt;/span&gt;.&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;.&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;9000&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        fastcgi_index index.php;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        fastcgi_param SCRIPT_FILENAME &lt;span class=&quot;variable&quot;&gt;$document&lt;/span&gt;_root&lt;span class=&quot;variable&quot;&gt;$fastcgi&lt;/span&gt;_script_name;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        fastcgi_param PATH_INFO &lt;span class=&quot;variable&quot;&gt;$fastcgi&lt;/span&gt;_script_name;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    error_page &lt;span class=&quot;number&quot;&gt;500&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;502&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;503&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;504&lt;/span&gt; /&lt;span class=&quot;number&quot;&gt;50&lt;/span&gt;x.html;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    location = /&lt;span class=&quot;number&quot;&gt;50&lt;/span&gt;x.html &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        root html;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;&lt;strong&gt;fpm&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;配置文件 &lt;code&gt;/etc/php5/fpm/pool.d/www.conf&lt;/code&gt;,设置fpm监听端口和nginx配置一致&lt;/p&gt;
@@ -254,14 +350,21 @@
     
     <summary type="html">
     
-      &lt;p&gt;##整体结构&lt;br&gt;&lt;img src=&quot;http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg&quot; alt=&quot;盗用一张图&quot;&gt;&lt;/p&gt;
-&lt;p&gt;##安装&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;nginx&lt;/strong&gt;
+      &lt;p&gt;个人使用的方式有两种&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;lamp/lnmp 环境&lt;/li&gt;
+&lt;li&gt;php 自带的webserver&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id=&quot;php-自带的webserver&quot;&gt;&lt;a href=&quot;#php-自带的webserver&quot; class=&quot;he
     
     </summary>
     
     
       <category term="lnmp" scheme="http://yangzz0.github.io/tags/lnmp/"/>
+    
+      <category term="php" scheme="http://yangzz0.github.io/tags/php/"/>
+    
+      <category term="环境搭建" scheme="http://yangzz0.github.io/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
     
       <category term="笔记" scheme="http://yangzz0.github.io/tags/%E7%AC%94%E8%AE%B0/"/>
     
@@ -533,19 +636,18 @@
     <link href="http://yangzz0.github.io/2015/10/13/c-incldue/"/>
     <id>http://yangzz0.github.io/2015/10/13/c-incldue/</id>
     <published>2015-10-13T11:12:04.000Z</published>
-    <updated>2015-12-07T10:43:19.032Z</updated>
+    <updated>2016-02-22T06:05:54.151Z</updated>
     
-    <content type="html">&lt;p&gt;##引言&lt;br&gt;前段时间看lua的时候，书中提到标准C是没有定义查找路径的，回想起来C的书籍中确实没有过多实没有提及文件包含的问题。在看linux网络编程的时候一些文件包含格式，以前也见过但是不理解为什么这么写，自己也没深入关注过这方面的问题。在配置eclipse,sublime,vs的文件包含、库文件、动态链接库相关的配置的时候，感觉配置参数和这些文件包含他们之间有那么一些隐隐约约的联系，&lt;code&gt;感觉配置的这些参数，就是编译器，链接器相关命令行参数&lt;/code&gt;，也确实是如此。&lt;/p&gt;
+    <content type="html">&lt;h2 id=&quot;引言&quot;&gt;&lt;a href=&quot;#引言&quot; class=&quot;headerlink&quot; title=&quot;引言&quot;&gt;&lt;/a&gt;引言&lt;/h2&gt;&lt;p&gt;前段时间看lua的时候，书中提到标准C是没有定义查找路径的，回想起来C的书籍中确实没有过多实没有提及文件包含的问题。在看linux网络编程的时候一些文件包含格式，以前也见过但是不理解为什么这么写，自己也没深入关注过这方面的问题。在配置eclipse,sublime,vs的文件包含、库文件、动态链接库相关的配置的时候，感觉配置参数和这些文件包含他们之间有那么一些隐隐约约的联系，&lt;code&gt;感觉配置的这些参数，就是编译器，链接器相关命令行参数&lt;/code&gt;，也确实是如此。&lt;/p&gt;
 &lt;p&gt;如何包含文件的问题其实是一个文件查找的问题。例如php中对文件包含的规则就比较简单&lt;code&gt;require&lt;/code&gt;或者&lt;code&gt;include&lt;/code&gt; 后面加上文件路径，但是C语言中在自己的印象中一直好像没有相关的说法，于是翻了一下C程序语言设计这本书，呵呵。。果然是阳春白雪。。就那么一点点。。。不留心可能就忽略了，在工程之中却又是一个非常重要的问题。比如可以利用文件把一个大的工程分开，有利于&lt;code&gt;模块化&lt;/code&gt;开发设计。&lt;/p&gt;
 &lt;p&gt;随即查阅了一些资料做个简单的小结。&lt;/p&gt;
-&lt;p&gt;##查找路径&lt;/p&gt;
-&lt;p&gt;按照程序的时段可以划分为三个&lt;/p&gt;
+&lt;h2 id=&quot;查找路径&quot;&gt;&lt;a href=&quot;#查找路径&quot; class=&quot;headerlink&quot; title=&quot;查找路径&quot;&gt;&lt;/a&gt;查找路径&lt;/h2&gt;&lt;p&gt;按照程序的时段可以划分为三个&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;编译时的查找&lt;/li&gt;
 &lt;li&gt;链接时的查找&lt;/li&gt;
 &lt;li&gt;运行时查找&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;###编译时的查找&lt;br&gt;&lt;strong&gt;include 文件包含格式：&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&quot;编译时的查找&quot;&gt;&lt;a href=&quot;#编译时的查找&quot; class=&quot;headerlink&quot; title=&quot;编译时的查找&quot;&gt;&lt;/a&gt;编译时的查找&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;include 文件包含格式：&lt;/strong&gt;&lt;/p&gt;
 &lt;hr&gt;
 &lt;ul&gt;
 &lt;li&gt;尖括号&lt;code&gt;&amp;lt;&amp;gt;&lt;/code&gt;引起来&lt;/li&gt;
@@ -564,13 +666,12 @@
 &lt;li&gt;头文件中不支持通配符，如&lt;code&gt;*&lt;/code&gt;&lt;/li&gt;
 &lt;/ol&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
-&lt;p&gt;###链接时的查找&lt;/p&gt;
-&lt;p&gt;在命令行下可以使用 &lt;code&gt;-L&lt;/code&gt;  &lt;code&gt;-l&lt;/code&gt;添加查找路径，也可以使用环境变量添加。含义分别表示&lt;/p&gt;
+&lt;h3 id=&quot;链接时的查找&quot;&gt;&lt;a href=&quot;#链接时的查找&quot; class=&quot;headerlink&quot; title=&quot;链接时的查找&quot;&gt;&lt;/a&gt;链接时的查找&lt;/h3&gt;&lt;p&gt;在命令行下可以使用 &lt;code&gt;-L&lt;/code&gt;  &lt;code&gt;-l&lt;/code&gt;添加查找路径，也可以使用环境变量添加。含义分别表示&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;code&gt;-L&lt;/code&gt; 查找的文件夹&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;-l&lt;/code&gt; 静态库文件&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;###运行时查找&lt;br&gt;查找动态链接库。比如在Windows上运行某个程序的时候，弹出提示说缺少&lt;strong&gt;dll&lt;/strong&gt;的情况，就是因为没有在指定的位置找到对应的DLL。一般把对应的DLL放在程序运行的位置，或者放在系统 &lt;code&gt;C:\Windows\System32&lt;/code&gt;问题就解决了。&lt;/p&gt;
+&lt;h3 id=&quot;运行时查找&quot;&gt;&lt;a href=&quot;#运行时查找&quot; class=&quot;headerlink&quot; title=&quot;运行时查找&quot;&gt;&lt;/a&gt;运行时查找&lt;/h3&gt;&lt;p&gt;查找动态链接库。比如在Windows上运行某个程序的时候，弹出提示说缺少&lt;strong&gt;dll&lt;/strong&gt;的情况，就是因为没有在指定的位置找到对应的DLL。一般把对应的DLL放在程序运行的位置，或者放在系统 &lt;code&gt;C:\Windows\System32&lt;/code&gt;问题就解决了。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;部分环境变量的含义&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
 &lt;hr&gt;
 &lt;table&gt;
@@ -619,13 +720,12 @@
 &lt;li&gt;详见 &lt;a href=&quot;http://blog.chinaunix.net/uid-22145625-id-1789493.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://blog.chinaunix.net/uid-22145625-id-1789493.html&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;br&gt;&lt;/p&gt;
-&lt;p&gt;##参考&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://blog.chinaunix.net/uid-22150747-id-189278.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;gcc include路径&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://www.cnblogs.com/zhoug2020/archive/2012/07/04/2576068.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;gcc中include文件的搜索路径&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/ericghw/article/details/38639821&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;c项目中指定头文件目录&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://blog.chinaunix.net/uid-22150747-id-189278.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;gcc include路径&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://www.cnblogs.com/zhoug2020/archive/2012/07/04/2576068.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;gcc中include文件的搜索路径&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/ericghw/article/details/38639821&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;c项目中指定头文件目录&lt;/a&gt;&lt;/p&gt;
 </content>
     
     <summary type="html">
     
-      &lt;p&gt;##引言&lt;br&gt;前段时间看lua的时候，书中提到标准C是没有定义查找路径的，回想起来C的书籍中确实没有过多实没有提及文件包含的问题。在看linux网络编程的时候一些文件包含格式，以前也见过但是不理解为什么这么写，自己也没深入关注过这方面的问题。在配置eclipse,subl
+      &lt;h2 id=&quot;引言&quot;&gt;&lt;a href=&quot;#引言&quot; class=&quot;headerlink&quot; title=&quot;引言&quot;&gt;&lt;/a&gt;引言&lt;/h2&gt;&lt;p&gt;前段时间看lua的时候，书中提到标准C是没有定义查找路径的，回想起来C的书籍中确实没有过多实没有提及文件包含的问题。在看linux网络编程的
     
     </summary>
     
@@ -994,113 +1094,6 @@
       <category term="nginx-rtmp-module" scheme="http://yangzz0.github.io/tags/nginx-rtmp-module/"/>
     
       <category term="rtmp" scheme="http://yangzz0.github.io/tags/rtmp/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>【译】How to set up your own private RTMP server using nginx</title>
-    <link href="http://yangzz0.github.io/2015/08/12/How-to-set-up-your-own-private-RTMP-server-using-nginx/"/>
-    <id>http://yangzz0.github.io/2015/08/12/How-to-set-up-your-own-private-RTMP-server-using-nginx/</id>
-    <published>2015-08-12T09:20:51.000Z</published>
-    <updated>2015-12-07T10:43:19.015Z</updated>
-    
-    <content type="html">&lt;blockquote&gt;&lt;p&gt;原文地址: &lt;a href=&quot;https://obsproject.com/forum/resources/how-to-set-up-your-own-private-rtmp-server-using-nginx.50/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://obsproject.com/forum/resources/how-to-set-up-your-own-private-rtmp-server-using-nginx.50/&lt;/a&gt;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;大多数人喜欢使用Twitch.tv和Ustream这类服务把流视频转播放给用户，并且工作的也非常好。但是有时候你想对你的流视频有更多的控制权，或者你想其他人把视频流转发给你，或者你想转发视频流到多个地方，或者一些事情需要你有权限访问RTMP服务器上的视频流。这篇教程内容非常基础，教你在一台linux服务器上搭建一个简单的RTMP服务器。&lt;/p&gt;
-&lt;p&gt;在你自己RTMP服务器上，你可能感兴趣去做的是这两件事情：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;向多个频道播放内容&lt;/li&gt;
-&lt;li&gt;由于一些目的，把其他人的多个视频流合成一个（我在多个角度拍摄中使用它，例如像在&lt;a href=&quot;https://www.youtube.com/watch?v=6WUU58POsTM&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这个多个拍摄角度视频中&lt;/a&gt;）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;好的，你该怎样做到这些事情呢？&lt;/p&gt;
-&lt;p&gt;##第一步：获取一个服务器&lt;br&gt;不管你信不信，RTMP 实际上对系统资源要求十分的小。本质上来说，它仅仅是从输入端抓取数据并把数据转发到输出端，简单的数据传输。不相信我？我的运行了很长一段时间的RTMP服务器是一个树莓派,一个价值35美金（月200元人民币）的迷你计算机，就放在我的办公桌上，至少同时处理3个数据输入流是完全没有问题的，我也从来没有对它进行过压力测试去看看到底他能处理多少。因此，我向你保证，即使一个便宜的旧机器也是完全没有问题的。&lt;/p&gt;
-&lt;p&gt;假如你没有树莓派，一个vps也是可以的。我推荐Linode服务商，如果你能支付的起服务费用。我现在也在使用，并且到现在为止，它也运行良好。仅仅确保你有足够的带宽。。。记住带宽的使用量是&lt;code&gt;（视频流的大小）* （上传人数+下载人数）&lt;/code&gt;。因此当我有两个视频流推送视频流到我的服务器，并且我同时下载他们，两小时消耗了10GB的带宽流量。&lt;/p&gt;
-&lt;p&gt;为了方便，我推荐使用Ubuntu作为服务器软件，但是你完全可使用任何你想使用的。只要你能从apt之外其他的地方解决nginx的依赖问题，你就能参考这篇文档。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Windows 用户注意&lt;/strong&gt; 这边教程关注Linux上的使用，假如你想在Windows上使用，你能找到带有RTMP 模块的nginx二进制包，在这个地方： &lt;a href=&quot;http://nginx-win.ecsds.eu/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://nginx-win.ecsds.eu/&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;假如你的服务器在你家里，你需要转发TCP 1935端口数据到这个服务器上。。。不同的路由器有不同的设置，因此你需要根据你自己的路由器，查看怎么设置端口转发。同时，我推荐使用 DynDNS 这类服务去克服家用主机动态IP的问题。&lt;/p&gt;
-&lt;p&gt;##第二步：安装nginx 和RTMP 模块&lt;br&gt;登录你的机器，并且确保你有这些必须的工具去编译nginx,执行下面的命令&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ sudo apt-get install build-essential libpcre3 libpcre3-dev libssl-dev
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;现在说点关于nginx的一点小知识（发音 “engine-X”）。nginx是个轻量级的web server，但是有些人为它写了一个RTMP模块，因此它能够提供RTMP流相关的服务，为了添加这个RTMP模块，我们必须重新从源码编译nginx 而不是使用apt包。不要担心，它是非常简单的，仅仅执行下面的指令:)&lt;/p&gt;
-&lt;p&gt;在你的home目录，下载nginx 源码：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ wget http://nginx.org/download/nginx-1.7.7.tar.gz
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;在写这篇文章的时候，ngxin 最新的稳定版本是 1.7.7。你可是从&lt;a href=&quot;http://nginx.org/en/download.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;nginx 下载页&lt;/a&gt;下载最新的包。&lt;/p&gt;
-&lt;p&gt;接着，从git 获取RTMP 模块的源代码&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ wget https://github.com/arut/nginx-rtmp-module/archive/master.zip
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;解压开他们，斌且进入nginx 目录：&lt;/p&gt;
-&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ tar -zxvf nginx-1.7.7.tar.gz&amp;#10;$ unzip master.zip&amp;#10;$ cd nginx-1.7.7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;现在，编译nginx:&lt;/p&gt;
-&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ ./configure --with-http_ssl_module --add-module=../nginx-rtmp-module-master&amp;#10;$ make&amp;#10;$ sudo make install&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;现在nginx 安装完毕了！默认安装在了 &lt;code&gt;/usr/local/nginx&lt;/code&gt;,使用下面的命令启动：&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ sudo /usr/local/nginx/sbin/nginx
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;现在测试一下确认nginx 正在运行，打开浏览器输入 &lt;code&gt;http://服务器ip/&lt;/code&gt; 然后你将看到”Welcome to nginx!”这个页面。&lt;/p&gt;
-&lt;p&gt;##第三步：配置nginx 启用RTMP&lt;br&gt;打开配置文件，默认是 &lt;code&gt;/usr/local/nginx/conf/nginx.conf&lt;/code&gt;，在文件的最后添加下面的内容：&lt;/p&gt;
-&lt;figure class=&quot;highlight nginx&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;title&quot;&gt;rtmp&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;title&quot;&gt;server&lt;/span&gt; &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;title&quot;&gt;listen&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;1935&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;title&quot;&gt;chunk_size&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;4096&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;title&quot;&gt;application&lt;/span&gt; live &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;span class=&quot;title&quot;&gt;live&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;on&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                        &lt;span class=&quot;title&quot;&gt;record&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;off&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;这是一个非常简单的基础配置，有一个live应用，它将会把RTMP视频流转发给所有请求这它的用户。你可能过一会才播放这个视频。&lt;a href=&quot;https://github.com/arut/nginx-rtmp-module/wiki/Directives&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;这里是所有配置选项&lt;/a&gt;，展示了如何转发视频流到其他的地方（像Twitch），保存上传的记录，输出状态等等。&lt;/p&gt;
-&lt;p&gt;重启nginx:&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;$ sudo /usr/local/nginx/sbin/nginx -s stop
-$ sudo /usr/local/nginx/sbin/nginx
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;##第四步：测试&lt;/p&gt;
-&lt;p&gt;你的服务器应该能接收RTMP视频流了。让我们尝试一下吧。&lt;/p&gt;
-&lt;p&gt;创建一个新的工程在OBS,并且更改 Broadcast Settings 为如下：&lt;/p&gt;
-&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Streaming Service: Custom&amp;#10;Server: rtmp://&amp;#60;your server ip&amp;#62;/live&amp;#10;Play Path/Stream Key: test&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;你可能会疑惑test路径从哪里来。好吧，我们就是刚刚创建的。你能创建任何路径和流，把那个路径发到RTMP播放器里面，就可以播放了。对于简单的应用，没必要授权。&lt;/p&gt;
-&lt;p&gt;你现在能向你的服务器推送视频流了。当你点击了 “Start Streaming” ，没有报告错误，这是一个好的信号。&lt;/p&gt;
-&lt;p&gt;怎么打开观看呢？就我个人来说，我使用&lt;a href=&quot;http://vmix.com.au/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;vMix&lt;/a&gt;播放RTMP流并且将多个视频流合并成一个我自己的流。如果你仅仅想播放一个正在上传的视频流，可以使用&lt;code&gt;VLC 2.1.0&lt;/code&gt;或者更新的版本。打开一个网络流，输入&lt;code&gt;rtmp://&amp;lt;your server ip&amp;gt;/live/test&lt;/code&gt;作为url。如果没有报什么错误的话，现在你就能在VLC里面看到流里面的内容了。&lt;/p&gt;
-&lt;p&gt;现在你有一个能工作的视频流了，欢呼吧:)&lt;/p&gt;
-&lt;p&gt;##现在做什么呢？&lt;/p&gt;
-&lt;p&gt;你能使用使你的服务器转发视频流到其他的流服务和频道。在”record off;”后面添加下面的指令。&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;push rtmp://&amp;lt;other streaming service rtmp url&amp;gt;/&amp;lt;stream key&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;任何视频流都会被转发，同时客户端也能使用这个地址播放视频。你可以添加多个push指令，把这个视频转发到多个位置。&lt;/p&gt;
-&lt;p&gt;##FAQ&lt;/p&gt;
-&lt;p&gt;Q:为什么使用nginx?不使用crtmpserver/Red5/Wowza?&lt;/p&gt;
-&lt;p&gt;A:先前用过crtmpserver，并且也能工作，但是太难用了。如果需要RTSP服务代替RTMP服务，我推荐使用它，因为nginx RTMP模块不支持RTSP。对于我来说Red5看起来太重，太复杂了，并且是用java写的。。。如果你想使用它就是用它吧。我没有在这上面投资很多精力。Wowza不是免费的。你能使用它完成你想的功能，但是nginx是更轻量级的，易于使用，并且免费。&lt;/p&gt;
-&lt;p&gt;Q:X怎么做?&lt;/p&gt;
-&lt;p&gt;A:FAQ会保持更新。。问一些问题，我将把答案写在这里。&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;&lt;p&gt;原文地址: &lt;a href=&quot;https://obsproject.com/forum/resources/how-to-set-up-your-own-private-rtmp-server-using-nginx.50/&quot; target=&quot;_bl
-    
-    </summary>
-    
-    
-      <category term="nginx" scheme="http://yangzz0.github.io/tags/nginx/"/>
-    
-      <category term="rtmp" scheme="http://yangzz0.github.io/tags/rtmp/"/>
-    
-      <category term="翻译" scheme="http://yangzz0.github.io/tags/%E7%BF%BB%E8%AF%91/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>PHP文件上传</title>
-    <link href="http://yangzz0.github.io/2015/08/05/php-upload-file/"/>
-    <id>http://yangzz0.github.io/2015/08/05/php-upload-file/</id>
-    <published>2015-08-05T11:07:02.000Z</published>
-    <updated>2015-12-07T10:43:19.120Z</updated>
-    
-    <content type="html">&lt;p&gt;上传一个213M的文件的时候一直报IOerror。首先想到的是php上传文件大小的限制，改为300兆后，不起作用，就感觉是上传的的时候脚本执行的时间太长了，就修改&lt;code&gt;max_input_time&lt;/code&gt; 为6000 还是不起作用，琢磨是不是&lt;code&gt;max_input_time&lt;/code&gt;解析数据的时间出了问题，最后发现也不是，原来是nginx设置的太小了，改为500m,问题立马解决了。&lt;/p&gt;
-&lt;p&gt;php 和 nginx 设置如下&lt;/p&gt;
-&lt;p&gt;ngxin server 里面配置如下&lt;br&gt;&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;server&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     ***&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     client_max_body_size 1000M;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;     ****&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;php.ini 配置如下&lt;br&gt;&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;file_uploads = On ;是否允许通过HTTP上传文件的开关。默认为ON即是开&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;upload_max_filesize = 500M ;上传文件上限 &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;upload_tmp_dir ;文件上传至服务器上存储临时文件的地方，如果没指定就会用系统默认的临时文件夹。&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;如果要上传比较大的文件，仅仅以上两条还不够，必须把服务器缓存上限调大，把脚本最大执行时间变长 &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;post_max_size = 500M ; POST给PHP的所能接收的最大值&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;max_execution_time = 30 ; 每个PHP页面运行的最大时间值 Maximum execution time of each script, in seconds脚本最大执行时间 &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;max_input_time = 60 ; 每个PHP页面接收数据所需的最大时间 解析一次请求时间上线 Maximum amount of time each script may spend parsing request data &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;memory_limit = 128M ;  每个PHP页面所吃掉的最大内存 内存上限 Maximum amount of memory a script may consume (128MB)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;相关参数解释&lt;/p&gt;
-&lt;p&gt;##参考&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;http://www.jb51.net/article/18975.htm&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.jb51.net/article/18975.htm&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml&lt;/a&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;上传一个213M的文件的时候一直报IOerror。首先想到的是php上传文件大小的限制，改为300兆后，不起作用，就感觉是上传的的时候脚本执行的时间太长了，就修改&lt;code&gt;max_input_time&lt;/code&gt; 为6000 还是不起作用，琢磨是不是&lt;code&gt;max_
-    
-    </summary>
-    
-    
-      <category term="nginx" scheme="http://yangzz0.github.io/tags/nginx/"/>
-    
-      <category term="php" scheme="http://yangzz0.github.io/tags/php/"/>
-    
-      <category term="配置" scheme="http://yangzz0.github.io/tags/%E9%85%8D%E7%BD%AE/"/>
     
   </entry>
   

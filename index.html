@@ -144,6 +144,104 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
+			<a href="/2016/02/24/mooc-linux-kernel-1/" title="杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about">Linux 内核分析 -- C函数调用栈机制在汇编中的实现</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2016-02-24  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		<h2 id="一些常识"><a href="#一些常识" class="headerlink" title="一些常识"></a>一些常识</h2><p>平时可能见到movb,movw,movl等一些指令，三条指令的意思基本一样，不一样的地方在于，操作的数据是1个字节(1B)，1个字(2B)，1个双字（4B）。</p>
+<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>汇编语言简单的可以认为是机器语言的一种便记符号，理解体系结构对理解汇编指令集大有裨益。现在的流行计算机体系结构是冯诺依曼体系也即存储程序体系。其结构大致如下:</p>
+<p><img src="/imgs/cpu-arch.jpg" alt=""></p>
+<p>也决定了指令集设计基本上都是围绕着cpu、存储进行设计的，对于汇编的语法格式，Intel和AT&amp;T汇编之间的区别看以参考文档 <a href="http://www.ibm.com/developerworks/cn/linux/l-assembly/" target="_blank" rel="external">Linux 汇编语言开发指南</a>,这里简要的说一下本文代码中用到的AT&amp;T 32位cpu汇编语言的一些指令。<!-- 说到汇编语言，就离不开了解一点cpu硬件结构的知识， -->汇编中用到的cpu硬件主要是寄存器，它们可用来暂存<code>指令</code>、<code>数据</code>和<code>地址</code>，这里主要用到的寄存器包括通用寄存器中的eax，以及esp（栈顶指针寄存器），ebp（占地指针寄存器）。另外还有一些操作指令，像pushl，popl，movl，leave、enter：</p>
+<table>
+<thead>
+<tr>
+<th>指令</th>
+<th>含义</th>
+<th>等价指令</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pushl</td>
+<td>入栈指令</td>
+</tr>
+<tr>
+<td>popl</td>
+<td>出栈指令</td>
+</tr>
+<tr>
+<td>movl</td>
+<td>a,b 数据传送指令,把a—&gt;b</td>
+</tr>
+<tr>
+<td>leave</td>
+<td>跟函数调用相关</td>
+<td><code>movl   %ebp, %esp</code><br><code>popl   %ebp</code></td>
+</tr>
+<tr>
+<td>enter</td>
+<td>跟函数调用相关</td>
+<td><code>pushl   %ebp</code><br><code>movl    %esp, %ebp</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="一段代码"><a href="#一段代码" class="headerlink" title="一段代码"></a>一段代码</h2><p>首先我们分析一段代码，每个函数都不接受参数。重点分析<code>f()</code>的汇编代码。其他不相关的干扰信息少。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">g</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> g() + <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> f() + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>使用 <code>gcc -S -o main.s mian.c -m32</code>指令编译过后，删除了跟链接相关的信息过后的汇编代码。</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_g:&#10;    pushl   %ebp&#10;    movl    %esp, %ebp&#10;    movl    $4, %eax&#10;    popl    %ebp&#10;    ret&#10;_f:&#10;    pushl   %ebp&#10;    movl    %esp, %ebp&#10;    call    _g&#10;    addl    $2, %eax&#10;    popl    %ebp&#10;    ret&#10;_main:&#10;    pushl   %ebp&#10;    movl    %esp, %ebp&#10;    call    _f&#10;    addl    $1, %eax&#10;    leave&#10;    ret</span><br></pre></td></tr></table></figure>
+<p>俗话说射人先射马，擒贼先擒王，看上面这坨代码，如果不知道模型是什么确实挺费劲，下面就个人理解说一下这个模型。比如说我们把64KB这么大内存空间分配给<code>_f</code>使用，初始化的时候，EBP，ESP所指向如图所示的上一个函数的栈基址和栈顶地址。当在f中执行完下面的指令后，ESP,EBP位置如下图所示：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pushl   %ebp&#10;movl    %esp, %ebp</span><br></pre></td></tr></table></figure>
+<p><img src="/imgs/stack-asm.png" alt=""></p>
+<p>从图中也就看到，当前函数使用的栈内存为[ESP,EBP)（不是固定的哦，因为，ESP会变化）这段内存空间（它俩指向同一个位置说明函数栈还没有使用），另外[EBP,EBP+4)这段内存空间保存的是调用此函数的函数栈基址。<br>在到<code>popl    %ebp</code>这条指令之间没有单向操作栈的指令，故可以略去不用考虑，直接看这条指令，此时已经是函数调用完毕，此函数中保存的调用此函数的函数栈机制恢复到ebp寄存器中，到此函数调用栈的建立与销毁已经完毕。再看_g的代码，就会发现同样也是利用这个模型机制，到此内存中程序的函数调用栈机制的整体模型浮现在了面前。至于参数怎么传的，返回值怎么保存的，简单的说在栈和ax寄存器或者内存中，后面再详细说。</p>
+
+	
+	</div>
+  <a type="button" href="/2016/02/24/mooc-linux-kernel-1/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
+			<a href="/2016/02/22/yii2-assets-code-read/" >yii2 前端资源管理代码阅读</a>
+		</h3>
+		</div>
+	<div class="col-md-4">
+		<div class="date">post @ 2016-02-22  </div>
+		</div>
+	</div>
+	
+
+
+			<div class="entry">
+  <div class="row">
+	
+	
+		
+	
+	</div>
+  <a type="button" href="/2016/02/22/yii2-assets-code-read/#more" class="btn btn-default more">阅读此文</a>
+</div>
+
+		
+			
+	
+	<!-- display as entry -->
+<div class="row">
+	<div class="col-md-8">
+		<h3 class="title">
 			<a href="/2016/02/20/yii2-assets/" >yii2 前端资源管理笔记</a>
 		</h3>
 		</div>
@@ -158,7 +256,7 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<h2 id="资源是什么？"><a href="#资源是什么？" class="headerlink" title="资源是什么？"></a>资源是什么？</h2><p>Yii中的资源是 <code>和Web页面相关的文件</code> ，可为CSS文件，JavaScript文件，图片或视频等，资源放在Web可访问的目录下，直接被Web服务器调用。在yii中实现了使用程序自动管理资源。</p>
+		<h1 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h1><h2 id="资源是什么？"><a href="#资源是什么？" class="headerlink" title="资源是什么？"></a>资源是什么？</h2><p>Yii中的资源是 <code>和Web页面相关的文件</code> ，可为CSS文件，JavaScript文件，图片或视频等，资源放在Web可访问的目录下，直接被Web服务器调用。在yii中实现了使用程序自动管理资源。</p>
 <h2 id="管理方式"><a href="#管理方式" class="headerlink" title="管理方式"></a>管理方式</h2><p>Yii在资源包中管理资源，<code>资源包</code>简单的说就是<code>放在一个目录下的资源集合</code>，在视图中注册一个资源包，在渲染Web页面时会包含包中的CSS和JavaScript文件</p>
 <h2 id="资源包管理类"><a href="#资源包管理类" class="headerlink" title="资源包管理类"></a>资源包管理类</h2><p>继承于<code>yii\web\AssetBundle</code>的类,类名可自动加载。在类中要指定：</p>
 <ol>
@@ -177,10 +275,12 @@ var _hmt = _hmt || [];
 </ol>
 <h2 id="使用资源包"><a href="#使用资源包" class="headerlink" title="使用资源包"></a>使用资源包</h2><ol>
 <li>视图中</li>
-<li>小部件类中<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">&lt;?php</span></span><br><span class="line">    <span class="keyword">use</span> <span class="title">app</span>\<span class="title">assets</span>\<span class="title">AppAsset</span>;</span><br><span class="line">    AppAsset::register(<span class="variable">$this</span>);  <span class="comment">// $this 代表视图对象</span></span><br></pre></td></tr></table></figure>
-</li>
+<li>小部件类中</li>
 </ol>
-<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://www.yiichina.com/doc/guide/2.0/structure-assets" target="_blank" rel="external">http://www.yiichina.com/doc/guide/2.0/structure-assets</a></p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="preprocessor">&lt;?php</span></span><br><span class="line">    <span class="keyword">use</span> <span class="title">app</span>\<span class="title">assets</span>\<span class="title">AppAsset</span>;</span><br><span class="line">    AppAsset::register(<span class="variable">$this</span>);  <span class="comment">// $this 代表视图对象</span></span><br></pre></td></tr></table></figure>
+<h1 id="yii2中的代码实现"><a href="#yii2中的代码实现" class="headerlink" title="yii2中的代码实现"></a>yii2中的代码实现</h1><h2 id="SiteController中怎么加载进来的？在那个位置，怎么调用的代码"><a href="#SiteController中怎么加载进来的？在那个位置，怎么调用的代码" class="headerlink" title="SiteController中怎么加载进来的？在那个位置，怎么调用的代码?"></a>SiteController中怎么加载进来的？在那个位置，怎么调用的代码?</h2><p>文件  <code>@app/views/layouts/main.php</code><br>调用的代码<code>$this-&gt;endBody()</code></p>
+<h3 id="yii-web-View"><a href="#yii-web-View" class="headerlink" title="yii\web\View"></a><code>yii\web\View</code></h3><p><code>registerAssetBundle($name, $position = null)</code> 注册依赖的资源包，其中<code>$name</code>是资源包的管理类的类名。</p>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://www.yiichina.com/doc/guide/2.0/structure-assets" target="_blank" rel="external">http://www.yiichina.com/doc/guide/2.0/structure-assets</a></p>
 
 	
 	</div>
@@ -388,7 +488,7 @@ var _hmt = _hmt || [];
 <div class="row">
 	<div class="col-md-8">
 		<h3 class="title">
-			<a href="/2015/11/17/lnmp-环境-搭建/" >lnmp 环境 搭建</a>
+			<a href="/2015/11/17/lnmp-环境-搭建/" >php 开发环境搭建</a>
 		</h3>
 		</div>
 	<div class="col-md-4">
@@ -402,14 +502,18 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>##整体结构<br><img src="http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg" alt="盗用一张图"></p>
-<p>##安装</p>
-<p><strong>nginx</strong></p>
+		<p>个人使用的方式有两种</p>
+<ol>
+<li>lamp/lnmp 环境</li>
+<li>php 自带的webserver</li>
+</ol>
+<h1 id="php-自带的webserver"><a href="#php-自带的webserver" class="headerlink" title="php 自带的webserver"></a>php 自带的webserver</h1><p>配置搭建比较简单，一条命令即可以下实现一个本地server <code>php -S 0.0.0.0:8010</code>。在浏览器中就可以访问。</p>
+<h1 id="lnmp-环境-搭建"><a href="#lnmp-环境-搭建" class="headerlink" title="lnmp 环境 搭建"></a>lnmp 环境 搭建</h1><h2 id="整体结构"><a href="#整体结构" class="headerlink" title="整体结构"></a>整体结构</h2><p><img src="http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg" alt="盗用一张图"></p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><strong>nginx</strong></p>
 <p>可以手动编译安装，也可以是使用<code>apt-get</code>方式安装。第二种方式版本较低。</p>
 <p><strong>fpm、mysql</strong></p>
 <p>荐<code>apt-get</code>方式安装，便捷。</p>
-<p>##配置</p>
-<p><strong>nginx </strong></p>
+<h2 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h2><p><strong>nginx </strong></p>
 <figure class="highlight xquery"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"> server &#123;</span><br><span class="line">    listen <span class="number">8082</span>;</span><br><span class="line">    #server_name localhost;</span><br><span class="line"></span><br><span class="line">    root /data/codes/sevenga_tuitui/backend;</span><br><span class="line">    index index.php;</span><br><span class="line"></span><br><span class="line">    location / &#123; </span><br><span class="line">        try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ /index.php?<span class="variable">$args</span>;</span><br><span class="line">        # upload_limit_rate <span class="number">1</span>m;</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    location ~ \.php$ &#123;</span><br><span class="line">        try_files <span class="variable">$uri</span> =<span class="number">404</span>;</span><br><span class="line">        include fastcgi_params;</span><br><span class="line">        fastcgi_pass <span class="number">127.0</span>.<span class="number">0</span>.<span class="number">1</span>:<span class="number">9000</span>;</span><br><span class="line">        fastcgi_index index.php;</span><br><span class="line">        fastcgi_param SCRIPT_FILENAME <span class="variable">$document</span>_root<span class="variable">$fastcgi</span>_script_name;</span><br><span class="line">        fastcgi_param PATH_INFO <span class="variable">$fastcgi</span>_script_name;</span><br><span class="line">    &#125;   </span><br><span class="line"></span><br><span class="line">    error_page <span class="number">500</span> <span class="number">502</span> <span class="number">503</span> <span class="number">504</span> /<span class="number">50</span>x.html;</span><br><span class="line">    location = /<span class="number">50</span>x.html &#123;</span><br><span class="line">        root html;</span><br><span class="line">    &#125;   </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>fpm</strong></p>
 <p>配置文件 <code>/etc/php5/fpm/pool.d/www.conf</code>,设置fpm监听端口和nginx配置一致</p>
@@ -735,17 +839,16 @@ var _hmt = _hmt || [];
   <div class="row">
 	
 	
-		<p>##引言<br>前段时间看lua的时候，书中提到标准C是没有定义查找路径的，回想起来C的书籍中确实没有过多实没有提及文件包含的问题。在看linux网络编程的时候一些文件包含格式，以前也见过但是不理解为什么这么写，自己也没深入关注过这方面的问题。在配置eclipse,sublime,vs的文件包含、库文件、动态链接库相关的配置的时候，感觉配置参数和这些文件包含他们之间有那么一些隐隐约约的联系，<code>感觉配置的这些参数，就是编译器，链接器相关命令行参数</code>，也确实是如此。</p>
+		<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>前段时间看lua的时候，书中提到标准C是没有定义查找路径的，回想起来C的书籍中确实没有过多实没有提及文件包含的问题。在看linux网络编程的时候一些文件包含格式，以前也见过但是不理解为什么这么写，自己也没深入关注过这方面的问题。在配置eclipse,sublime,vs的文件包含、库文件、动态链接库相关的配置的时候，感觉配置参数和这些文件包含他们之间有那么一些隐隐约约的联系，<code>感觉配置的这些参数，就是编译器，链接器相关命令行参数</code>，也确实是如此。</p>
 <p>如何包含文件的问题其实是一个文件查找的问题。例如php中对文件包含的规则就比较简单<code>require</code>或者<code>include</code> 后面加上文件路径，但是C语言中在自己的印象中一直好像没有相关的说法，于是翻了一下C程序语言设计这本书，呵呵。。果然是阳春白雪。。就那么一点点。。。不留心可能就忽略了，在工程之中却又是一个非常重要的问题。比如可以利用文件把一个大的工程分开，有利于<code>模块化</code>开发设计。</p>
 <p>随即查阅了一些资料做个简单的小结。</p>
-<p>##查找路径</p>
-<p>按照程序的时段可以划分为三个</p>
+<h2 id="查找路径"><a href="#查找路径" class="headerlink" title="查找路径"></a>查找路径</h2><p>按照程序的时段可以划分为三个</p>
 <ul>
 <li>编译时的查找</li>
 <li>链接时的查找</li>
 <li>运行时查找</li>
 </ul>
-<p>###编译时的查找<br><strong>include 文件包含格式：</strong></p>
+<h3 id="编译时的查找"><a href="#编译时的查找" class="headerlink" title="编译时的查找"></a>编译时的查找</h3><p><strong>include 文件包含格式：</strong></p>
 <hr>
 <ul>
 <li>尖括号<code>&lt;&gt;</code>引起来</li>
@@ -764,13 +867,12 @@ var _hmt = _hmt || [];
 <li>头文件中不支持通配符，如<code>*</code></li>
 </ol>
 <p><br></p>
-<p>###链接时的查找</p>
-<p>在命令行下可以使用 <code>-L</code>  <code>-l</code>添加查找路径，也可以使用环境变量添加。含义分别表示</p>
+<h3 id="链接时的查找"><a href="#链接时的查找" class="headerlink" title="链接时的查找"></a>链接时的查找</h3><p>在命令行下可以使用 <code>-L</code>  <code>-l</code>添加查找路径，也可以使用环境变量添加。含义分别表示</p>
 <ul>
 <li><code>-L</code> 查找的文件夹</li>
 <li><code>-l</code> 静态库文件</li>
 </ul>
-<p>###运行时查找<br>查找动态链接库。比如在Windows上运行某个程序的时候，弹出提示说缺少<strong>dll</strong>的情况，就是因为没有在指定的位置找到对应的DLL。一般把对应的DLL放在程序运行的位置，或者放在系统 <code>C:\Windows\System32</code>问题就解决了。</p>
+<h3 id="运行时查找"><a href="#运行时查找" class="headerlink" title="运行时查找"></a>运行时查找</h3><p>查找动态链接库。比如在Windows上运行某个程序的时候，弹出提示说缺少<strong>dll</strong>的情况，就是因为没有在指定的位置找到对应的DLL。一般把对应的DLL放在程序运行的位置，或者放在系统 <code>C:\Windows\System32</code>问题就解决了。</p>
 <p><strong><em>部分环境变量的含义</em></strong></p>
 <hr>
 <table>
@@ -819,8 +921,7 @@ var _hmt = _hmt || [];
 <li>详见 <a href="http://blog.chinaunix.net/uid-22145625-id-1789493.html" target="_blank" rel="external">http://blog.chinaunix.net/uid-22145625-id-1789493.html</a></li>
 </ul>
 <p><br></p>
-<p>##参考</p>
-<p><a href="http://blog.chinaunix.net/uid-22150747-id-189278.html" target="_blank" rel="external">gcc include路径</a><br><a href="http://www.cnblogs.com/zhoug2020/archive/2012/07/04/2576068.html" target="_blank" rel="external">gcc中include文件的搜索路径</a><br><a href="http://blog.csdn.net/ericghw/article/details/38639821" target="_blank" rel="external">c项目中指定头文件目录</a></p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://blog.chinaunix.net/uid-22150747-id-189278.html" target="_blank" rel="external">gcc include路径</a><br><a href="http://www.cnblogs.com/zhoug2020/archive/2012/07/04/2576068.html" target="_blank" rel="external">gcc中include文件的搜索路径</a><br><a href="http://blog.csdn.net/ericghw/article/details/38639821" target="_blank" rel="external">c项目中指定头文件目录</a></p>
 
 	
 	</div>
@@ -1436,48 +1537,48 @@ $ sudo /usr/local/nginx/sbin/nginx
 		<h4>标签云</h4>
 		<ul class="tag_box inline list-unstyled">		
 		
-			<li><a href="/tags/总结/">总结<span>0</span></a></li>
+			<li><a href="/tags/rtmp/">rtmp<span>2</span></a></li>
 		
-			<li><a href="/tags/元表/">元表<span>1</span></a></li>
-		
-			<li><a href="/tags/计算机图形学/">计算机图形学<span>0</span></a></li>
-		
-			<li><a href="/tags/c/">c<span>2</span></a></li>
-		
-			<li><a href="/tags/lnmp/">lnmp<span>1</span></a></li>
-		
-			<li><a href="/tags/lua/">lua<span>1</span></a></li>
+			<li><a href="/tags/swoole/">swoole<span>0</span></a></li>
 		
 			<li><a href="/tags/读书笔记/">读书笔记<span>0</span></a></li>
 		
-			<li><a href="/tags/mathjax/">mathjax<span>1</span></a></li>
-		
-			<li><a href="/tags/工具/">工具<span>1</span></a></li>
-		
-			<li><a href="/tags/nginx/">nginx<span>4</span></a></li>
-		
-			<li><a href="/tags/git/">git<span>0</span></a></li>
-		
-			<li><a href="/tags/元方法/">元方法<span>1</span></a></li>
-		
-			<li><a href="/tags/摘抄/">摘抄<span>1</span></a></li>
-		
-			<li><a href="/tags/rtmp/">rtmp<span>2</span></a></li>
-		
-			<li><a href="/tags/eclipse/">eclipse<span>1</span></a></li>
-		
-			<li><a href="/tags/php/">php<span>1</span></a></li>
-		
-			<li><a href="/tags/awk/">awk<span>1</span></a></li>
-		
 			<li><a href="/tags/draft/">draft<span>0</span></a></li>
+		
+			<li><a href="/tags/元表/">元表<span>1</span></a></li>
+		
+			<li><a href="/tags/ngx-lua/">ngx-lua<span>1</span></a></li>
 		
 			<li><a href="/tags/札记/">札记<span>0</span></a></li>
 		
+			<li><a href="/tags/汇编/">汇编<span>1</span></a></li>
+		
+			<li><a href="/tags/linux/">linux<span>2</span></a></li>
+		
+			<li><a href="/tags/总结/">总结<span>0</span></a></li>
+		
+			<li><a href="/tags/assets/">assets<span>2</span></a></li>
+		
+			<li><a href="/tags/erlang/">erlang<span>0</span></a></li>
+		
+			<li><a href="/tags/obs/">obs<span>1</span></a></li>
+		
+			<li><a href="/tags/元方法/">元方法<span>1</span></a></li>
+		
+			<li><a href="/tags/工具/">工具<span>1</span></a></li>
+		
 			<li><a href="/tags/include/">include<span>1</span></a></li>
 		
+			<li><a href="/tags/Linux-内核分析/">Linux 内核分析<span>1</span></a></li>
 		
-		   <li><a href="/tags">...<span>37</span></a></li>
+			<li><a href="/tags/php/">php<span>2</span></a></li>
+		
+			<li><a href="/tags/笔记/">笔记<span>3</span></a></li>
+		
+			<li><a href="/tags/计算机图形学/">计算机图形学<span>0</span></a></li>
+		
+		
+		   <li><a href="/tags">...<span>42</span></a></li>
 		 
 		</ul>
 	</div>
@@ -1490,6 +1591,14 @@ $ sudo /usr/local/nginx/sbin/nginx
   <ul class="entry list-unstyled">
     
       <li>
+        <a href="/2016/02/24/mooc-linux-kernel-1/"  title="杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about" ><i class="fa fa-file-o"></i>Linux 内核分析 -- C函数调用栈机制在汇编中的...</a>
+      </li>
+    
+      <li>
+        <a href="/2016/02/22/yii2-assets-code-read/" ><i class="fa fa-file-o"></i>yii2 前端资源管理代码阅读...</a>
+      </li>
+    
+      <li>
         <a href="/2016/02/20/yii2-assets/" ><i class="fa fa-file-o"></i>yii2 前端资源管理笔记...</a>
       </li>
     
@@ -1499,14 +1608,6 @@ $ sudo /usr/local/nginx/sbin/nginx
     
       <li>
         <a href="/2015/12/07/eclipse-mars-php 自动补全提示/" ><i class="fa fa-file-o"></i>eclipse-mars-php 自动补全提示...</a>
-      </li>
-    
-      <li>
-        <a href="/2015/12/07/awk-处理日志/" ><i class="fa fa-file-o"></i>awk 处理日志...</a>
-      </li>
-    
-      <li>
-        <a href="/2015/12/06/mathjax/" ><i class="fa fa-file-o"></i>mathjax &amp;&amp; hexo...</a>
       </li>
     
   </ul>
