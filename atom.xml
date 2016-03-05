@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yangzz0.github.io/"/>
-  <updated>2016-02-24T07:55:33.285Z</updated>
+  <updated>2016-03-05T11:28:24.502Z</updated>
   <id>http://yangzz0.github.io/</id>
   
   <author>
@@ -16,13 +16,109 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Linux 内核分析 -- 进程的启动和进程的切换机制</title>
+    <link href="http://yangzz0.github.io/2016/03/05/mooc-linux-kernel-2/"/>
+    <id>http://yangzz0.github.io/2016/03/05/mooc-linux-kernel-2/</id>
+    <published>2016-03-05T04:02:45.000Z</published>
+    <updated>2016-03-05T11:28:24.502Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;&lt;p&gt;杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 &lt;a href=&quot;http://mooc.study.163.com/course/USTC-1000029000&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;网易云课堂&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;&lt;p&gt;杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程  &lt;a href=&quot;http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;学堂在线&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;&lt;p&gt;实验要求：&lt;/p&gt;
+&lt;p&gt;完成一个简单的时间片轮转多道程序内核代码，代码见视频中或从&lt;a href=&quot;https://github.com/mengning/mykernel&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;mykernel&lt;/a&gt;找。&lt;br&gt;详细分析该精简内核的源代码并给出实验截图，撰写一篇署名博客，并在博客文章中注明“真实姓名（与最后申请证书的姓名务必一致） + 原创作品转载请注明出处 + 《Linux内核分析》MOOC课程&lt;a href=&quot;http://mooc.study.163.com/course/USTC-1000029000&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://mooc.study.163.com/course/USTC-1000029000&lt;/a&gt; ”，博客内容的具体要求如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;题目自拟，内容围绕操作系统是如何工作的进行；&lt;/li&gt;
+&lt;li&gt;博客中需要使用实验截图&lt;/li&gt;
+&lt;li&gt;博客内容中需要仔细分析进程的启动和进程的切换机制&lt;/li&gt;
+&lt;li&gt;总结部分需要阐明自己对“操作系统是如何工作的”理解。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;中断&quot;&gt;&lt;a href=&quot;#中断&quot; class=&quot;headerlink&quot; title=&quot;中断&quot;&gt;&lt;/a&gt;中断&lt;/h2&gt;&lt;p&gt;现代计算机实现多道程序设计的基础是出现了中断这一技术。中断意如其名，打断你原来的正在做的事情，比如说放假的时候在家看苦逼的写着作业的时候，突然有人打来电话约你。应约，还是继续写作业，具体你会怎么做呢？具体的行为，可以认为是中断处理程序。&lt;/p&gt;
+&lt;h2 id=&quot;进程调度实现&quot;&gt;&lt;a href=&quot;#进程调度实现&quot; class=&quot;headerlink&quot; title=&quot;进程调度实现&quot;&gt;&lt;/a&gt;进程调度实现&lt;/h2&gt;&lt;ol&gt;
+&lt;li&gt;程序加载完后就会执行这段&lt;a href=&quot;https://github.com/mengning/mykernel/blob/master/mymain.c#L25-L57&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;初始化代码&lt;/a&gt; &lt;/li&gt;
+&lt;li&gt;同时还会检测时钟中断，并调用这段&lt;a href=&quot;https://github.com/mengning/mykernel/blob/master/myinterrupt.c#L27-L38&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;中断处理程序&lt;/a&gt;， &lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;my-start-kernel-都做了写什么呢？&quot;&gt;&lt;a href=&quot;#my-start-kernel-都做了写什么呢？&quot; class=&quot;headerlink&quot; title=&quot;my_start_kernel 都做了写什么呢？&quot;&gt;&lt;/a&gt;my_start_kernel 都做了写什么呢？&lt;/h2&gt;&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;void __init my_start_kernel(void)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int pid = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int i;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    /* Initialize process 0*/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    task[pid].pid = pid;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    task[pid].state = 0;/* -1 unrunnable, 0 runnable, &amp;gt;0 stopped */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    task[pid].task_entry = task[pid].thread.ip = (unsigned long)my_process;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    task[pid].thread.sp = (unsigned long)&amp;amp;task[pid].stack[KERNEL_STACK_SIZE-1];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    task[pid].next = &amp;amp;task[pid];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    /*fork more process */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    for(i=1;i&amp;lt;MAX_TASK_NUM;i++)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        memcpy(&amp;amp;task[i],&amp;amp;task[0],sizeof(tPCB));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        task[i].pid = i;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        task[i].state = -1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        task[i].thread.sp = (unsigned long)&amp;amp;task[i].stack[KERNEL_STACK_SIZE-1];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        task[i].next = task[i-1].next;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        task[i-1].next = &amp;amp;task[i];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    /* start process 0 by task[0] */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    pid = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    my_current_task = &amp;amp;task[pid];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    asm volatile(&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &quot;movl %1,%%esp\n\t&quot;     /* set task[pid].thread.sp to esp */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &quot;pushl %1\n\t&quot;          /* push ebp */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &quot;pushl %0\n\t&quot;          /* push task[pid].thread.ip */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &quot;ret\n\t&quot;               /* pop task[pid].thread.ip to eip */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &quot;popl %%ebp\n\t&quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        : &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        : &quot;c&quot; (task[pid].thread.ip),&quot;d&quot; (task[pid].thread.sp)   /* input c or d mean %ecx/%edx*/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    );&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;初始化代码做的事情&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;创建进程 &lt;/li&gt;
+&lt;li&gt;初始化每个进程的堆栈位置&lt;/li&gt;
+&lt;li&gt;进程之间的调度顺序，其实就是一个接一个的执行，没有什么优先级&lt;/li&gt;
+&lt;li&gt;初始化根进程&lt;/li&gt;
+&lt;li&gt;每个进程的功能都是一样的，指向了&lt;a href=&quot;https://github.com/mengning/mykernel/blob/master/mymain.c#L58-L75&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;&lt;code&gt;void my_process(void)&lt;/code&gt;&lt;/a&gt;，即代码注释中所说的 fork&lt;/li&gt;
+&lt;li&gt;启动pid=0的进程，即代码中嵌入式汇编代码&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    asm volatile(&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &quot;movl %1,%%esp\n\t&quot;     /* set task[pid].thread.sp to esp */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &quot;pushl %1\n\t&quot;          /* push ebp */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &quot;pushl %0\n\t&quot;          /* push task[pid].thread.ip */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &quot;ret\n\t&quot;               /* pop task[pid].thread.ip to eip */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &quot;popl %%ebp\n\t&quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        : &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        : &quot;c&quot; (task[pid].thread.ip),&quot;d&quot; (task[pid].thread.sp)   /* input c or d mean %ecx/%edx*/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    );&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;这段代码什么做了那些事情那呢？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;切换堆栈&lt;/p&gt;
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;movl %1,%%esp\n\t&quot;&lt;/span&gt;     &lt;span class=&quot;comment&quot;&gt;/* set task[pid].thread.sp to esp */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;pushl %1\n\t&quot;&lt;/span&gt;          &lt;span class=&quot;comment&quot;&gt;/* push ebp */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;指令跳转，使cpu指向进程代码入口&lt;/p&gt;
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;pushl %0\n\t&quot;&lt;/span&gt;          &lt;span class=&quot;comment&quot;&gt;/* push task[pid].thread.ip */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;ret\n\t&quot;&lt;/span&gt;               &lt;span class=&quot;comment&quot;&gt;/* pop task[pid].thread.ip to eip */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;进程如何切换的？&quot;&gt;&lt;a href=&quot;#进程如何切换的？&quot; class=&quot;headerlink&quot; title=&quot;进程如何切换的？&quot;&gt;&lt;/a&gt;进程如何切换的？&lt;/h2&gt;&lt;p&gt;从&lt;code&gt;void my_process(void)&lt;/code&gt;，可以看出进程是每经过一段时间检查一下（利用硬件中断实现的）是否需要执行&lt;code&gt;my_schedule();&lt;/code&gt;函数进行进程切换（根据&lt;code&gt;my_need_sched&lt;/code&gt;来判断）。&lt;/p&gt;
+&lt;figure class=&quot;highlight cpp&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;my_process&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt;)&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; i = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;while&lt;/span&gt;(&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        i++;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(i%&lt;span class=&quot;number&quot;&gt;10000000&lt;/span&gt; == &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            printk(KERN_NOTICE &lt;span class=&quot;string&quot;&gt;&quot;this is process %d -\n&quot;&lt;/span&gt;,my_current_task-&amp;gt;pid);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(my_need_sched == &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                my_need_sched = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                my_schedule();&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            printk(KERN_NOTICE &lt;span class=&quot;string&quot;&gt;&quot;this is process %d +\n&quot;&lt;/span&gt;,my_current_task-&amp;gt;pid);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;     &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;下面分析一下进程切换的时候所做的一些事情。（去除了部分代码，以两个都是在运行态进程间的切换代码为例）&lt;/p&gt;
+&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;void my_schedule(void)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        asm volatile(   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &quot;pushl %%ebp\n\t&quot;       /* save ebp */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &quot;movl %%esp,%0\n\t&quot;     /* save esp */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &quot;movl %2,%%esp\n\t&quot;     /* restore  esp */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &quot;movl $1f,%1\n\t&quot;       /* save eip */  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &quot;pushl %3\n\t&quot; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &quot;ret\n\t&quot;               /* restore  eip */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &quot;1:\t&quot;                  /* next process start here */&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &quot;popl %%ebp\n\t&quot;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            : &quot;=m&quot; (prev-&amp;gt;thread.sp),&quot;=m&quot; (prev-&amp;gt;thread.ip)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            : &quot;m&quot; (next-&amp;gt;thread.sp),&quot;m&quot; (next-&amp;gt;thread.ip)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        );&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ...&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;切换堆栈，包括旧堆栈以及现场保存，新堆栈的建立&lt;/p&gt;
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;pushl %%ebp\n\t&quot;&lt;/span&gt;       &lt;span class=&quot;comment&quot;&gt;/* save ebp */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;movl %%esp,%0\n\t&quot;&lt;/span&gt;     &lt;span class=&quot;comment&quot;&gt;/* save esp */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;movl %2,%%esp\n\t&quot;&lt;/span&gt;     &lt;span class=&quot;comment&quot;&gt;/* restore  esp */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;movl $1f,%1\n\t&quot;&lt;/span&gt;       &lt;span class=&quot;comment&quot;&gt;/* 保存当前进程将要执行的指令位置，当进程再次调度到这个进程的时候可以接着上次执行继续执行 */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;改变cpu IP 指向的位置，执行新进程直到完毕&lt;/p&gt;
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;pushl %3\n\t&quot;&lt;/span&gt; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;ret\n\t&quot;&lt;/span&gt;               &lt;span class=&quot;comment&quot;&gt;/* restore  eip */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;堆栈销毁与旧堆栈的恢复&lt;/p&gt;
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;    &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;string&quot;&gt;&quot;popl %%ebp\n\t&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;对于运行态切换A到刚加载进来的进程B之间的切换，从&lt;a href=&quot;https://github.com/mengning/mykernel/blob/master/myinterrupt.c#L78-L88&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;代码&lt;/a&gt;看到相比运行态进程间的切换，就多出来一条指令&lt;br&gt;&lt;code&gt;&amp;quot;movl %2,%%ebp\n\t&amp;quot; /* restore  ebp */&lt;/code&gt;，其含义是初始B进程的栈基址。也就是说只需要初始化一下栈基址。进程间的切换，这还是一个非常的粗糙，但也基本上整个模型已经建立起来，稍加优化，就非常完美。&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>php 获取当天0点的时间戳</title>
+    <link href="http://yangzz0.github.io/2016/03/04/php-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%A4%A90%E7%82%B9%E7%9A%84%E6%97%B6%E9%97%B4%E6%88%B3/"/>
+    <id>http://yangzz0.github.io/2016/03/04/php-获取当天0点的时间戳/</id>
+    <published>2016-03-04T06:54:58.000Z</published>
+    <updated>2016-03-05T03:08:05.500Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;常见代码&quot;&gt;&lt;a href=&quot;#常见代码&quot; class=&quot;headerlink&quot; title=&quot;常见代码&quot;&gt;&lt;/a&gt;常见代码&lt;/h1&gt;&lt;p&gt;方式一&lt;/p&gt;
+&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$year&lt;/span&gt; = date(&lt;span class=&quot;string&quot;&gt;&quot;Y&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$month&lt;/span&gt; = date(&lt;span class=&quot;string&quot;&gt;&quot;m&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$day&lt;/span&gt; = date(&lt;span class=&quot;string&quot;&gt;&quot;d&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$dayBegin&lt;/span&gt; = mktime(&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;,&lt;span class=&quot;variable&quot;&gt;$month&lt;/span&gt;,&lt;span class=&quot;variable&quot;&gt;$day&lt;/span&gt;,&lt;span class=&quot;variable&quot;&gt;$year&lt;/span&gt;);&lt;span class=&quot;comment&quot;&gt;//当天开始时间戳&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;方式二：&lt;br&gt;&lt;figure class=&quot;highlight php&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$daybegin&lt;/span&gt;=strtotime(date(&lt;span class=&quot;string&quot;&gt;&quot;Ymd&quot;&lt;/span&gt;));&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h1 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h1&gt;&lt;p&gt;&lt;a href=&quot;http://www.cnblogs.com/wangtao_20/archive/2011/01/06/1929046.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.cnblogs.com/wangtao_20/archive/2011/01/06/1929046.html&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/dongsg11200/article/details/8988598&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://blog.csdn.net/dongsg11200/article/details/8988598&lt;/a&gt;&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      几行代码
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
     <title>Linux 内核分析 -- C函数调用栈机制在汇编中的实现</title>
     <link href="http://yangzz0.github.io/2016/02/24/mooc-linux-kernel-1/"/>
     <id>http://yangzz0.github.io/2016/02/24/mooc-linux-kernel-1/</id>
     <published>2016-02-23T23:55:28.000Z</published>
-    <updated>2016-02-24T07:55:33.285Z</updated>
+    <updated>2016-03-05T04:02:24.711Z</updated>
     
     <content type="html">&lt;blockquote&gt;&lt;p&gt;杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 &lt;a href=&quot;http://mooc.study.163.com/course/USTC-1000029000&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://mooc.study.163.com/course/USTC-1000029000&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;&lt;p&gt;杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程  &lt;a href=&quot;http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id=&quot;一些常识&quot;&gt;&lt;a href=&quot;#一些常识&quot; class=&quot;headerlink&quot; title=&quot;一些常识&quot;&gt;&lt;/a&gt;一些常识&lt;/h2&gt;&lt;p&gt;平时可能见到movb,movw,movl等一些指令，三条指令的意思基本一样，不一样的地方在于，操作的数据是1个字节(1B)，1个字(2B)，1个双字（4B）。&lt;/p&gt;
 &lt;h2 id=&quot;基础知识&quot;&gt;&lt;a href=&quot;#基础知识&quot; class=&quot;headerlink&quot; title=&quot;基础知识&quot;&gt;&lt;/a&gt;基础知识&lt;/h2&gt;&lt;p&gt;汇编语言简单的可以认为是机器语言的一种便记符号，理解体系结构对理解汇编指令集大有裨益。现在的流行计算机体系结构是冯诺依曼体系也即存储程序体系。其结构大致如下:&lt;/p&gt;
@@ -928,174 +1024,6 @@
       <category term="元方法" scheme="http://yangzz0.github.io/tags/%E5%85%83%E6%96%B9%E6%B3%95/"/>
     
       <category term="元表" scheme="http://yangzz0.github.io/tags/%E5%85%83%E8%A1%A8/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>nginx-rtmp-module 总结（草稿）</title>
-    <link href="http://yangzz0.github.io/2015/09/06/rtmp/"/>
-    <id>http://yangzz0.github.io/2015/09/06/rtmp/</id>
-    <published>2015-09-05T16:00:00.000Z</published>
-    <updated>2015-12-07T10:43:19.122Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;一些参数及其含义&quot;&gt;&lt;a href=&quot;#一些参数及其含义&quot; class=&quot;headerlink&quot; title=&quot;一些参数及其含义&quot;&gt;&lt;/a&gt;一些参数及其含义&lt;/h2&gt;&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;参数名称&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;app&lt;/td&gt;
-&lt;td&gt;指明应用名称&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;name&lt;/td&gt;
-&lt;td&gt;绑定监听的本地流名字，为空则监听所有的流&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;tcUrl&lt;/td&gt;
-&lt;td&gt;自动构建如果为空&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;pageUrl&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;swfUrl&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;flashVer&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;playPath&lt;/td&gt;
-&lt;td&gt;远程播放地址&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;live&lt;/td&gt;
-&lt;td&gt;合并指定的行为，为直播流&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;start&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;stop&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;static&lt;/td&gt;
-&lt;td&gt;静态化，会在nginx 启动的时候创建&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;##rtmp 指令—中继（relay）&lt;br&gt;    Syntax: pull url [key=value]*&lt;br&gt;    Context: application&lt;/p&gt;
-&lt;p&gt;创建pull中继，拉取远程的流放到本地使用，当有播放器连接的时候命令才会生效&lt;/p&gt;
-&lt;p&gt;Url 语法: &lt;code&gt;[rtmp://]host[:port][/app[/playpath]]&lt;/code&gt;.&lt;/p&gt;
-&lt;p&gt;如果app没有指定，则使用本地请求中的app名字&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Example&lt;/strong&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;pull rtmp://192.168.1.129/live/test name=ted;
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;##Notify相关指令&lt;br&gt;主要用于回调通知&lt;/p&gt;
-&lt;p&gt;###on_connect&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;nginx 块: rtmp, server
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;当客户端发起一个连接的时候，同时将会发起一个异步的http请求，客户端连接将会被挂起等待http请求的结果。根据不同的结果做出不同的响应。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;返回结果&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;2xx – 刚才发起的RTMP会话请求继续&lt;/li&gt;
-&lt;li&gt;3xx – 重定向到另外一个应用，应用名在&lt;code&gt;Location&lt;/code&gt;响应头中&lt;/li&gt;
-&lt;li&gt;其他连接将会被丢弃&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;应用不能放在&lt;code&gt;application&lt;/code&gt;块，连接阶段的时候还不知道具体是请求的哪一个应用。&lt;br&gt;HTTP请求默认使用POST方法。&lt;/p&gt;
-&lt;p&gt;###on_play&lt;br&gt;与on_connect 类似，只是返回结果为 &lt;code&gt;3xx&lt;/code&gt;的时候需要指定新的流名称&lt;/p&gt;
-&lt;p&gt;##参考资料&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/arut/nginx-rtmp-module/wiki/Directives#live&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/arut/nginx-rtmp-module/wiki/Directives#live&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html?utm_source=tuicool&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html?utm_source=tuicool&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;一些参数及其含义&quot;&gt;&lt;a href=&quot;#一些参数及其含义&quot; class=&quot;headerlink&quot; title=&quot;一些参数及其含义&quot;&gt;&lt;/a&gt;一些参数及其含义&lt;/h2&gt;&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;参数名称&lt;/th&gt;
-&lt;th&gt;说明&lt;/th&gt;
-&lt;/
-    
-    </summary>
-    
-    
-      <category term="nginx" scheme="http://yangzz0.github.io/tags/nginx/"/>
-    
-      <category term="nginx-rtmp-module" scheme="http://yangzz0.github.io/tags/nginx-rtmp-module/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>nginx 点播</title>
-    <link href="http://yangzz0.github.io/2015/08/17/vod/"/>
-    <id>http://yangzz0.github.io/2015/08/17/vod/</id>
-    <published>2015-08-17T06:54:36.000Z</published>
-    <updated>2015-12-07T10:43:19.123Z</updated>
-    
-    <content type="html">&lt;p&gt;对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;play&lt;/li&gt;
-&lt;li&gt;play_temp_path&lt;/li&gt;
-&lt;li&gt;play_local_path&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/blockquote&gt;
-&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;#&amp;#26412;&amp;#22320;&amp;#25991;&amp;#20214;&amp;#10;application vod &amp;#123;&amp;#10;    play /var/flvs;&amp;#10;&amp;#125;&amp;#10;&amp;#10;#&amp;#32593;&amp;#32476;&amp;#20013;&amp;#30340;&amp;#25991;&amp;#20214;&amp;#10;application vod_http &amp;#123;&amp;#10;    play_temp_path /var/flvs;&amp;#10;    play_local_path /var/flvs;&amp;#10;    play /var/flvs http://myserver.com/vod;&amp;#10;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h2 id=&quot;play&quot;&gt;&lt;a href=&quot;#play&quot; class=&quot;headerlink&quot; title=&quot;play&quot;&gt;&lt;/a&gt;play&lt;/h2&gt;&lt;ul&gt;
-&lt;li&gt;文件格式是&lt;code&gt;mp4&lt;/code&gt;和&lt;code&gt;flv&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;文件可以是本地的，也可以是网络上http可以访问到的。&lt;/li&gt;
-&lt;li&gt;play 指令中可以指定多个文件路径&lt;/li&gt;
-&lt;li&gt;多个play指令的时候，会合并指令中的位置。在播放的时候会在这些路径列表中的文件夹下依次查找，查不到，就会给前端返回一个错误。&lt;/li&gt;
-&lt;li&gt;mp4 文件需要 采用 H.264 和 AAC 格式编码。&lt;/li&gt;
-&lt;li&gt;flv文件点播需要添加关键帧（可以使用yamdi添加），否则没有暂停功能。&lt;/li&gt;
-&lt;li&gt;如果点播&lt;code&gt;record&lt;/code&gt; 指令生成的文件，记住视频文件没有关键帧。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;播放网络文件&quot;&gt;&lt;a href=&quot;#播放网络文件&quot; class=&quot;headerlink&quot; title=&quot;播放网络文件&quot;&gt;&lt;/a&gt;播放网络文件&lt;/h2&gt;&lt;p&gt;当播放一个网络文件时，nginx会先把文件下载完，然后才播放。下载文件时临时存放的位置由&lt;code&gt;play_temp_path&lt;/code&gt;指定，其默认值是 &lt;code&gt;/tmp&lt;/code&gt;，播放完毕后就会丢弃。如果&lt;code&gt;play_local_path&lt;/code&gt;指定其值，就会先把拷贝到这个位置。这两条指令配合play指令可以提升一些性能。&lt;/p&gt;
-&lt;h2 id=&quot;一些-tips&quot;&gt;&lt;a href=&quot;#一些-tips&quot; class=&quot;headerlink&quot; title=&quot;一些 tips&quot;&gt;&lt;/a&gt;一些 tips&lt;/h2&gt;&lt;p&gt;&lt;strong&gt; 三条命令 &lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;如果每次点播文件每次都去下载,一是会浪费带宽，二是浪费时间，每次都必须等待下载完成才能播放。如果能下载的文件复制到本地，那么就可以结合play指令，使本地磁盘就可以起到缓存网络数据功能了。&lt;/p&gt;
-&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;#&amp;#30913;&amp;#30424;&amp;#32531;&amp;#23384;&amp;#32593;&amp;#32476;&amp;#25968;&amp;#25454;&amp;#10;application vod_http &amp;#123;&amp;#10;    play_temp_path  /var/flvs;&amp;#10;    play_local_path /var/flvs;&amp;#10;    play /var/flvs http://example.com/videos;&amp;#10;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;strong&gt;添加关键帧&lt;/strong&gt;&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;yamdi –i src.flv –o dst.flv
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;a href=&quot;http://yamdi.sourceforge.net/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;yamdi 文档&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;播放rtmp视频&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;可以使用ffmpeg自带的ffplay&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;ffplay rtmp://localhost/vod//dir/file.flv
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;一个网络工具&lt;/p&gt;
-&lt;pre&gt;&lt;code&gt;&amp;lt;http://www.cutv.com/demo/live_test.swf&amp;gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;h2 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h2&gt;&lt;ol&gt;
-&lt;li&gt;&lt;a href=&quot;https://github.com/arut/nginx-rtmp-module/wiki/Directives#video-on-demand&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://github.com/arut/nginx-rtmp-module/wiki/Directives#video-on-demand&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求:&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;play&lt;/li&gt;
-&lt;li&gt;play_temp_path&lt;/li&gt;
-&lt;li&gt;play_local_path&lt;/li&gt;
-&lt;
-    
-    </summary>
-    
-    
-      <category term="nginx" scheme="http://yangzz0.github.io/tags/nginx/"/>
-    
-      <category term="nginx-rtmp-module" scheme="http://yangzz0.github.io/tags/nginx-rtmp-module/"/>
-    
-      <category term="rtmp" scheme="http://yangzz0.github.io/tags/rtmp/"/>
     
   </entry>
   
