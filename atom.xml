@@ -4,21 +4,131 @@
   <subtitle>好习惯受益终生</subtitle>
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yangzz0.github.io/"/>
-  <updated>2016-03-05T12:06:01.672Z</updated>
-  <id>http://yangzz0.github.io/</id>
+  <link href="http://blog.soul11201.com/"/>
+  <updated>2016-03-11T09:14:38.072Z</updated>
+  <id>http://blog.soul11201.com/</id>
   
   <author>
-    <name>yangzz</name>
+    <name>soul11201</name>
     
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>dash 笔记</title>
+    <link href="http://blog.soul11201.com/2016/03/11/dashjsoverview/"/>
+    <id>http://blog.soul11201.com/2016/03/11/dashjsoverview/</id>
+    <published>2016-03-11T06:20:55.000Z</published>
+    <updated>2016-03-11T09:14:38.072Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;&lt;p&gt;著作权归作者所有。&lt;br&gt;商业转载请联系作者获得授权，非商业转载请注明出处。&lt;br&gt;作者：杨振振&lt;br&gt;链接：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h2&gt;&lt;p&gt;从使用的角度来看，&lt;a href=&quot;https://en.wikipedia.org/wiki/Dynamic_Adaptive_Streaming_over_HTTP&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;https://en.wikipedia.org/wiki/Dynamic_Adaptive_Streaming_over_HTTP&lt;/a&gt; 对dash协议已经有非常详细的描述。这只做一点简要的笔记。DASH (Dynamic Adaptive Streaming over HTTP，又名MPEG-DASH)是一种&lt;a href=&quot;https://en.wikipedia.org/wiki/Adaptive_bitrate_streaming&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;自适应码流技术&lt;/a&gt;，类似于 HLS,其特点总的说就是&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;码率自适应，可以实现最大可能的观看质量较高的视频&lt;/li&gt;
+&lt;li&gt;跨设备，协议。可以从一些协议转化成另外一些协议，在不同的设备上观看&lt;/li&gt;
+&lt;li&gt;可以利用已有的 HTTP Web Server 基础设施资源，&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;a href=&quot;https://wmspanel.com/nimble&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;nimble&lt;/a&gt;和&lt;a href=&quot;https://developer.bitcodin.com/doc/getting-started&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;bitcodin&lt;/a&gt;的下面两张图最能说明&lt;/p&gt;
+&lt;p&gt; &lt;img src=&quot;/imgs/bitcodindash.jpg&quot; alt=&quot;&quot;&gt;&lt;br&gt; &lt;img src=&quot;/imgs/NimbleStreamerFeature.png&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;相关类似技术&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Adobe Systems HTTP Dynamic Streaming&lt;/li&gt;
+&lt;li&gt;Apple Inc. HTTP Live Streaming (HLS) &lt;/li&gt;
+&lt;li&gt;Microsoft Smooth Streaming&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;支持的编码格式&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;h.264 &lt;/li&gt;
+&lt;li&gt;h.265&lt;/li&gt;
+&lt;li&gt;vp9&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;支持的容器格式&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/ISO_base_media_file_format&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ISO base media file format&lt;/a&gt; (e.g. MP4 file format) &lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/MPEG_transport_stream&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;MPEG-2 Transport Stream&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;将dash标准商业化，实现的相关组织&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;DASH Industry Forum (DASH-IF)&lt;/li&gt;
+&lt;li&gt;Microsoft,&lt;/li&gt;
+&lt;li&gt;Netflix&lt;/li&gt;
+&lt;li&gt;Google&lt;/li&gt;
+&lt;li&gt;Ericsson&lt;/li&gt;
+&lt;li&gt;Samsung&lt;/li&gt;
+&lt;li&gt;Adobe&lt;/li&gt;
+&lt;li&gt;其他&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;样例&quot;&gt;&lt;a href=&quot;#样例&quot; class=&quot;headerlink&quot; title=&quot;样例&quot;&gt;&lt;/a&gt;样例&lt;/h2&gt;&lt;p&gt;开始准备使用nginx-rtmp +dash.js 来做实现，dash.js无法播放，使用 &lt;a href=&quot;https://github.com/arut/dash.js&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;arut 修改过的dashjs&lt;/a&gt;仍旧无法播放，看来还是对dash的支持还是有点问题，使用&lt;a href=&quot;http://dashif.org/reference/players/javascript/v2.0.0/samples/dash-if-reference-player/index.html#&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;dashif&lt;/a&gt;给出的视频样例来做一个&lt;a href=&quot;/demo/dashjs.demo.html&quot;&gt;demo测试&lt;/a&gt;，感觉还行，&lt;/p&gt;
+&lt;figure class=&quot;highlight html&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;src&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;http://cdn.dashjs.org/latest/dash.all.min.js&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;span class=&quot;undefined&quot;&gt;&lt;/span&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;script&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;onLoad&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;Dash.createAll()&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;         &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;video&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;class&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;dashjs-player&quot;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;autoplay&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;preload&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;none&quot;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;controls&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;true&quot;&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;tag&quot;&gt;&amp;lt;&lt;span class=&quot;title&quot;&gt;source&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;src&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;http://dash.edgesuite.net/dash264/TestCases/1a/sony/SNE_DASH_SD_CASE1A_REVISED.mpd&quot;&lt;/span&gt; &lt;span class=&quot;attribute&quot;&gt;type&lt;/span&gt;=&lt;span class=&quot;value&quot;&gt;&quot;application/dash+xml&quot;&lt;/span&gt;/&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;         &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;video&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;      &lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;div&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;tag&quot;&gt;&amp;lt;/&lt;span class=&quot;title&quot;&gt;body&lt;/span&gt;&amp;gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+</content>
+    
+    <summary type="html">
+    
+      著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处
+    
+    </summary>
+    
+    
+      <category term="笔记" scheme="http://blog.soul11201.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在heroku上部署我的rss开源项目</title>
+    <link href="http://blog.soul11201.com/2016/03/09/heroku-deploy-myrss/"/>
+    <id>http://blog.soul11201.com/2016/03/09/heroku-deploy-myrss/</id>
+    <published>2016-03-09T07:08:02.000Z</published>
+    <updated>2016-03-09T07:08:51.425Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;&lt;p&gt;著作权归作者所有。&lt;br&gt;商业转载请联系作者获得授权，非商业转载请注明出处。&lt;br&gt;作者：杨振振&lt;br&gt;链接：&lt;/p&gt;
+&lt;/blockquote&gt;
+</content>
+    
+    <summary type="html">
+    
+      著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处
+    
+    </summary>
+    
+    
+      <category term="笔记" scheme="http://blog.soul11201.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用yii2框架开发的一点总结</title>
+    <link href="http://blog.soul11201.com/2016/03/08/php-yii2-summary/"/>
+    <id>http://blog.soul11201.com/2016/03/08/php-yii2-summary/</id>
+    <published>2016-03-08T07:44:50.000Z</published>
+    <updated>2016-03-11T09:51:41.088Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;&lt;p&gt;著作权归作者所有。&lt;br&gt;商业转载请联系作者获得授权，非商业转载请注明出处。&lt;br&gt;作者：杨振振&lt;br&gt;链接：&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;噼里啪啦，最近使用yii2框架开发了几个项目（包括开源的&lt;a href=&quot;https://github.com/noname007/learn-yii2&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;rss&lt;/a&gt;，&lt;a href=&quot;https://github.com/noname007/diandiandian&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;企业点餐系统&lt;/a&gt;)）。其中使用到了 GridView，gii，debug，migration，rbac，yii2-user，bootstrap 等模块。马上又要搞其他的东西去了，忘记东西的速度很快，所以下面总结一下整个过程中写代码的心得。&lt;/p&gt;
+&lt;h2 id=&quot;熟悉领域问题、概念&quot;&gt;&lt;a href=&quot;#熟悉领域问题、概念&quot; class=&quot;headerlink&quot; title=&quot;熟悉领域问题、概念&quot;&gt;&lt;/a&gt;熟悉领域问题、概念&lt;/h2&gt;&lt;p&gt;很多问题是问题领域不熟悉导致的，比如在写前端的时候bootstrap模块直接看代码注释文档，都不是特别理解在说什么，看源码，更是看不懂源码的思路逻辑，感觉肯定那里理解的出了问题，才导致自己使用工具才这么吃力，回头一想既然bootstrap插件是对bootstrap的一层封装，肯定是bootstrap里面的概念没理解清楚，然后就对着类名去搜bootstrap里面的一些概念，果然基本都有对应的，算是过去了这道坎。&lt;/p&gt;
+&lt;h2 id=&quot;分清角色、责任&quot;&gt;&lt;a href=&quot;#分清角色、责任&quot; class=&quot;headerlink&quot; title=&quot;分清角色、责任&quot;&gt;&lt;/a&gt;分清角色、责任&lt;/h2&gt;&lt;p&gt;不要重复造轮子，一个项目即使再怎么小，还是一个系统，会有大量的细节去要处理，如果自己真的要造轮子，真是难于上青天。就比如说我写的项目分这么几大块，基于角色的权限验证，前端，缓存，数据库，再加上业务上的逻辑处理，如果从头造轮子，简直累死，而且也说明自己分不清楚自己的在项目中的角色，在这个时期自己既是项目中的搬砖的程序员，还是整个系统的设计人员，还要和老大提出的需求来回进行确认系统到底要设计成什么样子的，这个时期更过的精力放在后两者，而不是造轮子。最好的方式是，选择模块化比较好的框架，并且还附带有大量的第三方模块。框架本身基本上就能保证住项目的质量，模块化比较好，说明后期易于替换，优化。所以就决定使用yii2框架，其本身十分强大，语法也很是喜欢，加上及其附带的第三方模块，极大的提升了效率。在编写界面代码的时候，php语言中的匿名函数提供了巨大的帮助。&lt;/p&gt;
+&lt;h2 id=&quot;抽象是一把利剑&quot;&gt;&lt;a href=&quot;#抽象是一把利剑&quot; class=&quot;headerlink&quot; title=&quot;抽象是一把利剑&quot;&gt;&lt;/a&gt;抽象是一把利剑&lt;/h2&gt;&lt;p&gt;对付复杂化细节的有利方式就是使用抽象。比如这次使用了几家的服务做一间事情，每一家的服务不太一样，所以这时候对每一家提供的服务做一个对象抽象，这样就屏蔽了使用这个服务的程序对细节的依赖，而只是对这个抽象的依赖。具体抽象的方式就是使用了策略模式，这个模式想想真的很重要，比如ffmpeg里面针对解码就是用了策略模式的思想，还可以实现软件的热插拔，也可以提高程序的健壮性(例如这家的服务挂了，我就使用下一家的，如果全挂了，那就真没辙了，赶紧速错)，&lt;/p&gt;
+&lt;h2 id=&quot;这是一个流程问题&quot;&gt;&lt;a href=&quot;#这是一个流程问题&quot; class=&quot;headerlink&quot; title=&quot;这是一个流程问题&quot;&gt;&lt;/a&gt;这是一个流程问题&lt;/h2&gt;&lt;p&gt;做一个系统和一个项目中一点最重要的区别感觉就是，把整个系统的流程完全跑通优先级提高一些，而不能想做一点的时候下很大的劲去做优化，调优。并且还要尽快实现，这样就尽可能的保证有一个比较小而简单的原型，小，设计出了问题，就可以方便修改。&lt;/p&gt;
+&lt;!-- ## 扩展性
+像yii2这种框架就比较好，提供了事件、行为、模块等方式可以很好的实现扩展。 --&gt;</content>
+    
+    <summary type="html">
+    
+      著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处
+    
+    </summary>
+    
+    
+      <category term="笔记" scheme="http://blog.soul11201.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Linux 内核分析 -- 进程的启动和进程的切换机制</title>
-    <link href="http://yangzz0.github.io/2016/03/05/mooc-linux-kernel-2/"/>
-    <id>http://yangzz0.github.io/2016/03/05/mooc-linux-kernel-2/</id>
+    <link href="http://blog.soul11201.com/2016/03/05/mooc-linux-kernel-2/"/>
+    <id>http://blog.soul11201.com/2016/03/05/mooc-linux-kernel-2/</id>
     <published>2016-03-05T04:02:45.000Z</published>
     <updated>2016-03-05T12:06:01.672Z</updated>
     
@@ -85,22 +195,22 @@
     </summary>
     
     
-      <category term="C" scheme="http://yangzz0.github.io/tags/C/"/>
+      <category term="C" scheme="http://blog.soul11201.com/tags/C/"/>
     
-      <category term="Linux 内核分析" scheme="http://yangzz0.github.io/tags/Linux-%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/"/>
+      <category term="Linux 内核分析" scheme="http://blog.soul11201.com/tags/Linux-%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/"/>
     
-      <category term="mooc" scheme="http://yangzz0.github.io/tags/mooc/"/>
+      <category term="mooc" scheme="http://blog.soul11201.com/tags/mooc/"/>
     
-      <category term="汇编" scheme="http://yangzz0.github.io/tags/%E6%B1%87%E7%BC%96/"/>
+      <category term="汇编" scheme="http://blog.soul11201.com/tags/%E6%B1%87%E7%BC%96/"/>
     
-      <category term="笔记" scheme="http://yangzz0.github.io/tags/%E7%AC%94%E8%AE%B0/"/>
+      <category term="笔记" scheme="http://blog.soul11201.com/tags/%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
   <entry>
     <title>php 获取当天0点的时间戳</title>
-    <link href="http://yangzz0.github.io/2016/03/04/php-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%A4%A90%E7%82%B9%E7%9A%84%E6%97%B6%E9%97%B4%E6%88%B3/"/>
-    <id>http://yangzz0.github.io/2016/03/04/php-获取当天0点的时间戳/</id>
+    <link href="http://blog.soul11201.com/2016/03/04/php-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%A4%A90%E7%82%B9%E7%9A%84%E6%97%B6%E9%97%B4%E6%88%B3/"/>
+    <id>http://blog.soul11201.com/2016/03/04/php-获取当天0点的时间戳/</id>
     <published>2016-03-04T06:54:58.000Z</published>
     <updated>2016-03-05T03:08:05.500Z</updated>
     
@@ -121,8 +231,8 @@
   
   <entry>
     <title>Linux 内核分析 -- C函数调用栈机制在汇编中的实现</title>
-    <link href="http://yangzz0.github.io/2016/02/24/mooc-linux-kernel-1/"/>
-    <id>http://yangzz0.github.io/2016/02/24/mooc-linux-kernel-1/</id>
+    <link href="http://blog.soul11201.com/2016/02/24/mooc-linux-kernel-1/"/>
+    <id>http://blog.soul11201.com/2016/02/24/mooc-linux-kernel-1/</id>
     <published>2016-02-23T23:55:28.000Z</published>
     <updated>2016-03-05T12:05:36.355Z</updated>
     
@@ -183,22 +293,22 @@
     </summary>
     
     
-      <category term="C" scheme="http://yangzz0.github.io/tags/C/"/>
+      <category term="C" scheme="http://blog.soul11201.com/tags/C/"/>
     
-      <category term="Linux 内核分析" scheme="http://yangzz0.github.io/tags/Linux-%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/"/>
+      <category term="Linux 内核分析" scheme="http://blog.soul11201.com/tags/Linux-%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/"/>
     
-      <category term="mooc" scheme="http://yangzz0.github.io/tags/mooc/"/>
+      <category term="mooc" scheme="http://blog.soul11201.com/tags/mooc/"/>
     
-      <category term="汇编" scheme="http://yangzz0.github.io/tags/%E6%B1%87%E7%BC%96/"/>
+      <category term="汇编" scheme="http://blog.soul11201.com/tags/%E6%B1%87%E7%BC%96/"/>
     
-      <category term="笔记" scheme="http://yangzz0.github.io/tags/%E7%AC%94%E8%AE%B0/"/>
+      <category term="笔记" scheme="http://blog.soul11201.com/tags/%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
   <entry>
     <title>yii2 前端资源管理代码阅读</title>
-    <link href="http://yangzz0.github.io/2016/02/22/yii2-assets-code-read/"/>
-    <id>http://yangzz0.github.io/2016/02/22/yii2-assets-code-read/</id>
+    <link href="http://blog.soul11201.com/2016/02/22/yii2-assets-code-read/"/>
+    <id>http://blog.soul11201.com/2016/02/22/yii2-assets-code-read/</id>
     <published>2016-02-22T09:05:26.000Z</published>
     <updated>2016-02-23T02:25:24.390Z</updated>
     
@@ -209,16 +319,16 @@
     </summary>
     
     
-      <category term="assets" scheme="http://yangzz0.github.io/tags/assets/"/>
+      <category term="assets" scheme="http://blog.soul11201.com/tags/assets/"/>
     
-      <category term="yii2" scheme="http://yangzz0.github.io/tags/yii2/"/>
+      <category term="yii2" scheme="http://blog.soul11201.com/tags/yii2/"/>
     
   </entry>
   
   <entry>
     <title>yii2 前端资源管理笔记</title>
-    <link href="http://yangzz0.github.io/2016/02/20/yii2-assets/"/>
-    <id>http://yangzz0.github.io/2016/02/20/yii2-assets/</id>
+    <link href="http://blog.soul11201.com/2016/02/20/yii2-assets/"/>
+    <id>http://blog.soul11201.com/2016/02/20/yii2-assets/</id>
     <published>2016-02-20T09:32:49.000Z</published>
     <updated>2016-02-23T03:03:08.175Z</updated>
     
@@ -256,16 +366,16 @@
     </summary>
     
     
-      <category term="assets" scheme="http://yangzz0.github.io/tags/assets/"/>
+      <category term="assets" scheme="http://blog.soul11201.com/tags/assets/"/>
     
-      <category term="yii2" scheme="http://yangzz0.github.io/tags/yii2/"/>
+      <category term="yii2" scheme="http://blog.soul11201.com/tags/yii2/"/>
     
   </entry>
   
   <entry>
     <title>yii2 GridView 使用</title>
-    <link href="http://yangzz0.github.io/2015/12/21/yii2-GridView-%E4%BD%BF%E7%94%A8/"/>
-    <id>http://yangzz0.github.io/2015/12/21/yii2-GridView-使用/</id>
+    <link href="http://blog.soul11201.com/2015/12/21/yii2-GridView-%E4%BD%BF%E7%94%A8/"/>
+    <id>http://blog.soul11201.com/2015/12/21/yii2-GridView-使用/</id>
     <published>2015-12-21T12:09:41.000Z</published>
     <updated>2015-12-21T13:00:53.546Z</updated>
     
@@ -295,8 +405,8 @@
   
   <entry>
     <title>eclipse-mars-php 自动补全提示</title>
-    <link href="http://yangzz0.github.io/2015/12/07/eclipse-mars-php%20%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E6%8F%90%E7%A4%BA/"/>
-    <id>http://yangzz0.github.io/2015/12/07/eclipse-mars-php 自动补全提示/</id>
+    <link href="http://blog.soul11201.com/2015/12/07/eclipse-mars-php%20%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E6%8F%90%E7%A4%BA/"/>
+    <id>http://blog.soul11201.com/2015/12/07/eclipse-mars-php 自动补全提示/</id>
     <published>2015-12-07T12:43:44.000Z</published>
     <updated>2015-12-08T06:13:35.908Z</updated>
     
@@ -307,16 +417,16 @@
     </summary>
     
     
-      <category term="eclipse" scheme="http://yangzz0.github.io/tags/eclipse/"/>
+      <category term="eclipse" scheme="http://blog.soul11201.com/tags/eclipse/"/>
     
-      <category term="工具" scheme="http://yangzz0.github.io/tags/%E5%B7%A5%E5%85%B7/"/>
+      <category term="工具" scheme="http://blog.soul11201.com/tags/%E5%B7%A5%E5%85%B7/"/>
     
   </entry>
   
   <entry>
     <title>awk 处理日志</title>
-    <link href="http://yangzz0.github.io/2015/12/07/awk-%E5%A4%84%E7%90%86%E6%97%A5%E5%BF%97/"/>
-    <id>http://yangzz0.github.io/2015/12/07/awk-处理日志/</id>
+    <link href="http://blog.soul11201.com/2015/12/07/awk-%E5%A4%84%E7%90%86%E6%97%A5%E5%BF%97/"/>
+    <id>http://blog.soul11201.com/2015/12/07/awk-处理日志/</id>
     <published>2015-12-07T11:36:31.000Z</published>
     <updated>2016-02-20T12:19:10.824Z</updated>
     
@@ -349,14 +459,14 @@
     </summary>
     
     
-      <category term="awk" scheme="http://yangzz0.github.io/tags/awk/"/>
+      <category term="awk" scheme="http://blog.soul11201.com/tags/awk/"/>
     
   </entry>
   
   <entry>
     <title>mathjax &amp;&amp; hexo</title>
-    <link href="http://yangzz0.github.io/2015/12/06/mathjax/"/>
-    <id>http://yangzz0.github.io/2015/12/06/mathjax/</id>
+    <link href="http://blog.soul11201.com/2015/12/06/mathjax/"/>
+    <id>http://blog.soul11201.com/2015/12/06/mathjax/</id>
     <published>2015-12-06T05:02:37.000Z</published>
     <updated>2016-02-20T11:58:56.499Z</updated>
     
@@ -379,14 +489,14 @@
     </summary>
     
     
-      <category term="mathjax" scheme="http://yangzz0.github.io/tags/mathjax/"/>
+      <category term="mathjax" scheme="http://blog.soul11201.com/tags/mathjax/"/>
     
   </entry>
   
   <entry>
     <title>碎语</title>
-    <link href="http://yangzz0.github.io/2015/11/22/2015.11.22.7/"/>
-    <id>http://yangzz0.github.io/2015/11/22/2015.11.22.7/</id>
+    <link href="http://blog.soul11201.com/2015/11/22/2015.11.22.7/"/>
+    <id>http://blog.soul11201.com/2015/11/22/2015.11.22.7/</id>
     <published>2015-11-22T13:09:37.000Z</published>
     <updated>2015-12-07T10:43:49.107Z</updated>
     
@@ -419,14 +529,14 @@
     </summary>
     
     
-      <category term="杂记" scheme="http://yangzz0.github.io/tags/%E6%9D%82%E8%AE%B0/"/>
+      <category term="杂记" scheme="http://blog.soul11201.com/tags/%E6%9D%82%E8%AE%B0/"/>
     
   </entry>
   
   <entry>
     <title>php 开发环境搭建</title>
-    <link href="http://yangzz0.github.io/2015/11/17/lnmp-%E7%8E%AF%E5%A2%83-%E6%90%AD%E5%BB%BA/"/>
-    <id>http://yangzz0.github.io/2015/11/17/lnmp-环境-搭建/</id>
+    <link href="http://blog.soul11201.com/2015/11/17/lnmp-%E7%8E%AF%E5%A2%83-%E6%90%AD%E5%BB%BA/"/>
+    <id>http://blog.soul11201.com/2015/11/17/lnmp-环境-搭建/</id>
     <published>2015-11-17T12:08:24.000Z</published>
     <updated>2016-02-22T06:04:48.215Z</updated>
     
@@ -470,20 +580,20 @@
     </summary>
     
     
-      <category term="lnmp" scheme="http://yangzz0.github.io/tags/lnmp/"/>
+      <category term="lnmp" scheme="http://blog.soul11201.com/tags/lnmp/"/>
     
-      <category term="php" scheme="http://yangzz0.github.io/tags/php/"/>
+      <category term="php" scheme="http://blog.soul11201.com/tags/php/"/>
     
-      <category term="环境搭建" scheme="http://yangzz0.github.io/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
+      <category term="环境搭建" scheme="http://blog.soul11201.com/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
     
-      <category term="笔记" scheme="http://yangzz0.github.io/tags/%E7%AC%94%E8%AE%B0/"/>
+      <category term="笔记" scheme="http://blog.soul11201.com/tags/%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   
   <entry>
     <title>MonaServer 使用笔记</title>
-    <link href="http://yangzz0.github.io/2015/11/11/MonaServer/"/>
-    <id>http://yangzz0.github.io/2015/11/11/MonaServer/</id>
+    <link href="http://blog.soul11201.com/2015/11/11/MonaServer/"/>
+    <id>http://blog.soul11201.com/2015/11/11/MonaServer/</id>
     <published>2015-11-11T11:54:48.000Z</published>
     <updated>2015-12-07T10:43:19.031Z</updated>
     
@@ -515,8 +625,8 @@
   
   <entry>
     <title>ngx-lua 笔记总计</title>
-    <link href="http://yangzz0.github.io/2015/11/10/ngx-lua/"/>
-    <id>http://yangzz0.github.io/2015/11/10/ngx-lua/</id>
+    <link href="http://blog.soul11201.com/2015/11/10/ngx-lua/"/>
+    <id>http://blog.soul11201.com/2015/11/10/ngx-lua/</id>
     <published>2015-11-10T12:27:52.000Z</published>
     <updated>2015-12-07T10:43:19.077Z</updated>
     
@@ -553,14 +663,14 @@
     </summary>
     
     
-      <category term="ngx-lua" scheme="http://yangzz0.github.io/tags/ngx-lua/"/>
+      <category term="ngx-lua" scheme="http://blog.soul11201.com/tags/ngx-lua/"/>
     
   </entry>
   
   <entry>
     <title>http 请求调试</title>
-    <link href="http://yangzz0.github.io/2015/10/30/http-debug/"/>
-    <id>http://yangzz0.github.io/2015/10/30/http-debug/</id>
+    <link href="http://blog.soul11201.com/2015/10/30/http-debug/"/>
+    <id>http://blog.soul11201.com/2015/10/30/http-debug/</id>
     <published>2015-10-30T05:08:18.000Z</published>
     <updated>2015-12-07T10:43:19.033Z</updated>
     
@@ -629,8 +739,8 @@
   
   <entry>
     <title>对一次寻找大素数问题的思考</title>
-    <link href="http://yangzz0.github.io/2015/10/25/prime-linear-time/"/>
-    <id>http://yangzz0.github.io/2015/10/25/prime-linear-time/</id>
+    <link href="http://blog.soul11201.com/2015/10/25/prime-linear-time/"/>
+    <id>http://blog.soul11201.com/2015/10/25/prime-linear-time/</id>
     <published>2015-10-25T05:49:37.000Z</published>
     <updated>2015-12-07T10:43:49.108Z</updated>
     
@@ -660,14 +770,14 @@
     </summary>
     
     
-      <category term="流水账" scheme="http://yangzz0.github.io/tags/%E6%B5%81%E6%B0%B4%E8%B4%A6/"/>
+      <category term="流水账" scheme="http://blog.soul11201.com/tags/%E6%B5%81%E6%B0%B4%E8%B4%A6/"/>
     
   </entry>
   
   <entry>
     <title>obs简单使用</title>
-    <link href="http://yangzz0.github.io/2015/10/23/obs-use/"/>
-    <id>http://yangzz0.github.io/2015/10/23/obs-use/</id>
+    <link href="http://blog.soul11201.com/2015/10/23/obs-use/"/>
+    <id>http://blog.soul11201.com/2015/10/23/obs-use/</id>
     <published>2015-10-23T08:55:27.000Z</published>
     <updated>2015-12-07T10:43:19.119Z</updated>
     
@@ -696,14 +806,14 @@
     </summary>
     
     
-      <category term="obs" scheme="http://yangzz0.github.io/tags/obs/"/>
+      <category term="obs" scheme="http://blog.soul11201.com/tags/obs/"/>
     
   </entry>
   
   <entry>
     <title>Linux 高性能服务器编程</title>
-    <link href="http://yangzz0.github.io/2015/10/14/linux-net-programming-dig/"/>
-    <id>http://yangzz0.github.io/2015/10/14/linux-net-programming-dig/</id>
+    <link href="http://blog.soul11201.com/2015/10/14/linux-net-programming-dig/"/>
+    <id>http://blog.soul11201.com/2015/10/14/linux-net-programming-dig/</id>
     <published>2015-10-14T09:40:49.000Z</published>
     <updated>2015-12-07T10:43:19.051Z</updated>
     
@@ -731,311 +841,13 @@
     </summary>
     
     
-      <category term="c" scheme="http://yangzz0.github.io/tags/c/"/>
+      <category term="c" scheme="http://blog.soul11201.com/tags/c/"/>
     
-      <category term="linux" scheme="http://yangzz0.github.io/tags/linux/"/>
+      <category term="linux" scheme="http://blog.soul11201.com/tags/linux/"/>
     
-      <category term="摘抄" scheme="http://yangzz0.github.io/tags/%E6%91%98%E6%8A%84/"/>
+      <category term="摘抄" scheme="http://blog.soul11201.com/tags/%E6%91%98%E6%8A%84/"/>
     
-      <category term="笔记" scheme="http://yangzz0.github.io/tags/%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>c incldue 文件包含</title>
-    <link href="http://yangzz0.github.io/2015/10/13/c-incldue/"/>
-    <id>http://yangzz0.github.io/2015/10/13/c-incldue/</id>
-    <published>2015-10-13T11:12:04.000Z</published>
-    <updated>2016-02-22T06:05:54.151Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;引言&quot;&gt;&lt;a href=&quot;#引言&quot; class=&quot;headerlink&quot; title=&quot;引言&quot;&gt;&lt;/a&gt;引言&lt;/h2&gt;&lt;p&gt;前段时间看lua的时候，书中提到标准C是没有定义查找路径的，回想起来C的书籍中确实没有过多实没有提及文件包含的问题。在看linux网络编程的时候一些文件包含格式，以前也见过但是不理解为什么这么写，自己也没深入关注过这方面的问题。在配置eclipse,sublime,vs的文件包含、库文件、动态链接库相关的配置的时候，感觉配置参数和这些文件包含他们之间有那么一些隐隐约约的联系，&lt;code&gt;感觉配置的这些参数，就是编译器，链接器相关命令行参数&lt;/code&gt;，也确实是如此。&lt;/p&gt;
-&lt;p&gt;如何包含文件的问题其实是一个文件查找的问题。例如php中对文件包含的规则就比较简单&lt;code&gt;require&lt;/code&gt;或者&lt;code&gt;include&lt;/code&gt; 后面加上文件路径，但是C语言中在自己的印象中一直好像没有相关的说法，于是翻了一下C程序语言设计这本书，呵呵。。果然是阳春白雪。。就那么一点点。。。不留心可能就忽略了，在工程之中却又是一个非常重要的问题。比如可以利用文件把一个大的工程分开，有利于&lt;code&gt;模块化&lt;/code&gt;开发设计。&lt;/p&gt;
-&lt;p&gt;随即查阅了一些资料做个简单的小结。&lt;/p&gt;
-&lt;h2 id=&quot;查找路径&quot;&gt;&lt;a href=&quot;#查找路径&quot; class=&quot;headerlink&quot; title=&quot;查找路径&quot;&gt;&lt;/a&gt;查找路径&lt;/h2&gt;&lt;p&gt;按照程序的时段可以划分为三个&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;编译时的查找&lt;/li&gt;
-&lt;li&gt;链接时的查找&lt;/li&gt;
-&lt;li&gt;运行时查找&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;编译时的查找&quot;&gt;&lt;a href=&quot;#编译时的查找&quot; class=&quot;headerlink&quot; title=&quot;编译时的查找&quot;&gt;&lt;/a&gt;编译时的查找&lt;/h3&gt;&lt;p&gt;&lt;strong&gt;include 文件包含格式：&lt;/strong&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;ul&gt;
-&lt;li&gt;尖括号&lt;code&gt;&amp;lt;&amp;gt;&lt;/code&gt;引起来&lt;/li&gt;
-&lt;li&gt;用引号&lt;code&gt;&amp;quot;&amp;quot;&lt;/code&gt;引起来&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;引号引起来的首先在文件当前位置查找。如果查找不到，则和尖括号引起来的查找规则一样，规则和具体的实现有关。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;gcc查找规则&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;可以使用 &lt;code&gt;-v&lt;/code&gt; 参数查看到gcc查找的路径。&lt;/p&gt;
-&lt;figure class=&quot;highlight&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;gcc -v hello.c&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;strong&gt;&lt;code&gt;&amp;lt;&amp;gt;&lt;/code&gt;查找规则&lt;/strong&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;ol&gt;
-&lt;li&gt;先搜索&lt;code&gt;-I&lt;/code&gt;选项后的路径（&lt;code&gt;-I&lt;/code&gt;选项指定的位置），然后是&lt;code&gt;标准的系统头文件路径&lt;/code&gt;。&lt;/li&gt;
-&lt;li&gt;查找通过环境变量添加的路径&lt;/li&gt;
-&lt;li&gt;在头文件中含有路径名。例如：&lt;code&gt;#include &amp;lt;sys/time.h&amp;gt;&lt;/code&gt;,会在&lt;code&gt;搜索的系统目录&lt;/code&gt;的&lt;code&gt;sys&lt;/code&gt;目录下寻找&lt;code&gt;time.h&lt;/code&gt;文件。&lt;/li&gt;
-&lt;li&gt;头文件中不支持通配符，如&lt;code&gt;*&lt;/code&gt;&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;
-&lt;h3 id=&quot;链接时的查找&quot;&gt;&lt;a href=&quot;#链接时的查找&quot; class=&quot;headerlink&quot; title=&quot;链接时的查找&quot;&gt;&lt;/a&gt;链接时的查找&lt;/h3&gt;&lt;p&gt;在命令行下可以使用 &lt;code&gt;-L&lt;/code&gt;  &lt;code&gt;-l&lt;/code&gt;添加查找路径，也可以使用环境变量添加。含义分别表示&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;-L&lt;/code&gt; 查找的文件夹&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;-l&lt;/code&gt; 静态库文件&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id=&quot;运行时查找&quot;&gt;&lt;a href=&quot;#运行时查找&quot; class=&quot;headerlink&quot; title=&quot;运行时查找&quot;&gt;&lt;/a&gt;运行时查找&lt;/h3&gt;&lt;p&gt;查找动态链接库。比如在Windows上运行某个程序的时候，弹出提示说缺少&lt;strong&gt;dll&lt;/strong&gt;的情况，就是因为没有在指定的位置找到对应的DLL。一般把对应的DLL放在程序运行的位置，或者放在系统 &lt;code&gt;C:\Windows\System32&lt;/code&gt;问题就解决了。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;&lt;em&gt;部分环境变量的含义&lt;/em&gt;&lt;/strong&gt;&lt;/p&gt;
-&lt;hr&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;环境变量&lt;/th&gt;
-&lt;th&gt;含义&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;C_INCLUDE_PAT&lt;/td&gt;
-&lt;td&gt;c 查找头文件的路径&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;CPATH&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;CPLUS_INCLUDE_PAT&lt;/td&gt;
-&lt;td&gt;C++ 查找头文件的路径&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;DEPENDENCIES_OUTPUT&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;OBJC_INCLUDE_PATH&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;SUNPRO_DEPENDENCIES&lt;/td&gt;
-&lt;td&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;LD_LIBRARY_PATH&lt;/td&gt;
-&lt;td&gt;查找动态链接库的路径&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;LIBRARY_PATH&lt;/td&gt;
-&lt;td&gt;查找静态库的路径&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;ul&gt;
-&lt;li&gt;详见 &lt;a href=&quot;http://blog.chinaunix.net/uid-22145625-id-1789493.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://blog.chinaunix.net/uid-22145625-id-1789493.html&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;br&gt;&lt;/p&gt;
-&lt;h2 id=&quot;参考&quot;&gt;&lt;a href=&quot;#参考&quot; class=&quot;headerlink&quot; title=&quot;参考&quot;&gt;&lt;/a&gt;参考&lt;/h2&gt;&lt;p&gt;&lt;a href=&quot;http://blog.chinaunix.net/uid-22150747-id-189278.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;gcc include路径&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://www.cnblogs.com/zhoug2020/archive/2012/07/04/2576068.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;gcc中include文件的搜索路径&lt;/a&gt;&lt;br&gt;&lt;a href=&quot;http://blog.csdn.net/ericghw/article/details/38639821&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;c项目中指定头文件目录&lt;/a&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;引言&quot;&gt;&lt;a href=&quot;#引言&quot; class=&quot;headerlink&quot; title=&quot;引言&quot;&gt;&lt;/a&gt;引言&lt;/h2&gt;&lt;p&gt;前段时间看lua的时候，书中提到标准C是没有定义查找路径的，回想起来C的书籍中确实没有过多实没有提及文件包含的问题。在看linux网络编程的
-    
-    </summary>
-    
-    
-      <category term="c" scheme="http://yangzz0.github.io/tags/c/"/>
-    
-      <category term="include" scheme="http://yangzz0.github.io/tags/include/"/>
-    
-      <category term="笔记" scheme="http://yangzz0.github.io/tags/%E7%AC%94%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>调试工具</title>
-    <link href="http://yangzz0.github.io/2015/09/23/debug-tools/"/>
-    <id>http://yangzz0.github.io/2015/09/23/debug-tools/</id>
-    <published>2015-09-23T10:22:00.000Z</published>
-    <updated>2015-12-07T10:43:19.032Z</updated>
-    
-    <content type="html">&lt;p&gt;##☆ gdb&lt;br&gt;启动gdb后&lt;/p&gt;
-&lt;p&gt;b breakpoint 断点&lt;br&gt;p print 打印&lt;br&gt;r&lt;br&gt;attach&lt;br&gt;watch&lt;br&gt;c&lt;br&gt;bt&lt;br&gt;up&lt;br&gt;list&lt;br&gt;info macro NGX_OK&lt;br&gt;macro expand&lt;/p&gt;
-&lt;p&gt;##☆ ulimit&lt;br&gt;-c&lt;br&gt;unlimited&lt;/p&gt;
-&lt;p&gt;##☆ tcpdump&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;选项&lt;/th&gt;
-&lt;th&gt;含义&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;t&lt;/td&gt;
-&lt;td&gt;时间戳&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;x&lt;/td&gt;
-&lt;td&gt;十六进制显示数据包&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;X&lt;/td&gt;
-&lt;td&gt;十六进制显示数据包,同时会对应显示对应的ASCII码表&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;i&lt;/td&gt;
-&lt;td&gt;后跟网卡名字，如&lt;code&gt;eth0&lt;/code&gt;&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;src&lt;/td&gt;
-&lt;td&gt;源地址&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;dst&lt;/td&gt;
-&lt;td&gt;目标地址&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;and&lt;/td&gt;
-&lt;td&gt;逻辑与&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;or&lt;/td&gt;
-&lt;td&gt;逻辑或&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;&lt;code&gt;tcpdump  -i eth0 -Xnt &amp;quot;(src 192.168.1.194 and dst 192.168.1.183) or (src 192.168.1.183 and dst 192.168.1.194)&amp;quot;&lt;/code&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;##☆ gdb&lt;br&gt;启动gdb后&lt;/p&gt;
-&lt;p&gt;b breakpoint 断点&lt;br&gt;p print 打印&lt;br&gt;r&lt;br&gt;attach&lt;br&gt;watch&lt;br&gt;c&lt;br&gt;bt&lt;br&gt;up&lt;br&gt;list&lt;br&gt;info macro NGX_OK&lt;br&gt;macro exp
-    
-    </summary>
-    
-    
-      <category term="gdb" scheme="http://yangzz0.github.io/tags/gdb/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>元表、元方法</title>
-    <link href="http://yangzz0.github.io/2015/09/18/lua-metatable/"/>
-    <id>http://yangzz0.github.io/2015/09/18/lua-metatable/</id>
-    <published>2015-09-18T09:47:00.000Z</published>
-    <updated>2015-12-07T10:43:19.052Z</updated>
-    
-    <content type="html">&lt;blockquote&gt;&lt;p&gt;每一个值都有一个元表。table和userdata可以有各自独立的元表，其他类型的值则共享其类型所属的单一元表&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;表是lua中非常重要的基本数据类型，实现其他的一些编程技术概念的基础，如模块、包、类。通过语言提供的元表和元方法可以更改表的表现行为。&lt;/p&gt;
-&lt;p&gt;###☆ 元方法&lt;/p&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;元方法&lt;/th&gt;
-&lt;th&gt;简单描述&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__metatable&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;调用 setmetatable、getmetatable方法的时候会用到这个字段&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__index&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;当表中的索引不存在时，查找元表中是否设置了这个元方法&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__newindex&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;同上&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__add&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;+&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__sub&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;-&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__mul&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;*&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__div&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;/&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__unm&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;-(相反数)&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__mod&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;%&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__pow&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;^&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__concat&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;&lt;code&gt;..&lt;/code&gt; 连接操作符&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__eq&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;等于&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__lt&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;小于&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__gt&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;大于&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__metatable&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;保护作用&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;&lt;code&gt;__tostring&lt;/code&gt;&lt;/td&gt;
-&lt;td&gt;字符串化&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;总的来说，在程序中通过&lt;code&gt;元方法&lt;/code&gt;，可以：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;更改&lt;code&gt;算符运算符&lt;/code&gt;、&lt;code&gt;关系运算符&lt;/code&gt;作用于表时的行为&lt;/li&gt;
-&lt;li&gt;更改对表中的元素的访问行为，简单说是重载了，&lt;code&gt;[]&lt;/code&gt; ,&lt;code&gt;[]=&lt;/code&gt; 运算符&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;这两个特性在C++特性中看起来是&lt;code&gt;运算符的重载&lt;/code&gt;。与C++相比，Lua本身没有面向对象的支持，但是使用元方法，可以实现其中的继承，还可以实现其他的功能、如返回具有默认值的table、跟踪table访问、只读的table&lt;/p&gt;
-&lt;p&gt;###☆ 继承&lt;br&gt;从原型窗口继承所有不存在的字段&lt;br&gt;&lt;figure class=&quot;highlight lua&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;Window = &amp;#123;&amp;#125;   &lt;span class=&quot;comment&quot;&gt;-- 名字空间&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Window.prototype = &amp;#123;x = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;,y = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;,width = &lt;span class=&quot;number&quot;&gt;300&lt;/span&gt;,height = &lt;span class=&quot;number&quot;&gt;400&lt;/span&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Window.mt = &amp;#123;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Window.new&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(o)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;-- body&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;setmetatable&lt;/span&gt;(o, Window.mt)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; o&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Window.mt.__index = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(tabel,key)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;print&lt;/span&gt;(key)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; Window.prototype[key]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;w = Window.new&amp;#123;&lt;span class=&quot;number&quot;&gt;10&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;20&lt;/span&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;print&lt;/span&gt;(w.height)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;``&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;###☆ 返回具有默认值的table&lt;br&gt;当访问Lua表中不存在的一个元素的时候默认的返回的是nil,如果不想返回nil,则可以利用使用&lt;code&gt;__index&lt;/code&gt; 元方法更改返回值。可以使用下面几种方式&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;方式一 :&lt;/strong&gt;  为每一个需要默认值的表创建一个新的元表&lt;/p&gt;
-&lt;figure class=&quot;highlight lua&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;set_default&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(t,default)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;--todo&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;local&lt;/span&gt; mt = &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        __index = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;()&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; default&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;setmetatable&lt;/span&gt;(t, mt)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;tab = &amp;#123;x = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,y = &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;print&lt;/span&gt;(tab.x,tab.y)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;set_default(tab,&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;print&lt;/span&gt;(tab.x,tab.y,tab.z)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;strong&gt;方式二 :&lt;/strong&gt;  使用同一个元表，默认值在每个表的各自内部&lt;br&gt;当有很多表需要默认值的时候，方法一会创建大量的元表，降低效率，下面这种方法更合适。所有通过新元表解决方案都会有这个问题&lt;br&gt;&lt;figure class=&quot;highlight lua&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;local&lt;/span&gt; mt = &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    __index = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(t,key)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; t.___&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;set_default&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(t,default)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    t.___ = default&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;setmetatable&lt;/span&gt;(t, mt)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;tab = &amp;#123;x = &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;,y = &lt;span class=&quot;number&quot;&gt;2&lt;/span&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;print&lt;/span&gt;(tab.x,tab.y)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;set_default(tab,&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;print&lt;/span&gt;(tab.x,tab.y,tab.z)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;防止索引冲突，可以改进为如下&lt;/p&gt;
-&lt;figure class=&quot;highlight lua&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;local&lt;/span&gt; key = &amp;#123;&amp;#125; &lt;span class=&quot;comment&quot;&gt;---- 防止索引冲突&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;local&lt;/span&gt; mt = &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    __index = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(t)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; t[key]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;set_default&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(t,default)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    t[key] = default&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;setmetatable&lt;/span&gt;(t, mt)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;###☆ 跟踪table访问&lt;/p&gt;
-&lt;figure class=&quot;highlight lua&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;proxy&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(t)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;--todo&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;local&lt;/span&gt;  _t = t&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;local&lt;/span&gt; _mt = &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        __index = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(t,k)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;built_in&quot;&gt;print&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&#39;access to element&#39;&lt;/span&gt;..&lt;span class=&quot;built_in&quot;&gt;tostring&lt;/span&gt;(k))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; _t[k]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        __newindex = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(t,k,v)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;built_in&quot;&gt;print&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;update  element &quot;&lt;/span&gt;..&lt;span class=&quot;built_in&quot;&gt;tostring&lt;/span&gt;(k)..&lt;span class=&quot;string&quot;&gt;&quot;to&quot;&lt;/span&gt;..&lt;span class=&quot;built_in&quot;&gt;tostring&lt;/span&gt;(v))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            _t[k] = v&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;setmetatable&lt;/span&gt;(t, _mt)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    t = &amp;#123;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; t&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;t = proxy&amp;#123;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;t.k = &lt;span class=&quot;number&quot;&gt;111&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;print&lt;/span&gt;(t.k)&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;可以改进如下：&lt;br&gt;&lt;figure class=&quot;highlight lua&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;local&lt;/span&gt; index = &amp;#123;&amp;#125; &lt;span class=&quot;comment&quot;&gt;-- 防止key 冲突&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;local&lt;/span&gt; _mt = &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    __index = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(t,k)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;built_in&quot;&gt;print&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&#39;access to element &#39;&lt;/span&gt;..&lt;span class=&quot;built_in&quot;&gt;tostring&lt;/span&gt;(k))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; t[index][k]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    __newindex = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(t,k,v)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;built_in&quot;&gt;print&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;update  element &quot;&lt;/span&gt;..&lt;span class=&quot;built_in&quot;&gt;tostring&lt;/span&gt;(k)..&lt;span class=&quot;string&quot;&gt;&quot; to &quot;&lt;/span&gt;..&lt;span class=&quot;built_in&quot;&gt;tostring&lt;/span&gt;(v))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        t[index][k] = v&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;proxy&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(t)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;--todo&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;local&lt;/span&gt;  proxy = &amp;#123;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    proxy[index] = t&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;setmetatable&lt;/span&gt;(proxy, _mt)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;comment&quot;&gt;-- t = proxy -- 方便 t = proxy(t),proxy(t)两种形式的调用 --- error  已经是局部变量t,和外围t不是一回事，受到名字的影响&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; proxy&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
-&lt;p&gt;###☆只读的table&lt;/p&gt;
-&lt;figure class=&quot;highlight lua&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;make_read_only_table&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(t)&lt;/span&gt;&lt;/span&gt; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;local&lt;/span&gt; read_only = &amp;#123;&amp;#125; &lt;span class=&quot;comment&quot;&gt;-- 重要的一步&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;local&lt;/span&gt; mt = &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        __index = t,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        __newindex = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;params&quot;&gt;(t,k,v)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &lt;span class=&quot;built_in&quot;&gt;error&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;attemp to update a read-only table&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;setmetatable&lt;/span&gt;(read_only, mt)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; read_only&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;a = &lt;span class=&quot;string&quot;&gt;&#39;test&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;t = make_read_only_table&amp;#123;&lt;span class=&quot;number&quot;&gt;13&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;6&lt;/span&gt;,name=&lt;span class=&quot;string&quot;&gt;&#39;webapp&#39;&lt;/span&gt;,temp=a&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;a = &lt;span class=&quot;string&quot;&gt;&#39;dd&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;print&lt;/span&gt;(t.temp)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;t.temp = &lt;span class=&quot;number&quot;&gt;1111&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;strong&gt;方案二&lt;/strong&gt;&lt;/p&gt;
-&lt;figure class=&quot;highlight lua&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;local&lt;/span&gt; index = &amp;#123;&amp;#125; &lt;span class=&quot;comment&quot;&gt;-- 防止key 冲突&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;local&lt;/span&gt; _mt = &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    __index = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(t,k)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;built_in&quot;&gt;print&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&#39;access to element &#39;&lt;/span&gt;..&lt;span class=&quot;built_in&quot;&gt;tostring&lt;/span&gt;(k))&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; t[index][k]&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    __newindex = &lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(t,k,v)&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;built_in&quot;&gt;error&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;attemp to update a read-only table&quot;&lt;/span&gt;)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;make_read_only_table&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(t)&lt;/span&gt;&lt;/span&gt; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;local&lt;/span&gt; read_only = &amp;#123;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    read_only[index] = t&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;built_in&quot;&gt;setmetatable&lt;/span&gt;(read_only, _mt)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &lt;span class=&quot;keyword&quot;&gt;return&lt;/span&gt; read_only&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;end&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;a = &lt;span class=&quot;string&quot;&gt;&#39;test&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;t = make_read_only_table&amp;#123;&lt;span class=&quot;number&quot;&gt;13&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;4&lt;/span&gt;,&lt;span class=&quot;number&quot;&gt;6&lt;/span&gt;,name=&lt;span class=&quot;string&quot;&gt;&#39;webapp&#39;&lt;/span&gt;,temp=a&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;a = &lt;span class=&quot;string&quot;&gt;&#39;dd&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;print&lt;/span&gt;(t.temp)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;-- t.temp = 1111&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</content>
-    
-    <summary type="html">
-    
-      &lt;blockquote&gt;&lt;p&gt;每一个值都有一个元表。table和userdata可以有各自独立的元表，其他类型的值则共享其类型所属的单一元表&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;表是lua中非常重要的基本数据类型，实现其他的一些编程技术概念的基础，如模块、包、类。通过语言提
-    
-    </summary>
-    
-    
-      <category term="lua" scheme="http://yangzz0.github.io/tags/lua/"/>
-    
-      <category term="元方法" scheme="http://yangzz0.github.io/tags/%E5%85%83%E6%96%B9%E6%B3%95/"/>
-    
-      <category term="元表" scheme="http://yangzz0.github.io/tags/%E5%85%83%E8%A1%A8/"/>
+      <category term="笔记" scheme="http://blog.soul11201.com/tags/%E7%AC%94%E8%AE%B0/"/>
     
   </entry>
   

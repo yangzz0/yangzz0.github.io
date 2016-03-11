@@ -4,8 +4,76 @@
   
     
     <entry>
+      <title><![CDATA[dash 笔记]]></title>
+      <url>http://blog.soul11201.com/2016/03/11/dashjsoverview/</url>
+      <content type="html"><![CDATA[<blockquote><p>著作权归作者所有。<br>商业转载请联系作者获得授权，非商业转载请注明出处。<br>作者：杨振振<br>链接：</p>
+</blockquote>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>从使用的角度来看，<a href="https://en.wikipedia.org/wiki/Dynamic_Adaptive_Streaming_over_HTTP" target="_blank" rel="external">https://en.wikipedia.org/wiki/Dynamic_Adaptive_Streaming_over_HTTP</a> 对dash协议已经有非常详细的描述。这只做一点简要的笔记。DASH (Dynamic Adaptive Streaming over HTTP，又名MPEG-DASH)是一种<a href="https://en.wikipedia.org/wiki/Adaptive_bitrate_streaming" target="_blank" rel="external">自适应码流技术</a>，类似于 HLS,其特点总的说就是</p>
+<ul>
+<li>码率自适应，可以实现最大可能的观看质量较高的视频</li>
+<li>跨设备，协议。可以从一些协议转化成另外一些协议，在不同的设备上观看</li>
+<li>可以利用已有的 HTTP Web Server 基础设施资源，</li>
+</ul>
+<p><a href="https://wmspanel.com/nimble" target="_blank" rel="external">nimble</a>和<a href="https://developer.bitcodin.com/doc/getting-started" target="_blank" rel="external">bitcodin</a>的下面两张图最能说明</p>
+<p> <img src="/imgs/bitcodindash.jpg" alt=""><br> <img src="/imgs/NimbleStreamerFeature.png" alt=""></p>
+<p>相关类似技术</p>
+<ul>
+<li>Adobe Systems HTTP Dynamic Streaming</li>
+<li>Apple Inc. HTTP Live Streaming (HLS) </li>
+<li>Microsoft Smooth Streaming</li>
+</ul>
+<p>支持的编码格式</p>
+<ul>
+<li>h.264 </li>
+<li>h.265</li>
+<li>vp9</li>
+</ul>
+<p>支持的容器格式</p>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/ISO_base_media_file_format" target="_blank" rel="external">ISO base media file format</a> (e.g. MP4 file format) </li>
+<li><a href="https://en.wikipedia.org/wiki/MPEG_transport_stream" target="_blank" rel="external">MPEG-2 Transport Stream</a></li>
+</ul>
+<p>将dash标准商业化，实现的相关组织</p>
+<ul>
+<li>DASH Industry Forum (DASH-IF)</li>
+<li>Microsoft,</li>
+<li>Netflix</li>
+<li>Google</li>
+<li>Ericsson</li>
+<li>Samsung</li>
+<li>Adobe</li>
+<li>其他</li>
+</ul>
+<h2 id="样例"><a href="#样例" class="headerlink" title="样例"></a>样例</h2><p>开始准备使用nginx-rtmp +dash.js 来做实现，dash.js无法播放，使用 <a href="https://github.com/arut/dash.js" target="_blank" rel="external">arut 修改过的dashjs</a>仍旧无法播放，看来还是对dash的支持还是有点问题，使用<a href="http://dashif.org/reference/players/javascript/v2.0.0/samples/dash-if-reference-player/index.html#" target="_blank" rel="external">dashif</a>给出的视频样例来做一个<a href="/demo/dashjs.demo.html">demo测试</a>，感觉还行，</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="title">script</span> <span class="attribute">src</span>=<span class="value">"http://cdn.dashjs.org/latest/dash.all.min.js"</span>&gt;</span><span class="undefined"></span><span class="tag">&lt;/<span class="title">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="title">body</span> <span class="attribute">onLoad</span>=<span class="value">"Dash.createAll()"</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="title">div</span>&gt;</span></span><br><span class="line">         <span class="tag">&lt;<span class="title">video</span> <span class="attribute">class</span>=<span class="value">"dashjs-player"</span> <span class="attribute">autoplay</span> <span class="attribute">preload</span>=<span class="value">"none"</span> <span class="attribute">controls</span>=<span class="value">"true"</span>&gt;</span></span><br><span class="line">            <span class="tag">&lt;<span class="title">source</span> <span class="attribute">src</span>=<span class="value">"http://dash.edgesuite.net/dash264/TestCases/1a/sony/SNE_DASH_SD_CASE1A_REVISED.mpd"</span> <span class="attribute">type</span>=<span class="value">"application/dash+xml"</span>/&gt;</span></span><br><span class="line">         <span class="tag">&lt;/<span class="title">video</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;/<span class="title">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="title">body</span>&gt;</span></span><br></pre></td></tr></table></figure>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[在heroku上部署我的rss开源项目]]></title>
+      <url>http://blog.soul11201.com/2016/03/09/heroku-deploy-myrss/</url>
+      <content type="html"><![CDATA[<blockquote><p>著作权归作者所有。<br>商业转载请联系作者获得授权，非商业转载请注明出处。<br>作者：杨振振<br>链接：</p>
+</blockquote>
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[使用yii2框架开发的一点总结]]></title>
+      <url>http://blog.soul11201.com/2016/03/08/php-yii2-summary/</url>
+      <content type="html"><![CDATA[<blockquote><p>著作权归作者所有。<br>商业转载请联系作者获得授权，非商业转载请注明出处。<br>作者：杨振振<br>链接：</p>
+</blockquote>
+<p>噼里啪啦，最近使用yii2框架开发了几个项目（包括开源的<a href="https://github.com/noname007/learn-yii2" target="_blank" rel="external">rss</a>，<a href="https://github.com/noname007/diandiandian" target="_blank" rel="external">企业点餐系统</a>)）。其中使用到了 GridView，gii，debug，migration，rbac，yii2-user，bootstrap 等模块。马上又要搞其他的东西去了，忘记东西的速度很快，所以下面总结一下整个过程中写代码的心得。</p>
+<h2 id="熟悉领域问题、概念"><a href="#熟悉领域问题、概念" class="headerlink" title="熟悉领域问题、概念"></a>熟悉领域问题、概念</h2><p>很多问题是问题领域不熟悉导致的，比如在写前端的时候bootstrap模块直接看代码注释文档，都不是特别理解在说什么，看源码，更是看不懂源码的思路逻辑，感觉肯定那里理解的出了问题，才导致自己使用工具才这么吃力，回头一想既然bootstrap插件是对bootstrap的一层封装，肯定是bootstrap里面的概念没理解清楚，然后就对着类名去搜bootstrap里面的一些概念，果然基本都有对应的，算是过去了这道坎。</p>
+<h2 id="分清角色、责任"><a href="#分清角色、责任" class="headerlink" title="分清角色、责任"></a>分清角色、责任</h2><p>不要重复造轮子，一个项目即使再怎么小，还是一个系统，会有大量的细节去要处理，如果自己真的要造轮子，真是难于上青天。就比如说我写的项目分这么几大块，基于角色的权限验证，前端，缓存，数据库，再加上业务上的逻辑处理，如果从头造轮子，简直累死，而且也说明自己分不清楚自己的在项目中的角色，在这个时期自己既是项目中的搬砖的程序员，还是整个系统的设计人员，还要和老大提出的需求来回进行确认系统到底要设计成什么样子的，这个时期更过的精力放在后两者，而不是造轮子。最好的方式是，选择模块化比较好的框架，并且还附带有大量的第三方模块。框架本身基本上就能保证住项目的质量，模块化比较好，说明后期易于替换，优化。所以就决定使用yii2框架，其本身十分强大，语法也很是喜欢，加上及其附带的第三方模块，极大的提升了效率。在编写界面代码的时候，php语言中的匿名函数提供了巨大的帮助。</p>
+<h2 id="抽象是一把利剑"><a href="#抽象是一把利剑" class="headerlink" title="抽象是一把利剑"></a>抽象是一把利剑</h2><p>对付复杂化细节的有利方式就是使用抽象。比如这次使用了几家的服务做一间事情，每一家的服务不太一样，所以这时候对每一家提供的服务做一个对象抽象，这样就屏蔽了使用这个服务的程序对细节的依赖，而只是对这个抽象的依赖。具体抽象的方式就是使用了策略模式，这个模式想想真的很重要，比如ffmpeg里面针对解码就是用了策略模式的思想，还可以实现软件的热插拔，也可以提高程序的健壮性(例如这家的服务挂了，我就使用下一家的，如果全挂了，那就真没辙了，赶紧速错)，</p>
+<h2 id="这是一个流程问题"><a href="#这是一个流程问题" class="headerlink" title="这是一个流程问题"></a>这是一个流程问题</h2><p>做一个系统和一个项目中一点最重要的区别感觉就是，把整个系统的流程完全跑通优先级提高一些，而不能想做一点的时候下很大的劲去做优化，调优。并且还要尽快实现，这样就尽可能的保证有一个比较小而简单的原型，小，设计出了问题，就可以方便修改。</p>
+<!-- ## 扩展性
+像yii2这种框架就比较好，提供了事件、行为、模块等方式可以很好的实现扩展。 -->]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Linux 内核分析 -- 进程的启动和进程的切换机制]]></title>
-      <url>http://yangzz0.github.io/2016/03/05/mooc-linux-kernel-2/</url>
+      <url>http://blog.soul11201.com/2016/03/05/mooc-linux-kernel-2/</url>
       <content type="html"><![CDATA[<blockquote><p>杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 <a href="http://mooc.study.163.com/course/USTC-1000029000" target="_blank" rel="external">网易云课堂</a></p>
 </blockquote>
 <blockquote><p>杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程  <a href="http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about" target="_blank" rel="external">学堂在线</a></p>
@@ -65,7 +133,7 @@
     
     <entry>
       <title><![CDATA[php 获取当天0点的时间戳]]></title>
-      <url>http://yangzz0.github.io/2016/03/04/php-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%A4%A90%E7%82%B9%E7%9A%84%E6%97%B6%E9%97%B4%E6%88%B3/</url>
+      <url>http://blog.soul11201.com/2016/03/04/php-%E8%8E%B7%E5%8F%96%E5%BD%93%E5%A4%A90%E7%82%B9%E7%9A%84%E6%97%B6%E9%97%B4%E6%88%B3/</url>
       <content type="html"><![CDATA[<h1 id="常见代码"><a href="#常见代码" class="headerlink" title="常见代码"></a>常见代码</h1><p>方式一</p>
 <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$year</span> = date(<span class="string">"Y"</span>);</span><br><span class="line"><span class="variable">$month</span> = date(<span class="string">"m"</span>);</span><br><span class="line"><span class="variable">$day</span> = date(<span class="string">"d"</span>);</span><br><span class="line"><span class="variable">$dayBegin</span> = mktime(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="variable">$month</span>,<span class="variable">$day</span>,<span class="variable">$year</span>);<span class="comment">//当天开始时间戳</span></span><br></pre></td></tr></table></figure>
 <p>方式二：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$daybegin</span>=strtotime(date(<span class="string">"Ymd"</span>));</span><br></pre></td></tr></table></figure></p>
@@ -75,7 +143,7 @@
     
     <entry>
       <title><![CDATA[Linux 内核分析 -- C函数调用栈机制在汇编中的实现]]></title>
-      <url>http://yangzz0.github.io/2016/02/24/mooc-linux-kernel-1/</url>
+      <url>http://blog.soul11201.com/2016/02/24/mooc-linux-kernel-1/</url>
       <content type="html"><![CDATA[<blockquote><p>杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 <a href="http://mooc.study.163.com/course/USTC-1000029000" target="_blank" rel="external">http://mooc.study.163.com/course/USTC-1000029000</a></p>
 </blockquote>
 <blockquote><p>杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程  <a href="http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about" target="_blank" rel="external">http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about</a></p>
@@ -129,13 +197,13 @@
     
     <entry>
       <title><![CDATA[yii2 前端资源管理代码阅读]]></title>
-      <url>http://yangzz0.github.io/2016/02/22/yii2-assets-code-read/</url>
+      <url>http://blog.soul11201.com/2016/02/22/yii2-assets-code-read/</url>
       <content type="html"></content>
     </entry>
     
     <entry>
       <title><![CDATA[yii2 前端资源管理笔记]]></title>
-      <url>http://yangzz0.github.io/2016/02/20/yii2-assets/</url>
+      <url>http://blog.soul11201.com/2016/02/20/yii2-assets/</url>
       <content type="html"><![CDATA[<h1 id="简单介绍"><a href="#简单介绍" class="headerlink" title="简单介绍"></a>简单介绍</h1><h2 id="资源是什么？"><a href="#资源是什么？" class="headerlink" title="资源是什么？"></a>资源是什么？</h2><p>Yii中的资源是 <code>和Web页面相关的文件</code> ，可为CSS文件，JavaScript文件，图片或视频等，资源放在Web可访问的目录下，直接被Web服务器调用。在yii中实现了使用程序自动管理资源。</p>
 <h2 id="管理方式"><a href="#管理方式" class="headerlink" title="管理方式"></a>管理方式</h2><p>Yii在资源包中管理资源，<code>资源包</code>简单的说就是<code>放在一个目录下的资源集合</code>，在视图中注册一个资源包，在渲染Web页面时会包含包中的CSS和JavaScript文件</p>
 <h2 id="资源包管理类"><a href="#资源包管理类" class="headerlink" title="资源包管理类"></a>资源包管理类</h2><p>继承于<code>yii\web\AssetBundle</code>的类,类名可自动加载。在类中要指定：</p>
@@ -166,7 +234,7 @@
     
     <entry>
       <title><![CDATA[yii2 GridView 使用]]></title>
-      <url>http://yangzz0.github.io/2015/12/21/yii2-GridView-%E4%BD%BF%E7%94%A8/</url>
+      <url>http://blog.soul11201.com/2015/12/21/yii2-GridView-%E4%BD%BF%E7%94%A8/</url>
       <content type="html"><![CDATA[<h2 id="GridView是什么？能做什么？"><a href="#GridView是什么？能做什么？" class="headerlink" title="GridView是什么？能做什么？"></a>GridView是什么？能做什么？</h2><p><code>GridView</code>是一个用于把数据显示在一个表格中的<code>yii2</code> <code>widget</code></p>
 <p>提供的功能，主要包括下面几种对数据的操作</p>
 <ul>
@@ -185,13 +253,13 @@
     
     <entry>
       <title><![CDATA[eclipse-mars-php 自动补全提示]]></title>
-      <url>http://yangzz0.github.io/2015/12/07/eclipse-mars-php%20%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E6%8F%90%E7%A4%BA/</url>
+      <url>http://blog.soul11201.com/2015/12/07/eclipse-mars-php%20%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E6%8F%90%E7%A4%BA/</url>
       <content type="html"></content>
     </entry>
     
     <entry>
       <title><![CDATA[awk 处理日志]]></title>
-      <url>http://yangzz0.github.io/2015/12/07/awk-%E5%A4%84%E7%90%86%E6%97%A5%E5%BF%97/</url>
+      <url>http://blog.soul11201.com/2015/12/07/awk-%E5%A4%84%E7%90%86%E6%97%A5%E5%BF%97/</url>
       <content type="html"><![CDATA[<!-- ## 问题 -->
 <blockquote>
 <p>提取一段时间内的日志</p>
@@ -213,7 +281,7 @@
     
     <entry>
       <title><![CDATA[mathjax && hexo]]></title>
-      <url>http://yangzz0.github.io/2015/12/06/mathjax/</url>
+      <url>http://blog.soul11201.com/2015/12/06/mathjax/</url>
       <content type="html"><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>在hexo安装使用mathjax的方式不外乎那么几种，具体的可以参见 <a href="http://lukang.me/2014/mathjax-for-hexo.html" target="_blank" rel="external">在 Hexo 中完美使用 Mathjax 输出数学公式</a>。原本想使用hexo 插件的方式安装，比较方便，也省去维护的负担，实现一个松耦合的组织状态，并且插件作者给出的一篇简易的文档<a href="http://catx.me/2014/03/09/hexo-mathjax-plugin/" target="_blank" rel="external">Hexo MathJax插件</a>。使用插件的时候会遇到了下面的问题：</p>
 <ul>
 <li><code>hexo math install</code>命令在本地无法运行，跳过也没出现什么太大的问题。</li>
@@ -229,7 +297,7 @@
     
     <entry>
       <title><![CDATA[碎语]]></title>
-      <url>http://yangzz0.github.io/2015/11/22/2015.11.22.7/</url>
+      <url>http://blog.soul11201.com/2015/11/22/2015.11.22.7/</url>
       <content type="html"><![CDATA[<h2 id="一些问题"><a href="#一些问题" class="headerlink" title="一些问题"></a>一些问题</h2><h3 id="内容选择困难症"><a href="#内容选择困难症" class="headerlink" title="内容选择困难症"></a>内容选择困难症</h3><blockquote>
 <p>做ppt演讲的时候，该讲什么内容。自己会的感觉太简单，那就是1+1，别人应该都会，讲出来没意思，要么不懂感觉这个好像才有讲的价值。</p>
 </blockquote>
@@ -255,7 +323,7 @@
     
     <entry>
       <title><![CDATA[php 开发环境搭建]]></title>
-      <url>http://yangzz0.github.io/2015/11/17/lnmp-%E7%8E%AF%E5%A2%83-%E6%90%AD%E5%BB%BA/</url>
+      <url>http://blog.soul11201.com/2015/11/17/lnmp-%E7%8E%AF%E5%A2%83-%E6%90%AD%E5%BB%BA/</url>
       <content type="html"><![CDATA[<p>个人使用的方式有两种</p>
 <ol>
 <li>lamp/lnmp 环境</li>
@@ -287,7 +355,7 @@
     
     <entry>
       <title><![CDATA[MonaServer 使用笔记]]></title>
-      <url>http://yangzz0.github.io/2015/11/11/MonaServer/</url>
+      <url>http://blog.soul11201.com/2015/11/11/MonaServer/</url>
       <content type="html"><![CDATA[<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p><strong>windows</strong></p>
 <ol>
 <li><a href="http://sourceforge.net/projects/monaserver/files/MonaServer_Windows_32.zip/download" target="_blank" rel="external">点击下载运行包</a></li>
@@ -306,7 +374,7 @@
     
     <entry>
       <title><![CDATA[ngx-lua 笔记总计]]></title>
-      <url>http://yangzz0.github.io/2015/11/10/ngx-lua/</url>
+      <url>http://blog.soul11201.com/2015/11/10/ngx-lua/</url>
       <content type="html"><![CDATA[<p>##跟ngx有关的函数、变量</p>
 <p>###ngx.header</p>
 <p>响应头设置</p>
@@ -332,7 +400,7 @@
     
     <entry>
       <title><![CDATA[http 请求调试]]></title>
-      <url>http://yangzz0.github.io/2015/10/30/http-debug/</url>
+      <url>http://blog.soul11201.com/2015/10/30/http-debug/</url>
       <content type="html"><![CDATA[<h3 id="查看请求响应头信息"><a href="#查看请求响应头信息" class="headerlink" title="查看请求响应头信息"></a>查看请求响应头信息</h3><ul>
 <li>curl</li>
 </ul>
@@ -385,7 +453,7 @@
     
     <entry>
       <title><![CDATA[对一次寻找大素数问题的思考]]></title>
-      <url>http://yangzz0.github.io/2015/10/25/prime-linear-time/</url>
+      <url>http://blog.soul11201.com/2015/10/25/prime-linear-time/</url>
       <content type="html"><![CDATA[<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>我每过段时间，就会兴趣大发，噼里啪啦加上一堆qq群，一般就是最近在做相关的工作，或者想了解学习相关的知识，到现在已经加了几十群了。qq群对于我来说，一是看大家伙的讨论一些专业技术问题，一是从共享里面下载一些书籍资料，当然一般一个群建立的比较久了，群里活跃成员达到一定的数目，一个群也会有适当的灌水，娱乐一下，好像有点一个小社会的那么点意思。昨天加一个计算机相关的群，它设置了一个问题：</p>
 <pre><code>小于899808659的最大质数是？
 </code></pre><h2 id="低头做事"><a href="#低头做事" class="headerlink" title="低头做事"></a>低头做事</h2><p>第一感觉是<code>简单，应该能很快做出来</code>，但随后也感觉<code>这个数稍微有点大，会不会没自己想想的这么简单</code>，也想到了三种可能能解决这个问题的方案：试除法（复杂度约为n^1.5）、欧拉筛法 和 Miller–Rabin素性检测，前两种解决方案以前都写过对应的C代码,第三种也就是知道名字能做什么而已。决定试一把前两种解决方案，感觉以前写过怎也能做出来。前两种选哪一种呢？我也说不太清楚，带着复杂的的心情写完了第一个方案的<a href="">程序</a>，</p>
@@ -408,7 +476,7 @@
     
     <entry>
       <title><![CDATA[obs简单使用]]></title>
-      <url>http://yangzz0.github.io/2015/10/23/obs-use/</url>
+      <url>http://blog.soul11201.com/2015/10/23/obs-use/</url>
       <content type="html"><![CDATA[<h2 id="obs-是什么"><a href="#obs-是什么" class="headerlink" title="obs 是什么"></a>obs 是什么</h2><p><a href="https://obsproject.com/" target="_blank" rel="external">官网</a>标题有这么一句话，</p>
 <blockquote><p>Free, open source software for live streaming and recording</p>
 </blockquote>
@@ -430,7 +498,7 @@
     
     <entry>
       <title><![CDATA[Linux 高性能服务器编程]]></title>
-      <url>http://yangzz0.github.io/2015/10/14/linux-net-programming-dig/</url>
+      <url>http://blog.soul11201.com/2015/10/14/linux-net-programming-dig/</url>
       <content type="html"><![CDATA[<p>##IO 复用函数</p>
 <p>##定时器</p>
 <p><strong>定时方法</strong></p>
@@ -445,7 +513,7 @@
     
     <entry>
       <title><![CDATA[c incldue 文件包含]]></title>
-      <url>http://yangzz0.github.io/2015/10/13/c-incldue/</url>
+      <url>http://blog.soul11201.com/2015/10/13/c-incldue/</url>
       <content type="html"><![CDATA[<h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>前段时间看lua的时候，书中提到标准C是没有定义查找路径的，回想起来C的书籍中确实没有过多实没有提及文件包含的问题。在看linux网络编程的时候一些文件包含格式，以前也见过但是不理解为什么这么写，自己也没深入关注过这方面的问题。在配置eclipse,sublime,vs的文件包含、库文件、动态链接库相关的配置的时候，感觉配置参数和这些文件包含他们之间有那么一些隐隐约约的联系，<code>感觉配置的这些参数，就是编译器，链接器相关命令行参数</code>，也确实是如此。</p>
 <p>如何包含文件的问题其实是一个文件查找的问题。例如php中对文件包含的规则就比较简单<code>require</code>或者<code>include</code> 后面加上文件路径，但是C语言中在自己的印象中一直好像没有相关的说法，于是翻了一下C程序语言设计这本书，呵呵。。果然是阳春白雪。。就那么一点点。。。不留心可能就忽略了，在工程之中却又是一个非常重要的问题。比如可以利用文件把一个大的工程分开，有利于<code>模块化</code>开发设计。</p>
 <p>随即查阅了一些资料做个简单的小结。</p>
@@ -534,12 +602,63 @@
     
     <entry>
       <title><![CDATA[调试工具]]></title>
-      <url>http://yangzz0.github.io/2015/09/23/debug-tools/</url>
-      <content type="html"><![CDATA[<p>##☆ gdb<br>启动gdb后</p>
-<p>b breakpoint 断点<br>p print 打印<br>r<br>attach<br>watch<br>c<br>bt<br>up<br>list<br>info macro NGX_OK<br>macro expand</p>
-<p>##☆ ulimit<br>-c<br>unlimited</p>
-<p>##☆ tcpdump</p>
+      <url>http://blog.soul11201.com/2015/09/23/debug-tools/</url>
+      <content type="html"><![CDATA[<h2 id="☆-gdb"><a href="#☆-gdb" class="headerlink" title="☆ gdb"></a>☆ gdb</h2><p>启动gdb后</p>
 <table>
+<thead>
+<tr>
+<th>参数</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b/breakpoint</td>
+<td>断点</td>
+</tr>
+<tr>
+<td>p print</td>
+<td>打印输出变量</td>
+</tr>
+<tr>
+<td>r</td>
+<td></td>
+</tr>
+<tr>
+<td>attach</td>
+<td></td>
+</tr>
+<tr>
+<td>watch</td>
+<td></td>
+</tr>
+<tr>
+<td>c</td>
+<td></td>
+</tr>
+<tr>
+<td>bt</td>
+<td></td>
+</tr>
+<tr>
+<td>up</td>
+<td></td>
+</tr>
+<tr>
+<td>list</td>
+<td></td>
+</tr>
+<tr>
+<td>info macro</td>
+<td>例 info macro NGX_OK</td>
+</tr>
+<tr>
+<td>macro expand</td>
+</tr>
+</tbody>
+</table>
+<h2 id="☆-ulimit"><a href="#☆-ulimit" class="headerlink" title="☆ ulimit"></a>☆ ulimit</h2><p>-c<br>unlimited</p>
+<h2 id="☆-tcpdump"><a href="#☆-tcpdump" class="headerlink" title="☆ tcpdump"></a>☆ tcpdump</h2><table>
 <thead>
 <tr>
 <th>选项</th>
@@ -587,7 +706,7 @@
     
     <entry>
       <title><![CDATA[元表、元方法]]></title>
-      <url>http://yangzz0.github.io/2015/09/18/lua-metatable/</url>
+      <url>http://blog.soul11201.com/2015/09/18/lua-metatable/</url>
       <content type="html"><![CDATA[<blockquote><p>每一个值都有一个元表。table和userdata可以有各自独立的元表，其他类型的值则共享其类型所属的单一元表</p>
 </blockquote>
 <p>表是lua中非常重要的基本数据类型，实现其他的一些编程技术概念的基础，如模块、包、类。通过语言提供的元表和元方法可以更改表的表现行为。</p>
@@ -690,7 +809,7 @@
     
     <entry>
       <title><![CDATA[nginx-rtmp-module 总结（草稿）]]></title>
-      <url>http://yangzz0.github.io/2015/09/06/rtmp/</url>
+      <url>http://blog.soul11201.com/2015/09/06/rtmp/</url>
       <content type="html"><![CDATA[<h2 id="一些参数及其含义"><a href="#一些参数及其含义" class="headerlink" title="一些参数及其含义"></a>一些参数及其含义</h2><table>
 <thead>
 <tr>
@@ -773,7 +892,7 @@
     
     <entry>
       <title><![CDATA[nginx 点播]]></title>
-      <url>http://yangzz0.github.io/2015/08/17/vod/</url>
+      <url>http://blog.soul11201.com/2015/08/17/vod/</url>
       <content type="html"><![CDATA[<p>对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求:</p>
 <blockquote>
 <ul>
@@ -813,7 +932,7 @@
     
     <entry>
       <title><![CDATA[【译】How to set up your own private RTMP server using nginx]]></title>
-      <url>http://yangzz0.github.io/2015/08/12/How-to-set-up-your-own-private-RTMP-server-using-nginx/</url>
+      <url>http://blog.soul11201.com/2015/08/12/How-to-set-up-your-own-private-RTMP-server-using-nginx/</url>
       <content type="html"><![CDATA[<blockquote><p>原文地址: <a href="https://obsproject.com/forum/resources/how-to-set-up-your-own-private-rtmp-server-using-nginx.50/" target="_blank" rel="external">https://obsproject.com/forum/resources/how-to-set-up-your-own-private-rtmp-server-using-nginx.50/</a></p>
 </blockquote>
 <p>大多数人喜欢使用Twitch.tv和Ustream这类服务把流视频转播放给用户，并且工作的也非常好。但是有时候你想对你的流视频有更多的控制权，或者你想其他人把视频流转发给你，或者你想转发视频流到多个地方，或者一些事情需要你有权限访问RTMP服务器上的视频流。这篇教程内容非常基础，教你在一台linux服务器上搭建一个简单的RTMP服务器。</p>
@@ -823,12 +942,12 @@
 <li>由于一些目的，把其他人的多个视频流合成一个（我在多个角度拍摄中使用它，例如像在<a href="https://www.youtube.com/watch?v=6WUU58POsTM" target="_blank" rel="external">这个多个拍摄角度视频中</a>）</li>
 </ul>
 <p>好的，你该怎样做到这些事情呢？</p>
-<p>##第一步：获取一个服务器<br>不管你信不信，RTMP 实际上对系统资源要求十分的小。本质上来说，它仅仅是从输入端抓取数据并把数据转发到输出端，简单的数据传输。不相信我？我的运行了很长一段时间的RTMP服务器是一个树莓派,一个价值35美金（月200元人民币）的迷你计算机，就放在我的办公桌上，至少同时处理3个数据输入流是完全没有问题的，我也从来没有对它进行过压力测试去看看到底他能处理多少。因此，我向你保证，即使一个便宜的旧机器也是完全没有问题的。</p>
+<h2 id="第一步：获取一个服务器"><a href="#第一步：获取一个服务器" class="headerlink" title="第一步：获取一个服务器"></a>第一步：获取一个服务器</h2><p>不管你信不信，RTMP 实际上对系统资源要求十分的小。本质上来说，它仅仅是从输入端抓取数据并把数据转发到输出端，简单的数据传输。不相信我？我的运行了很长一段时间的RTMP服务器是一个树莓派,一个价值35美金（月200元人民币）的迷你计算机，就放在我的办公桌上，至少同时处理3个数据输入流是完全没有问题的，我也从来没有对它进行过压力测试去看看到底他能处理多少。因此，我向你保证，即使一个便宜的旧机器也是完全没有问题的。</p>
 <p>假如你没有树莓派，一个vps也是可以的。我推荐Linode服务商，如果你能支付的起服务费用。我现在也在使用，并且到现在为止，它也运行良好。仅仅确保你有足够的带宽。。。记住带宽的使用量是<code>（视频流的大小）* （上传人数+下载人数）</code>。因此当我有两个视频流推送视频流到我的服务器，并且我同时下载他们，两小时消耗了10GB的带宽流量。</p>
 <p>为了方便，我推荐使用Ubuntu作为服务器软件，但是你完全可使用任何你想使用的。只要你能从apt之外其他的地方解决nginx的依赖问题，你就能参考这篇文档。</p>
 <p><strong>Windows 用户注意</strong> 这边教程关注Linux上的使用，假如你想在Windows上使用，你能找到带有RTMP 模块的nginx二进制包，在这个地方： <a href="http://nginx-win.ecsds.eu/" target="_blank" rel="external">http://nginx-win.ecsds.eu/</a></p>
 <p>假如你的服务器在你家里，你需要转发TCP 1935端口数据到这个服务器上。。。不同的路由器有不同的设置，因此你需要根据你自己的路由器，查看怎么设置端口转发。同时，我推荐使用 DynDNS 这类服务去克服家用主机动态IP的问题。</p>
-<p>##第二步：安装nginx 和RTMP 模块<br>登录你的机器，并且确保你有这些必须的工具去编译nginx,执行下面的命令</p>
+<h2 id="第二步：安装nginx-和RTMP-模块"><a href="#第二步：安装nginx-和RTMP-模块" class="headerlink" title="第二步：安装nginx 和RTMP 模块"></a>第二步：安装nginx 和RTMP 模块</h2><p>登录你的机器，并且确保你有这些必须的工具去编译nginx,执行下面的命令</p>
 <pre><code>$ sudo apt-get install build-essential libpcre3 libpcre3-dev libssl-dev
 </code></pre><p>现在说点关于nginx的一点小知识（发音 “engine-X”）。nginx是个轻量级的web server，但是有些人为它写了一个RTMP模块，因此它能够提供RTMP流相关的服务，为了添加这个RTMP模块，我们必须重新从源码编译nginx 而不是使用apt包。不要担心，它是非常简单的，仅仅执行下面的指令:)</p>
 <p>在你的home目录，下载nginx 源码：</p>
@@ -843,26 +962,23 @@
 <p>现在nginx 安装完毕了！默认安装在了 <code>/usr/local/nginx</code>,使用下面的命令启动：</p>
 <pre><code>$ sudo /usr/local/nginx/sbin/nginx
 </code></pre><p>现在测试一下确认nginx 正在运行，打开浏览器输入 <code>http://服务器ip/</code> 然后你将看到”Welcome to nginx!”这个页面。</p>
-<p>##第三步：配置nginx 启用RTMP<br>打开配置文件，默认是 <code>/usr/local/nginx/conf/nginx.conf</code>，在文件的最后添加下面的内容：</p>
+<h2 id="第三步：配置nginx-启用RTMP"><a href="#第三步：配置nginx-启用RTMP" class="headerlink" title="第三步：配置nginx 启用RTMP"></a>第三步：配置nginx 启用RTMP</h2><p>打开配置文件，默认是 <code>/usr/local/nginx/conf/nginx.conf</code>，在文件的最后添加下面的内容：</p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="title">rtmp</span> &#123;</span><br><span class="line">        <span class="title">server</span> &#123;</span><br><span class="line">                <span class="title">listen</span> <span class="number">1935</span>;</span><br><span class="line">                <span class="title">chunk_size</span> <span class="number">4096</span>;</span><br><span class="line"></span><br><span class="line">                <span class="title">application</span> live &#123;</span><br><span class="line">                        <span class="title">live</span> <span class="built_in">on</span>;</span><br><span class="line">                        <span class="title">record</span> <span class="built_in">off</span>;</span><br><span class="line">                &#125;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这是一个非常简单的基础配置，有一个live应用，它将会把RTMP视频流转发给所有请求这它的用户。你可能过一会才播放这个视频。<a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives" target="_blank" rel="external">这里是所有配置选项</a>，展示了如何转发视频流到其他的地方（像Twitch），保存上传的记录，输出状态等等。</p>
 <p>重启nginx:</p>
 <pre><code>$ sudo /usr/local/nginx/sbin/nginx -s stop
 $ sudo /usr/local/nginx/sbin/nginx
-</code></pre><p>##第四步：测试</p>
-<p>你的服务器应该能接收RTMP视频流了。让我们尝试一下吧。</p>
+</code></pre><h2 id="第四步：测试"><a href="#第四步：测试" class="headerlink" title="第四步：测试"></a>第四步：测试</h2><p>你的服务器应该能接收RTMP视频流了。让我们尝试一下吧。</p>
 <p>创建一个新的工程在OBS,并且更改 Broadcast Settings 为如下：</p>
 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Streaming Service: Custom&#10;Server: rtmp://&#60;your server ip&#62;/live&#10;Play Path/Stream Key: test</span><br></pre></td></tr></table></figure>
 <p>你可能会疑惑test路径从哪里来。好吧，我们就是刚刚创建的。你能创建任何路径和流，把那个路径发到RTMP播放器里面，就可以播放了。对于简单的应用，没必要授权。</p>
 <p>你现在能向你的服务器推送视频流了。当你点击了 “Start Streaming” ，没有报告错误，这是一个好的信号。</p>
 <p>怎么打开观看呢？就我个人来说，我使用<a href="http://vmix.com.au/" target="_blank" rel="external">vMix</a>播放RTMP流并且将多个视频流合并成一个我自己的流。如果你仅仅想播放一个正在上传的视频流，可以使用<code>VLC 2.1.0</code>或者更新的版本。打开一个网络流，输入<code>rtmp://&lt;your server ip&gt;/live/test</code>作为url。如果没有报什么错误的话，现在你就能在VLC里面看到流里面的内容了。</p>
 <p>现在你有一个能工作的视频流了，欢呼吧:)</p>
-<p>##现在做什么呢？</p>
-<p>你能使用使你的服务器转发视频流到其他的流服务和频道。在”record off;”后面添加下面的指令。</p>
+<h2 id="现在做什么呢？"><a href="#现在做什么呢？" class="headerlink" title="现在做什么呢？"></a>现在做什么呢？</h2><p>你能使用使你的服务器转发视频流到其他的流服务和频道。在”record off;”后面添加下面的指令。</p>
 <pre><code>push rtmp://&lt;other streaming service rtmp url&gt;/&lt;stream key&gt;
 </code></pre><p>任何视频流都会被转发，同时客户端也能使用这个地址播放视频。你可以添加多个push指令，把这个视频转发到多个位置。</p>
-<p>##FAQ</p>
-<p>Q:为什么使用nginx?不使用crtmpserver/Red5/Wowza?</p>
+<h2 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h2><p>Q:为什么使用nginx?不使用crtmpserver/Red5/Wowza?</p>
 <p>A:先前用过crtmpserver，并且也能工作，但是太难用了。如果需要RTSP服务代替RTMP服务，我推荐使用它，因为nginx RTMP模块不支持RTSP。对于我来说Red5看起来太重，太复杂了，并且是用java写的。。。如果你想使用它就是用它吧。我没有在这上面投资很多精力。Wowza不是免费的。你能使用它完成你想的功能，但是nginx是更轻量级的，易于使用，并且免费。</p>
 <p>Q:X怎么做?</p>
 <p>A:FAQ会保持更新。。问一些问题，我将把答案写在这里。</p>
@@ -871,7 +987,7 @@ $ sudo /usr/local/nginx/sbin/nginx
     
     <entry>
       <title><![CDATA[PHP文件上传]]></title>
-      <url>http://yangzz0.github.io/2015/08/05/php-upload-file/</url>
+      <url>http://blog.soul11201.com/2015/08/05/php-upload-file/</url>
       <content type="html"><![CDATA[<p>上传一个213M的文件的时候一直报IOerror。首先想到的是php上传文件大小的限制，改为300兆后，不起作用，就感觉是上传的的时候脚本执行的时间太长了，就修改<code>max_input_time</code> 为6000 还是不起作用，琢磨是不是<code>max_input_time</code>解析数据的时间出了问题，最后发现也不是，原来是nginx设置的太小了，改为500m,问题立马解决了。</p>
 <p>php 和 nginx 设置如下</p>
 <p>ngxin server 里面配置如下<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">     ***</span><br><span class="line">     client_max_body_size 1000M;</span><br><span class="line">     ****</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
@@ -884,9 +1000,8 @@ $ sudo /usr/local/nginx/sbin/nginx
     
     <entry>
       <title><![CDATA[linux 下工具命令]]></title>
-      <url>http://yangzz0.github.io/2015/08/04/linux-cmd/</url>
-      <content type="html"><![CDATA[<p>#sort</p>
-<table>
+      <url>http://blog.soul11201.com/2015/08/04/linux-cmd/</url>
+      <content type="html"><![CDATA[<h2 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h2><table>
 <thead>
 <tr>
 <th>参数</th>
@@ -904,14 +1019,14 @@ $ sudo /usr/local/nginx/sbin/nginx
 </tr>
 </tbody>
 </table>
-<p>#du </p>
-<ul>
+<h2 id="du"><a href="#du" class="headerlink" title="du"></a>du</h2><ul>
 <li><code>du -sh *</code><br>统计当前文件夹下各个文件的大小</li>
 <li><code>du -shm *</code><br>统计当前文件夹下各个文件的大小,以<code>M</code> 为单位。<code>-shk</code> 以 <code>KB</code>为单位</li>
 </ul>
-<p>#locate<br><blockquote><p>linux 下可以使用 locate 和 find 来查找文件,但是 locate 在定位时要比 find 快.</p>
+<h2 id="locate"><a href="#locate" class="headerlink" title="locate"></a>locate</h2><blockquote><p>linux 下可以使用 locate 和 find 来查找文件,但是 locate 在定位时要比 find 快.</p>
 <p>locate 并不是穿梭于档案文件中查找,而是在<strong>数据库</strong>查找文件.find 正好相反,他的查找要穿梭于档案文件中.</p>
-</blockquote><br><code>locate [-ir] keyword</code><br>更新数据库<br><del><code>locate -u</code></del><br><code>updatedb</code></p>
+</blockquote>
+<p><code>locate [-ir] keyword</code><br>更新数据库<br><del><code>locate -u</code></del><br><code>updatedb</code></p>
 <p><strong>命令选项</strong></p>
 <table>
 <thead>
@@ -935,8 +1050,7 @@ $ sudo /usr/local/nginx/sbin/nginx
 <ul>
 <li><a href="http://yijiebuyi.com/blog/58d0b9eec7f18769439f388a8037c151.html" target="_blank" rel="external">locate 在linux下快速定位文档</a></li>
 </ul>
-<p>#问题总结 FAQ</p>
-<ol>
+<h2 id="问题总结-FAQ"><a href="#问题总结-FAQ" class="headerlink" title="问题总结 FAQ"></a>问题总结 FAQ</h2><ol>
 <li><p>crontab不执行问题</p>
 <blockquote><p>今天有个服务不能使用了，查来查去，原来 <code>crontab</code> 被干掉了。装上后还是无法运行，原来还要依赖 <code>crond</code> 这个服务</p>
 </blockquote>
