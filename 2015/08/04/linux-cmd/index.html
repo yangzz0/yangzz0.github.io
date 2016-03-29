@@ -50,6 +50,7 @@
 <meta name="description" content="sort
 
 
+
 参数
 含义
 
@@ -66,11 +67,12 @@
 
 
 du
-du -sh *统计当前文件夹下各个文件的大小
-du -shm *统计当前文件夹下各个文件的大小,以M 为单位。-shk 以 KB为单位
 
-locatelinux 下可以使用 locate 和 find 来查找文件,但是 locate 在定位时要比 find 快.
-locate">
+du -sh * 统计当前文件夹下各个文件的大小
+du -shm * 统计当前文件夹下各个文件的大小,以M 为单位。-shk 以 KB为单位
+
+locate
+linux 下可以使用 locate 和 find 来查找文件,但是">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux 下工具命令">
 <meta property="og:url" content="http://blog.soul11201.com/2015/08/04/linux-cmd/index.html">
@@ -78,6 +80,7 @@ locate">
 <meta property="og:description" content="sort
 
 
+
 参数
 含义
 
@@ -94,17 +97,19 @@ locate">
 
 
 du
-du -sh *统计当前文件夹下各个文件的大小
-du -shm *统计当前文件夹下各个文件的大小,以M 为单位。-shk 以 KB为单位
 
-locatelinux 下可以使用 locate 和 find 来查找文件,但是 locate 在定位时要比 find 快.
-locate">
+du -sh * 统计当前文件夹下各个文件的大小
+du -shm * 统计当前文件夹下各个文件的大小,以M 为单位。-shk 以 KB为单位
+
+locate
+linux 下可以使用 locate 和 find 来查找文件,但是">
 <meta property="og:updated_time" content="2016-03-09T07:35:11.491Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="linux 下工具命令">
 <meta name="twitter:description" content="sort
 
 
+
 参数
 含义
 
@@ -121,11 +126,12 @@ locate">
 
 
 du
-du -sh *统计当前文件夹下各个文件的大小
-du -shm *统计当前文件夹下各个文件的大小,以M 为单位。-shk 以 KB为单位
 
-locatelinux 下可以使用 locate 和 find 来查找文件,但是 locate 在定位时要比 find 快.
-locate">
+du -sh * 统计当前文件夹下各个文件的大小
+du -shm * 统计当前文件夹下各个文件的大小,以M 为单位。-shk 以 KB为单位
+
+locate
+linux 下可以使用 locate 和 find 来查找文件,但是">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -292,70 +298,65 @@ locate">
       
 
       
-        <span itemprop="articleBody"><h2 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h2><table>
+        <span itemprop="articleBody"><h2 id="sort">sort</h2>
+<table>
 <thead>
-<tr>
-<th>参数</th>
-<th>含义</th>
+<tr class="header">
+<th align="left">参数</th>
+<th align="left">含义</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td><code>-kx</code></td>
-<td>按照第x列的大小进行排序</td>
+<tr class="odd">
+<td align="left"><code>-kx</code></td>
+<td align="left">按照第x列的大小进行排序</td>
 </tr>
-<tr>
-<td><code>-n</code></td>
-<td>按照数字比较，默认字典序排序</td>
+<tr class="even">
+<td align="left"><code>-n</code></td>
+<td align="left">按照数字比较，默认字典序排序</td>
 </tr>
 </tbody>
 </table>
-<h2 id="du"><a href="#du" class="headerlink" title="du"></a>du</h2><ul>
-<li><code>du -sh *</code><br>统计当前文件夹下各个文件的大小</li>
-<li><code>du -shm *</code><br>统计当前文件夹下各个文件的大小,以<code>M</code> 为单位。<code>-shk</code> 以 <code>KB</code>为单位</li>
+<h2 id="du">du</h2>
+<ul>
+<li><code>du -sh *</code> 统计当前文件夹下各个文件的大小</li>
+<li><code>du -shm *</code> 统计当前文件夹下各个文件的大小,以<code>M</code> 为单位。<code>-shk</code> 以 <code>KB</code>为单位</li>
 </ul>
-<h2 id="locate"><a href="#locate" class="headerlink" title="locate"></a>locate</h2><blockquote><p>linux 下可以使用 locate 和 find 来查找文件,但是 locate 在定位时要比 find 快.</p>
+<h2 id="locate">locate</h2>
+<blockquote><p>linux 下可以使用 locate 和 find 来查找文件,但是 locate 在定位时要比 find 快.</p>
 <p>locate 并不是穿梭于档案文件中查找,而是在<strong>数据库</strong>查找文件.find 正好相反,他的查找要穿梭于档案文件中.</p>
 </blockquote>
-<p><code>locate [-ir] keyword</code><br>更新数据库<br><del><code>locate -u</code></del><br><code>updatedb</code></p>
+<p><code>locate [-ir] keyword</code> 更新数据库 <del><code>locate -u</code></del> <code>updatedb</code></p>
 <p><strong>命令选项</strong></p>
 <table>
 <thead>
-<tr>
-<th>参数</th>
-<th>含义</th>
+<tr class="header">
+<th align="left">参数</th>
+<th align="left">含义</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>i</td>
-<td>不区分大小写</td>
+<tr class="odd">
+<td align="left">i</td>
+<td align="left">不区分大小写</td>
 </tr>
-<tr>
-<td>r</td>
-<td>后面可以接收正则表达式</td>
+<tr class="even">
+<td align="left">r</td>
+<td align="left">后面可以接收正则表达式</td>
 </tr>
 </tbody>
 </table>
-<p><strong>参考</strong></p>
-<ul>
-<li><a href="http://yijiebuyi.com/blog/58d0b9eec7f18769439f388a8037c151.html" target="_blank" rel="external">locate 在linux下快速定位文档</a></li>
-</ul>
-<h2 id="问题总结-FAQ"><a href="#问题总结-FAQ" class="headerlink" title="问题总结 FAQ"></a>问题总结 FAQ</h2><ol>
-<li><p>crontab不执行问题</p>
-<blockquote><p>今天有个服务不能使用了，查来查去，原来 <code>crontab</code> 被干掉了。装上后还是无法运行，原来还要依赖 <code>crond</code> 这个服务</p>
-</blockquote>
+<p><strong>参考</strong> - <a href="http://yijiebuyi.com/blog/58d0b9eec7f18769439f388a8037c151.html" target="_blank" rel="external">locate 在linux下快速定位文档</a></p>
+<h2 id="问题总结-faq">问题总结 FAQ</h2>
+<ol style="list-style-type: decimal">
+<li>crontab不执行问题 <blockquote><p>今天有个服务不能使用了，查来查去，原来 <code>crontab</code> 被干掉了。装上后还是无法运行，原来还要依赖 <code>crond</code> 这个服务</p>
+</blockquote></li>
+</ol>
 <ul>
 <li>检查文件具有可执行权限 <code>chmod a+x</code></li>
 <li>crond服务是否启动。查看及启动方式 <code>service crond start</code> <code>service crond status</code></li>
 </ul>
-</li>
-</ol>
-<p><strong>参考</strong></p>
-<ul>
-<li><a href="http://www.nginx.cn/2451.html" target="_blank" rel="external">crontab不执行问题</a></li>
-<li><a href="http://baike.baidu.com/link?url=4A3zDEAEGxKEkZV0GihvwInk1Rx9lCsJEZTeBUCgZq6a_h519pBSgCaCynxbiURbpXFUZ7Qqn-iF2Pj6Wp58Bq" target="_blank" rel="external">crond</a></li>
-</ul>
+<p><strong>参考</strong> - <a href="http://www.nginx.cn/2451.html" target="_blank" rel="external">crontab不执行问题</a> - <a href="http://baike.baidu.com/link?url=4A3zDEAEGxKEkZV0GihvwInk1Rx9lCsJEZTeBUCgZq6a_h519pBSgCaCynxbiURbpXFUZ7Qqn-iF2Pj6Wp58Bq" target="_blank" rel="external">crond</a></p>
 </span>
       
     </div>
@@ -452,7 +453,7 @@ locate">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -466,7 +467,7 @@ locate">
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-count">43</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -527,7 +528,7 @@ locate">
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#sort"><span class="nav-number">1.</span> <span class="nav-text">sort</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#du"><span class="nav-number">2.</span> <span class="nav-text">du</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#locate"><span class="nav-number">3.</span> <span class="nav-text">locate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题总结-FAQ"><span class="nav-number">4.</span> <span class="nav-text">问题总结 FAQ</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#sort"><span class="nav-number">1.</span> <span class="nav-text">sort</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#du"><span class="nav-number">2.</span> <span class="nav-text">du</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#locate"><span class="nav-number">3.</span> <span class="nav-text">locate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#问题总结-faq"><span class="nav-number">4.</span> <span class="nav-text">问题总结 FAQ</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

@@ -36,7 +36,7 @@
 
 
 
-  <meta name="keywords" content="nginx,nginx-rtmp-module,rtmp," />
+  <meta name="keywords" content="nginx,rtmp,nginx-rtmp-module," />
 
 
 
@@ -47,40 +47,19 @@
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
 
 
-<meta name="description" content="对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求:
-
-
-play
-play_temp_path
-play_local_path
-
-
-1#&amp;#26412;&amp;#22320;&amp;#25991;&amp;#20214;&amp;#10;application vod &amp;#123;&amp;#10;    play /var/flvs;&amp;#10;&amp;#125;&amp;#10;&amp;#10;#&amp;#">
+<meta name="description" content="对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求: &amp;gt;- play - play_temp_path - play_local_path
+1234567891011#本地文件application vod &amp;#123;    play /var/flvs;&amp;#125;#网络中的文件application vod_http &amp;#123;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nginx 点播">
 <meta property="og:url" content="http://blog.soul11201.com/2015/08/17/vod/index.html">
 <meta property="og:site_name" content="coder 随想录">
-<meta property="og:description" content="对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求:
-
-
-play
-play_temp_path
-play_local_path
-
-
-1#&amp;#26412;&amp;#22320;&amp;#25991;&amp;#20214;&amp;#10;application vod &amp;#123;&amp;#10;    play /var/flvs;&amp;#10;&amp;#125;&amp;#10;&amp;#10;#&amp;#">
-<meta property="og:updated_time" content="2015-12-07T10:43:19.123Z">
+<meta property="og:description" content="对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求: &amp;gt;- play - play_temp_path - play_local_path
+1234567891011#本地文件application vod &amp;#123;    play /var/flvs;&amp;#125;#网络中的文件application vod_http &amp;#123;">
+<meta property="og:updated_time" content="2016-03-29T13:09:16.020Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx 点播">
-<meta name="twitter:description" content="对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求:
-
-
-play
-play_temp_path
-play_local_path
-
-
-1#&amp;#26412;&amp;#22320;&amp;#25991;&amp;#20214;&amp;#10;application vod &amp;#123;&amp;#10;    play /var/flvs;&amp;#10;&amp;#125;&amp;#10;&amp;#10;#&amp;#">
+<meta name="twitter:description" content="对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求: &amp;gt;- play - play_temp_path - play_local_path
+1234567891011#本地文件application vod &amp;#123;    play /var/flvs;&amp;#125;#网络中的文件application vod_http &amp;#123;">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -247,16 +226,10 @@ play_local_path
       
 
       
-        <span itemprop="articleBody"><p>对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求:</p>
-<blockquote>
+        <span itemprop="articleBody"><p>对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求: &gt;- play - play_temp_path - play_local_path</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">#本地文件</span><br><span class="line">application vod &#123;</span><br><span class="line">    play /var/flvs;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#网络中的文件</span><br><span class="line">application vod_http &#123;</span><br><span class="line">    play_temp_path /var/flvs;</span><br><span class="line">    play_local_path /var/flvs;</span><br><span class="line">    play /var/flvs http://myserver.com/vod;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="play">play</h2>
 <ul>
-<li>play</li>
-<li>play_temp_path</li>
-<li>play_local_path</li>
-</ul>
-</blockquote>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#26412;&#22320;&#25991;&#20214;&#10;application vod &#123;&#10;    play /var/flvs;&#10;&#125;&#10;&#10;#&#32593;&#32476;&#20013;&#30340;&#25991;&#20214;&#10;application vod_http &#123;&#10;    play_temp_path /var/flvs;&#10;    play_local_path /var/flvs;&#10;    play /var/flvs http://myserver.com/vod;&#10;&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="play"><a href="#play" class="headerlink" title="play"></a>play</h2><ul>
 <li>文件格式是<code>mp4</code>和<code>flv</code>。</li>
 <li>文件可以是本地的，也可以是网络上http可以访问到的。</li>
 <li>play 指令中可以指定多个文件路径</li>
@@ -265,21 +238,24 @@ play_local_path
 <li>flv文件点播需要添加关键帧（可以使用yamdi添加），否则没有暂停功能。</li>
 <li>如果点播<code>record</code> 指令生成的文件，记住视频文件没有关键帧。</li>
 </ul>
-<h2 id="播放网络文件"><a href="#播放网络文件" class="headerlink" title="播放网络文件"></a>播放网络文件</h2><p>当播放一个网络文件时，nginx会先把文件下载完，然后才播放。下载文件时临时存放的位置由<code>play_temp_path</code>指定，其默认值是 <code>/tmp</code>，播放完毕后就会丢弃。如果<code>play_local_path</code>指定其值，就会先把拷贝到这个位置。这两条指令配合play指令可以提升一些性能。</p>
-<h2 id="一些-tips"><a href="#一些-tips" class="headerlink" title="一些 tips"></a>一些 tips</h2><p><strong> 三条命令 </strong></p>
+<h2 id="播放网络文件">播放网络文件</h2>
+<p>当播放一个网络文件时，nginx会先把文件下载完，然后才播放。下载文件时临时存放的位置由<code>play_temp_path</code>指定，其默认值是 <code>/tmp</code>，播放完毕后就会丢弃。如果<code>play_local_path</code>指定其值，就会先把拷贝到这个位置。这两条指令配合play指令可以提升一些性能。</p>
+<h2 id="一些-tips">一些 tips</h2>
+<p><strong>三条命令</strong></p>
 <p>如果每次点播文件每次都去下载,一是会浪费带宽，二是浪费时间，每次都必须等待下载完成才能播放。如果能下载的文件复制到本地，那么就可以结合play指令，使本地磁盘就可以起到缓存网络数据功能了。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#&#30913;&#30424;&#32531;&#23384;&#32593;&#32476;&#25968;&#25454;&#10;application vod_http &#123;&#10;    play_temp_path  /var/flvs;&#10;    play_local_path /var/flvs;&#10;    play /var/flvs http://example.com/videos;&#10;&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#磁盘缓存网络数据</span><br><span class="line">application vod_http &#123;</span><br><span class="line">    play_temp_path  /var/flvs;</span><br><span class="line">    play_local_path /var/flvs;</span><br><span class="line">    play /var/flvs http://example.com/videos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p><strong>添加关键帧</strong></p>
-<pre><code>yamdi –i src.flv –o dst.flv
-</code></pre><p><a href="http://yamdi.sourceforge.net/" target="_blank" rel="external">yamdi 文档</a></p>
+<pre><code>yamdi –i src.flv –o dst.flv</code></pre>
+<p><a href="http://yamdi.sourceforge.net/" target="_blank" rel="external">yamdi 文档</a></p>
 <p><strong>播放rtmp视频</strong></p>
 <p>可以使用ffmpeg自带的ffplay</p>
-<pre><code>ffplay rtmp://localhost/vod//dir/file.flv
-</code></pre><p>一个网络工具</p>
-<pre><code>&lt;http://www.cutv.com/demo/live_test.swf&gt;
-</code></pre><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><ol>
-<li><a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#video-on-demand" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module/wiki/Directives#video-on-demand</a></li>
-<li><a href="http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html" target="_blank" rel="external">http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html</a></li>
+<pre><code>ffplay rtmp://localhost/vod//dir/file.flv</code></pre>
+<p>一个网络工具</p>
+<pre><code>&lt;http://www.cutv.com/demo/live_test.swf&gt;</code></pre>
+<h2 id="参考">参考</h2>
+<ol style="list-style-type: decimal">
+<li>https://github.com/arut/nginx-rtmp-module/wiki/Directives#video-on-demand</li>
+<li>http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html</li>
 </ol>
 </span>
       
@@ -291,9 +267,9 @@ play_local_path
           
             <a href="/tags/nginx/" rel="tag">#nginx</a>
           
-            <a href="/tags/nginx-rtmp-module/" rel="tag">#nginx-rtmp-module</a>
-          
             <a href="/tags/rtmp/" rel="tag">#rtmp</a>
+          
+            <a href="/tags/nginx-rtmp-module/" rel="tag">#nginx-rtmp-module</a>
           
         </div>
       
@@ -385,7 +361,7 @@ play_local_path
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -399,7 +375,7 @@ play_local_path
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-count">43</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

@@ -223,10 +223,12 @@
       
 
       
-        <span itemprop="articleBody"><h1 id="常见代码"><a href="#常见代码" class="headerlink" title="常见代码"></a>常见代码</h1><p>方式一</p>
-<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$year</span> = date(<span class="string">"Y"</span>);</span><br><span class="line"><span class="variable">$month</span> = date(<span class="string">"m"</span>);</span><br><span class="line"><span class="variable">$day</span> = date(<span class="string">"d"</span>);</span><br><span class="line"><span class="variable">$dayBegin</span> = mktime(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,<span class="variable">$month</span>,<span class="variable">$day</span>,<span class="variable">$year</span>);<span class="comment">//当天开始时间戳</span></span><br></pre></td></tr></table></figure>
-<p>方式二：<br><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$daybegin</span>=strtotime(date(<span class="string">"Ymd"</span>));</span><br></pre></td></tr></table></figure></p>
-<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><p><a href="http://www.cnblogs.com/wangtao_20/archive/2011/01/06/1929046.html" target="_blank" rel="external">http://www.cnblogs.com/wangtao_20/archive/2011/01/06/1929046.html</a><br><a href="http://blog.csdn.net/dongsg11200/article/details/8988598" target="_blank" rel="external">http://blog.csdn.net/dongsg11200/article/details/8988598</a></p>
+        <span itemprop="articleBody"><h1 id="常见代码">常见代码</h1>
+<p>方式一</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$year = date(<span class="string">"Y"</span>);</span><br><span class="line">$month = date(<span class="string">"m"</span>);</span><br><span class="line">$day = date(<span class="string">"d"</span>);</span><br><span class="line">$dayBegin = mktime(<span class="number">0</span>,<span class="number">0</span>,<span class="number">0</span>,$month,$day,$year);<span class="comment">//当天开始时间戳</span></span><br></pre></td></tr></table></figure>
+<p>方式二： <figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$daybegin=strtotime(date(<span class="string">"Ymd"</span>));</span><br></pre></td></tr></table></figure></p>
+<h1 id="参考">参考</h1>
+<p>http://www.cnblogs.com/wangtao_20/archive/2011/01/06/1929046.html http://blog.csdn.net/dongsg11200/article/details/8988598</p>
 </span>
       
     </div>
@@ -321,7 +323,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -335,7 +337,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-count">43</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

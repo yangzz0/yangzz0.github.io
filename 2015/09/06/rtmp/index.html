@@ -50,6 +50,7 @@
 <meta name="description" content="一些参数及其含义
 
 
+
 参数名称
 说明
 
@@ -88,20 +89,7 @@ live
 合并指定的行为，为直播流
 
 
-start
-
-
-
-stop
-
-
-
-static
-静态化，会在nginx 启动的时候创建
-
-
-
-#">
+start">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nginx-rtmp-module 总结（草稿）">
 <meta property="og:url" content="http://blog.soul11201.com/2015/09/06/rtmp/index.html">
@@ -109,6 +97,7 @@ static
 <meta property="og:description" content="一些参数及其含义
 
 
+
 参数名称
 说明
 
@@ -147,26 +136,14 @@ live
 合并指定的行为，为直播流
 
 
-start
-
-
-
-stop
-
-
-
-static
-静态化，会在nginx 启动的时候创建
-
-
-
-#">
-<meta property="og:updated_time" content="2015-12-07T10:43:19.122Z">
+start">
+<meta property="og:updated_time" content="2016-03-29T13:23:13.989Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="nginx-rtmp-module 总结（草稿）">
 <meta name="twitter:description" content="一些参数及其含义
 
 
+
 参数名称
 说明
 
@@ -205,20 +182,7 @@ live
 合并指定的行为，为直播流
 
 
-start
-
-
-
-stop
-
-
-
-static
-静态化，会在nginx 启动的时候创建
-
-
-
-#">
+start">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -385,82 +349,125 @@ static
       
 
       
-        <span itemprop="articleBody"><h2 id="一些参数及其含义"><a href="#一些参数及其含义" class="headerlink" title="一些参数及其含义"></a>一些参数及其含义</h2><table>
+        <span itemprop="articleBody"><h2 id="一些参数及其含义">一些参数及其含义</h2>
+<table>
 <thead>
-<tr>
-<th>参数名称</th>
-<th>说明</th>
+<tr class="header">
+<th align="left">参数名称</th>
+<th align="left">说明</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>app</td>
-<td>指明应用名称</td>
+<tr class="odd">
+<td align="left">app</td>
+<td align="left">指明应用名称</td>
 </tr>
-<tr>
-<td>name</td>
-<td>绑定监听的本地流名字，为空则监听所有的流</td>
+<tr class="even">
+<td align="left">name</td>
+<td align="left">绑定监听的本地流名字，为空则监听所有的流</td>
 </tr>
-<tr>
-<td>tcUrl</td>
-<td>自动构建如果为空</td>
+<tr class="odd">
+<td align="left">tcUrl</td>
+<td align="left">自动构建如果为空</td>
 </tr>
-<tr>
-<td>pageUrl</td>
-<td></td>
+<tr class="even">
+<td align="left">pageUrl</td>
+<td align="left"></td>
 </tr>
-<tr>
-<td>swfUrl</td>
-<td></td>
+<tr class="odd">
+<td align="left">swfUrl</td>
+<td align="left"></td>
 </tr>
-<tr>
-<td>flashVer</td>
-<td></td>
+<tr class="even">
+<td align="left">flashVer</td>
+<td align="left"></td>
 </tr>
-<tr>
-<td>playPath</td>
-<td>远程播放地址</td>
+<tr class="odd">
+<td align="left">playPath</td>
+<td align="left">远程播放地址</td>
 </tr>
-<tr>
-<td>live</td>
-<td>合并指定的行为，为直播流</td>
+<tr class="even">
+<td align="left">live</td>
+<td align="left">合并指定的行为，为直播流</td>
 </tr>
-<tr>
-<td>start</td>
-<td></td>
+<tr class="odd">
+<td align="left">start</td>
+<td align="left"></td>
 </tr>
-<tr>
-<td>stop</td>
-<td></td>
+<tr class="even">
+<td align="left">stop</td>
+<td align="left"></td>
 </tr>
-<tr>
-<td>static</td>
-<td>静态化，会在nginx 启动的时候创建</td>
+<tr class="odd">
+<td align="left">static</td>
+<td align="left">静态化，会在nginx 启动的时候创建</td>
 </tr>
 </tbody>
 </table>
-<p>##rtmp 指令—中继（relay）<br>    Syntax: pull url [key=value]*<br>    Context: application</p>
+<h2 id="中继relay">中继（relay）</h2>
+<pre><code>Syntax: pull url [key=value]*
+Context: application</code></pre>
 <p>创建pull中继，拉取远程的流放到本地使用，当有播放器连接的时候命令才会生效</p>
 <p>Url 语法: <code>[rtmp://]host[:port][/app[/playpath]]</code>.</p>
 <p>如果app没有指定，则使用本地请求中的app名字</p>
 <p><strong>Example</strong></p>
-<pre><code>pull rtmp://192.168.1.129/live/test name=ted;
-</code></pre><p>##Notify相关指令<br>主要用于回调通知</p>
-<p>###on_connect</p>
-<pre><code>nginx 块: rtmp, server
-</code></pre><p>当客户端发起一个连接的时候，同时将会发起一个异步的http请求，客户端连接将会被挂起等待http请求的结果。根据不同的结果做出不同的响应。</p>
-<p><strong>返回结果</strong></p>
+<pre><code>pull rtmp://192.168.1.129/live/test name=ted;</code></pre>
+<h2 id="hls">hls</h2>
+<h3 id="hls_type">hls_type</h3>
+<p>播放列表中的多个播放片段 <code>event  从第一开始播放</code> <code>live 从当前片段开始播放</code>|</p>
+<!-- 播放列表什么个意思？
+有什么参数配置？代表什么意思？ -->
+<h3 id="hls_keys">hls_keys</h3>
+<p>对所有的hls片段启用aes-128加密，默认不使用加密。同时nginx编译的时候需要配置 <code>--with-http_ssl_module</code> 对https的支持。</p>
+<p>密钥的位置可以在本地hls_key_path，也可以是网络文件hls_key_url。</p>
+<p>也可以用 hls_fragments_per_key 指定一个密钥可以加密多少hls片段</p>
+<dl>
+<dt>hls_path</dt>
+<dd>设置playlist和视频片段存放位置
+</dd>
+<dt>hls_fragment</dt>
+<dd>视频片段长度 默认是5s
+</dd>
+<dt>hls_playlist_length</dt>
+<dd>播放列表长度，默认是30s视频长度
+</dd>
+<dt>hls_syn</dt>
+<dd>时间戳同步阈值默认是2ms,当从低分辨率向高分辨路转换的的时候可以去噪，low-resolution RTMP (1KHz) to high-resolution MPEG-TS (90KHz|
+</dd>
+<dt>hls_continuous:</dt>
+<dd>序列号连续模式上次停止的时候序列号开始
+</dd>
+<dt>hls_nested</dt>
+<dd>嵌套模式 是否为每一个流创建一个子目录
+</dd>
+<dt>hls_base_url</dt>
+<dd>指定播放列表url，默认为空
+</dd>
+<dt>hls_cleanup</dt>
+<dd>清理播放列表和视频片段缓存
+</dd>
+<dt>hls_fragment_naming</dt>
+<dd>视频片段命名 1.流时间戳，2.自增整数 3.系统时间戳
+</dd>
+<dt>hls_fragment_naming_granularity</dt>
+<dd>设置视频片段ids间隔，默认是0
+</dd>
+<dt>hls_fragment_slicing</dt>
+<dd>分片模式 1.plain 2.align
+</dd>
+</dl>
+<h2 id="notify相关指令">Notify相关指令</h2>
+<p>主要用于回调通知 ### on_connect</p>
+<pre><code>nginx 块: rtmp, server</code></pre>
+<p>当客户端发起一个连接的时候，同时将会发起一个异步的http请求，客户端连接将会被挂起等待http请求的结果。根据不同的结果做出不同的响应。</p>
+<p><strong>返回结果</strong> - 2xx – 刚才发起的RTMP会话请求继续 - 3xx – 重定向到另外一个应用，应用名在<code>Location</code>响应头中 - 其他连接将会被丢弃</p>
+<p>应用不能放在<code>application</code>块，连接阶段的时候还不知道具体是请求的哪一个应用。 HTTP请求默认使用POST方法。</p>
+<h3 id="on_play">on_play</h3>
+<p>与on_connect 类似，只是返回结果为 <code>3xx</code>的时候需要指定新的流名称</p>
+<h2 id="参考资料">参考资料</h2>
 <ul>
-<li>2xx – 刚才发起的RTMP会话请求继续</li>
-<li>3xx – 重定向到另外一个应用，应用名在<code>Location</code>响应头中</li>
-<li>其他连接将会被丢弃</li>
-</ul>
-<p>应用不能放在<code>application</code>块，连接阶段的时候还不知道具体是请求的哪一个应用。<br>HTTP请求默认使用POST方法。</p>
-<p>###on_play<br>与on_connect 类似，只是返回结果为 <code>3xx</code>的时候需要指定新的流名称</p>
-<p>##参考资料</p>
-<ul>
-<li><a href="https://github.com/arut/nginx-rtmp-module/wiki/Directives#live" target="_blank" rel="external">https://github.com/arut/nginx-rtmp-module/wiki/Directives#live</a></li>
-<li><a href="http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html?utm_source=tuicool" target="_blank" rel="external">http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html?utm_source=tuicool</a></li>
+<li>https://github.com/arut/nginx-rtmp-module/wiki/Directives#live</li>
+<li>http://blog.waterlin.org/articles/using-nginx-rtmp-module-to-build-broadcast-system.html?utm_source=tuicool</li>
 </ul>
 </span>
       
@@ -564,7 +571,7 @@ static
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -578,7 +585,7 @@ static
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-count">43</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -639,7 +646,7 @@ static
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一些参数及其含义"><span class="nav-number">1.</span> <span class="nav-text">一些参数及其含义</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一些参数及其含义"><span class="nav-number">1.</span> <span class="nav-text">一些参数及其含义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中继relay"><span class="nav-number">2.</span> <span class="nav-text">中继（relay）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#hls"><span class="nav-number">3.</span> <span class="nav-text">hls</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hls_type"><span class="nav-number">3.1.</span> <span class="nav-text">hls_type</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hls_keys"><span class="nav-number">3.2.</span> <span class="nav-text">hls_keys</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#notify相关指令"><span class="nav-number">4.</span> <span class="nav-text">Notify相关指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#on_play"><span class="nav-number">4.1.</span> <span class="nav-text">on_play</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">5.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

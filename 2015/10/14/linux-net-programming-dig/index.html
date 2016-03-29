@@ -36,7 +36,7 @@
 
 
 
-  <meta name="keywords" content="c,linux,摘抄,笔记," />
+  <meta name="keywords" content="摘抄,c,笔记,linux," />
 
 
 
@@ -47,40 +47,25 @@
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
 
 
-<meta name="description" content="##IO 复用函数
-##定时器
-定时方法
-
-socket 选项 SO_RCVTIMEO 和SO_SNDTIMEO
-SIGALRM信号
-I/O复用系统调用的超时参数
-
-SO_RCVTIMEO  SO_SNDTIMEO 设置接受、发送数据超时时间">
+<meta name="description" content="IO 复用函数
+定时器
+定时方法 * socket 选项 SO_RCVTIMEO 和SO_SNDTIMEO * SIGALRM信号 * I/O复用系统调用的超时参数
+SO_RCVTIMEO SO_SNDTIMEO 设置接受、发送数据超时时间">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux 高性能服务器编程">
 <meta property="og:url" content="http://blog.soul11201.com/2015/10/14/linux-net-programming-dig/index.html">
 <meta property="og:site_name" content="coder 随想录">
-<meta property="og:description" content="##IO 复用函数
-##定时器
-定时方法
-
-socket 选项 SO_RCVTIMEO 和SO_SNDTIMEO
-SIGALRM信号
-I/O复用系统调用的超时参数
-
-SO_RCVTIMEO  SO_SNDTIMEO 设置接受、发送数据超时时间">
+<meta property="og:description" content="IO 复用函数
+定时器
+定时方法 * socket 选项 SO_RCVTIMEO 和SO_SNDTIMEO * SIGALRM信号 * I/O复用系统调用的超时参数
+SO_RCVTIMEO SO_SNDTIMEO 设置接受、发送数据超时时间">
 <meta property="og:updated_time" content="2015-12-07T10:43:19.051Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux 高性能服务器编程">
-<meta name="twitter:description" content="##IO 复用函数
-##定时器
-定时方法
-
-socket 选项 SO_RCVTIMEO 和SO_SNDTIMEO
-SIGALRM信号
-I/O复用系统调用的超时参数
-
-SO_RCVTIMEO  SO_SNDTIMEO 设置接受、发送数据超时时间">
+<meta name="twitter:description" content="IO 复用函数
+定时器
+定时方法 * socket 选项 SO_RCVTIMEO 和SO_SNDTIMEO * SIGALRM信号 * I/O复用系统调用的超时参数
+SO_RCVTIMEO SO_SNDTIMEO 设置接受、发送数据超时时间">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -247,15 +232,10 @@ SO_RCVTIMEO  SO_SNDTIMEO 设置接受、发送数据超时时间">
       
 
       
-        <span itemprop="articleBody"><p>##IO 复用函数</p>
-<p>##定时器</p>
-<p><strong>定时方法</strong></p>
-<ul>
-<li>socket 选项 SO_RCVTIMEO 和SO_SNDTIMEO</li>
-<li>SIGALRM信号</li>
-<li>I/O复用系统调用的超时参数</li>
-</ul>
-<p>SO_RCVTIMEO  SO_SNDTIMEO 设置接受、发送数据超时时间</p>
+        <span itemprop="articleBody"><h2 id="io-复用函数">IO 复用函数</h2>
+<h2 id="定时器">定时器</h2>
+<p><strong>定时方法</strong> * socket 选项 SO_RCVTIMEO 和SO_SNDTIMEO * SIGALRM信号 * I/O复用系统调用的超时参数</p>
+<p>SO_RCVTIMEO SO_SNDTIMEO 设置接受、发送数据超时时间</p>
 </span>
       
     </div>
@@ -264,13 +244,13 @@ SO_RCVTIMEO  SO_SNDTIMEO 设置接受、发送数据超时时间">
       
         <div class="post-tags">
           
-            <a href="/tags/c/" rel="tag">#c</a>
-          
-            <a href="/tags/linux/" rel="tag">#linux</a>
-          
             <a href="/tags/摘抄/" rel="tag">#摘抄</a>
           
+            <a href="/tags/c/" rel="tag">#c</a>
+          
             <a href="/tags/笔记/" rel="tag">#笔记</a>
+          
+            <a href="/tags/linux/" rel="tag">#linux</a>
           
         </div>
       
@@ -362,7 +342,7 @@ SO_RCVTIMEO  SO_SNDTIMEO 设置接受、发送数据超时时间">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -376,7 +356,7 @@ SO_RCVTIMEO  SO_SNDTIMEO 设置接受、发送数据超时时间">
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-count">43</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -437,7 +417,7 @@ SO_RCVTIMEO  SO_SNDTIMEO 设置接受、发送数据超时时间">
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#io-复用函数"><span class="nav-number">1.</span> <span class="nav-text">IO 复用函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定时器"><span class="nav-number">2.</span> <span class="nav-text">定时器</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

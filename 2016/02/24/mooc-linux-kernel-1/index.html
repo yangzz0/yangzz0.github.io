@@ -36,7 +36,7 @@
 
 
 
-  <meta name="keywords" content="C,Linux 内核分析,mooc,汇编,笔记," />
+  <meta name="keywords" content="笔记,mooc,Linux 内核分析,汇编,C," />
 
 
 
@@ -59,6 +59,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux 内核分析 -- C函数调用栈机制在汇编中的实现">
 <meta name="twitter:description" content="杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about">
+<meta name="twitter:image" content="http://blog.soul11201.com/imgs/cpu-arch.jpg">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -229,50 +230,59 @@
 </blockquote>
 <blockquote><p>杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程  <a href="http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about" target="_blank" rel="external">http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about</a></p>
 </blockquote>
-<h2 id="一些常识"><a href="#一些常识" class="headerlink" title="一些常识"></a>一些常识</h2><p>平时可能见到movb,movw,movl等一些指令，三条指令的意思基本一样，不一样的地方在于，操作的数据是1个字节(1B)，1个字(2B)，1个双字（4B）。</p>
-<h2 id="基础知识"><a href="#基础知识" class="headerlink" title="基础知识"></a>基础知识</h2><p>汇编语言简单的可以认为是机器语言的一种便记符号，理解体系结构对理解汇编指令集大有裨益。现在的流行计算机体系结构是冯诺依曼体系也即存储程序体系。其结构大致如下:</p>
-<p><img src="/imgs/cpu-arch.jpg" alt=""></p>
+<h2 id="一些常识">一些常识</h2>
+<p>平时可能见到movb,movw,movl等一些指令，三条指令的意思基本一样，不一样的地方在于，操作的数据是1个字节(1B)，1个字(2B)，1个双字（4B）。</p>
+<h2 id="基础知识">基础知识</h2>
+<p>汇编语言简单的可以认为是机器语言的一种便记符号，理解体系结构对理解汇编指令集大有裨益。现在的流行计算机体系结构是冯诺依曼体系也即存储程序体系。其结构大致如下:</p>
+<div class="figure">
+<img src="/imgs/cpu-arch.jpg">
+
+</div>
 <p>也决定了指令集设计基本上都是围绕着cpu、存储进行设计的，对于汇编的语法格式，Intel和AT&amp;T汇编之间的区别看以参考文档 <a href="http://www.ibm.com/developerworks/cn/linux/l-assembly/" target="_blank" rel="external">Linux 汇编语言开发指南</a>,这里简要的说一下本文代码中用到的AT&amp;T 32位cpu汇编语言的一些指令。<!-- 说到汇编语言，就离不开了解一点cpu硬件结构的知识， -->汇编中用到的cpu硬件主要是寄存器，它们可用来暂存<code>指令</code>、<code>数据</code>和<code>地址</code>，这里主要用到的寄存器包括通用寄存器中的eax，以及esp（栈顶指针寄存器），ebp（占地指针寄存器）。另外还有一些操作指令，像pushl，popl，movl，leave、enter：</p>
 <table>
 <thead>
-<tr>
-<th>指令</th>
-<th>含义</th>
-<th>等价指令</th>
+<tr class="header">
+<th align="left">指令</th>
+<th align="left">含义</th>
+<th align="left">等价指令</th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td>pushl</td>
-<td>入栈指令</td>
+<tr class="odd">
+<td align="left">pushl</td>
+<td align="left">入栈指令</td>
 </tr>
-<tr>
-<td>popl</td>
-<td>出栈指令</td>
+<tr class="even">
+<td align="left">popl</td>
+<td align="left">出栈指令</td>
 </tr>
-<tr>
-<td>movl</td>
-<td>a,b 数据传送指令,把a—&gt;b</td>
+<tr class="odd">
+<td align="left">movl</td>
+<td align="left">a,b 数据传送指令,把a—&gt;b</td>
 </tr>
-<tr>
-<td>leave</td>
-<td>跟函数调用相关</td>
-<td><code>movl   %ebp, %esp</code><br><code>popl   %ebp</code></td>
+<tr class="even">
+<td align="left">leave</td>
+<td align="left">跟函数调用相关</td>
+<td align="left"><code>movl   %ebp, %esp</code><br><code>popl   %ebp</code></td>
 </tr>
-<tr>
-<td>enter</td>
-<td>跟函数调用相关</td>
-<td><code>pushl   %ebp</code><br><code>movl    %esp, %ebp</code></td>
+<tr class="odd">
+<td align="left">enter</td>
+<td align="left">跟函数调用相关</td>
+<td align="left"><code>pushl   %ebp</code><br><code>movl    %esp, %ebp</code></td>
 </tr>
 </tbody>
 </table>
-<h2 id="一段代码"><a href="#一段代码" class="headerlink" title="一段代码"></a>一段代码</h2><p>首先我们分析一段代码，每个函数都不接受参数。重点分析<code>f()</code>的汇编代码。其他不相关的干扰信息少。<br><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">g</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> g() + <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> f() + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="一段代码">一段代码</h2>
+<p>首先我们分析一段代码，每个函数都不接受参数。重点分析<code>f()</code>的汇编代码。其他不相关的干扰信息少。 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">g</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">f</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> g() + <span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> f() + <span class="number">1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>使用 <code>gcc -S -o main.s mian.c -m32</code>指令编译过后，删除了跟链接相关的信息过后的汇编代码。</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">_g:&#10;    pushl   %ebp&#10;    movl    %esp, %ebp&#10;    movl    $4, %eax&#10;    popl    %ebp&#10;    ret&#10;_f:&#10;    pushl   %ebp&#10;    movl    %esp, %ebp&#10;    call    _g&#10;    addl    $2, %eax&#10;    popl    %ebp&#10;    ret&#10;_main:&#10;    pushl   %ebp&#10;    movl    %esp, %ebp&#10;    call    _f&#10;    addl    $1, %eax&#10;    leave&#10;    ret</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">_g:</span><br><span class="line">    pushl   %ebp</span><br><span class="line">    movl    %esp, %ebp</span><br><span class="line">    movl    $4, %eax</span><br><span class="line">    popl    %ebp</span><br><span class="line">    ret</span><br><span class="line">_f:</span><br><span class="line">    pushl   %ebp</span><br><span class="line">    movl    %esp, %ebp</span><br><span class="line">    call    _g</span><br><span class="line">    addl    $2, %eax</span><br><span class="line">    popl    %ebp</span><br><span class="line">    ret</span><br><span class="line">_main:</span><br><span class="line">    pushl   %ebp</span><br><span class="line">    movl    %esp, %ebp</span><br><span class="line">    call    _f</span><br><span class="line">    addl    $1, %eax</span><br><span class="line">    leave</span><br><span class="line">    ret</span><br></pre></td></tr></table></figure>
 <p>俗话说射人先射马，擒贼先擒王，看上面这坨代码，如果不知道模型是什么确实挺费劲，下面就个人理解说一下这个模型。比如说我们把64KB这么大内存空间分配给<code>_f</code>使用，初始化的时候，EBP，ESP所指向如图所示的上一个函数的栈基址和栈顶地址。当在f中执行完下面的指令后，ESP,EBP位置如下图所示：</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pushl   %ebp&#10;movl    %esp, %ebp</span><br></pre></td></tr></table></figure>
-<p><img src="/imgs/stack-asm.png" alt=""></p>
-<p>从图中也就看到，当前函数使用的栈内存为[ESP,EBP)（不是固定的哦，因为，ESP会变化）这段内存空间（它俩指向同一个位置说明函数栈还没有使用），另外[EBP,EBP+4)这段内存空间保存的是调用此函数的函数栈基址。<br>在到<code>popl    %ebp</code>这条指令之间没有单向操作栈的指令，故可以略去不用考虑，直接看这条指令，此时已经是函数调用完毕，此函数中保存的调用此函数的函数栈机制恢复到ebp寄存器中，到此函数调用栈的建立与销毁已经完毕。再看_g的代码，就会发现同样也是利用这个模型机制，到此内存中程序的函数调用栈机制的整体模型浮现在了面前。至于参数怎么传的，返回值怎么保存的，简单的说在栈和ax寄存器或者内存中，后面再详细说。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pushl   %ebp</span><br><span class="line">movl    %esp, %ebp</span><br></pre></td></tr></table></figure>
+<div class="figure">
+<img src="/imgs/stack-asm.png">
+
+</div>
+<p>从图中也就看到，当前函数使用的栈内存为[ESP,EBP)（不是固定的哦，因为，ESP会变化）这段内存空间（它俩指向同一个位置说明函数栈还没有使用），另外[EBP,EBP+4)这段内存空间保存的是调用此函数的函数栈基址。 在到<code>popl    %ebp</code>这条指令之间没有单向操作栈的指令，故可以略去不用考虑，直接看这条指令，此时已经是函数调用完毕，此函数中保存的调用此函数的函数栈机制恢复到ebp寄存器中，到此函数调用栈的建立与销毁已经完毕。再看_g的代码，就会发现同样也是利用这个模型机制，到此内存中程序的函数调用栈机制的整体模型浮现在了面前。至于参数怎么传的，返回值怎么保存的，简单的说在栈和ax寄存器或者内存中，后面再详细说。</p>
 </span>
       
     </div>
@@ -281,15 +291,15 @@
       
         <div class="post-tags">
           
-            <a href="/tags/C/" rel="tag">#C</a>
-          
-            <a href="/tags/Linux-内核分析/" rel="tag">#Linux 内核分析</a>
+            <a href="/tags/笔记/" rel="tag">#笔记</a>
           
             <a href="/tags/mooc/" rel="tag">#mooc</a>
           
+            <a href="/tags/Linux-内核分析/" rel="tag">#Linux 内核分析</a>
+          
             <a href="/tags/汇编/" rel="tag">#汇编</a>
           
-            <a href="/tags/笔记/" rel="tag">#笔记</a>
+            <a href="/tags/C/" rel="tag">#C</a>
           
         </div>
       
@@ -381,7 +391,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -395,7 +405,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-count">43</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>

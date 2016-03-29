@@ -47,43 +47,46 @@
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
 
 
-<meta name="description" content="##跟ngx有关的函数、变量
-###ngx.header
+<meta name="description" content="跟ngx有关的函数、变量
+ngx.header
 响应头设置
 重定向:ngx.header.Location
-###ngx.exit(404)断开连接，同时设置响应的状态码
-###ngx.log(log_level,log_info1,log_info2,….)
+ngx.exit(404)
+断开连接，同时设置响应的状态码
+ngx.log(log_level,log_info1,log_info2,….)
 打印日志到ngx日志。第一个是日志级别如ngx.ERR
-##应用
-###获取post和get中的参数
-123456789loca">
+应用
+获取post和get中的参数
+123456789local arg">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ngx-lua 笔记总计">
 <meta property="og:url" content="http://blog.soul11201.com/2015/11/10/ngx-lua/index.html">
 <meta property="og:site_name" content="coder 随想录">
-<meta property="og:description" content="##跟ngx有关的函数、变量
-###ngx.header
+<meta property="og:description" content="跟ngx有关的函数、变量
+ngx.header
 响应头设置
 重定向:ngx.header.Location
-###ngx.exit(404)断开连接，同时设置响应的状态码
-###ngx.log(log_level,log_info1,log_info2,….)
+ngx.exit(404)
+断开连接，同时设置响应的状态码
+ngx.log(log_level,log_info1,log_info2,….)
 打印日志到ngx日志。第一个是日志级别如ngx.ERR
-##应用
-###获取post和get中的参数
-123456789loca">
+应用
+获取post和get中的参数
+123456789local arg">
 <meta property="og:updated_time" content="2015-12-07T10:43:19.077Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ngx-lua 笔记总计">
-<meta name="twitter:description" content="##跟ngx有关的函数、变量
-###ngx.header
+<meta name="twitter:description" content="跟ngx有关的函数、变量
+ngx.header
 响应头设置
 重定向:ngx.header.Location
-###ngx.exit(404)断开连接，同时设置响应的状态码
-###ngx.log(log_level,log_info1,log_info2,….)
+ngx.exit(404)
+断开连接，同时设置响应的状态码
+ngx.log(log_level,log_info1,log_info2,….)
 打印日志到ngx日志。第一个是日志级别如ngx.ERR
-##应用
-###获取post和get中的参数
-123456789loca">
+应用
+获取post和get中的参数
+123456789local arg">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -250,26 +253,28 @@
       
 
       
-        <span itemprop="articleBody"><p>##跟ngx有关的函数、变量</p>
-<p>###ngx.header</p>
+        <span itemprop="articleBody"><h2 id="跟ngx有关的函数变量">跟ngx有关的函数、变量</h2>
+<h3 id="ngx.header">ngx.header</h3>
 <p>响应头设置</p>
 <p>重定向:<code>ngx.header.Location</code></p>
-<p>###ngx.exit(404)<br>断开连接，同时设置响应的状态码</p>
-<p>###ngx.log(log_level,log_info1,log_info2,….)</p>
+<h3 id="ngx.exit404">ngx.exit(404)</h3>
+<p>断开连接，同时设置响应的状态码</p>
+<h3 id="ngx.loglog_levellog_info1log_info2.">ngx.log(log_level,log_info1,log_info2,….)</h3>
 <p>打印日志到ngx日志。第一个是日志级别如<code>ngx.ERR</code></p>
-<p>##应用</p>
-<p>###获取post和get中的参数</p>
+<h2 id="应用">应用</h2>
+<h3 id="获取post和get中的参数">获取post和get中的参数</h3>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">local</span> args = &#123;&#125;</span><br><span class="line"><span class="keyword">if</span> <span class="string">"GET"</span> == r_m <span class="keyword">or</span> <span class="string">"HEAD"</span> == r_m <span class="keyword">then</span></span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"GET============"</span>)</span><br><span class="line">    args = ngx.req.get_uri_args()</span><br><span class="line"><span class="keyword">elseif</span> <span class="string">"POST"</span> == r_m <span class="keyword">then</span></span><br><span class="line">    ngx.req.read_body()</span><br><span class="line">    args = ngx.req.get_post_args()</span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"POSTD-----------"</span>)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
 <!-- ##细节 -->
 <!-- ## -->
-<p>###遍历出来请求中的数据并打印到日志</p>
+<h3 id="遍历出来请求中的数据并打印到日志">遍历出来请求中的数据并打印到日志</h3>
 <p>pairs – table</p>
 <p>ipairs – 数组</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> k,v <span class="keyword">in</span> <span class="built_in">pairs</span>(args) <span class="keyword">do</span></span><br><span class="line">    ngx.log(ngx.ERR,<span class="string">"=====k=====&gt;"</span>,<span class="built_in">type</span>(k),<span class="string">":"</span>,k, <span class="string">" ====v===&gt;"</span>,<span class="built_in">type</span>(v),<span class="string">":"</span>,v)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
-<p>##ngx 指令</p>
-<p>###rewrite<br><code>rewrite reg new flag</code></p>
+<h2 id="ngx-指令">ngx 指令</h2>
+<h3 id="rewrite">rewrite</h3>
+<p><code>rewrite reg new flag</code></p>
 <p>匹配失败，则继续往下执行，就当什么都没发生过</p>
-<p>具体使用 <a href="http://www.nginx.cn/216.html" target="_blank" rel="external">http://www.nginx.cn/216.html</a></p>
+<p>具体使用 http://www.nginx.cn/216.html</p>
 </span>
       
     </div>
@@ -370,7 +375,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -384,7 +389,7 @@
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-count">43</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -445,7 +450,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#跟ngx有关的函数变量"><span class="nav-number">1.</span> <span class="nav-text">跟ngx有关的函数、变量</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ngx.header"><span class="nav-number">1.1.</span> <span class="nav-text">ngx.header</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ngx.exit404"><span class="nav-number">1.2.</span> <span class="nav-text">ngx.exit(404)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ngx.loglog_levellog_info1log_info2."><span class="nav-number">1.3.</span> <span class="nav-text">ngx.log(log_level,log_info1,log_info2,….)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#应用"><span class="nav-number">2.</span> <span class="nav-text">应用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#获取post和get中的参数"><span class="nav-number">2.1.</span> <span class="nav-text">获取post和get中的参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#遍历出来请求中的数据并打印到日志"><span class="nav-number">2.2.</span> <span class="nav-text">遍历出来请求中的数据并打印到日志</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ngx-指令"><span class="nav-number">3.</span> <span class="nav-text">ngx 指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#rewrite"><span class="nav-number">3.1.</span> <span class="nav-text">rewrite</span></a></li></ol></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

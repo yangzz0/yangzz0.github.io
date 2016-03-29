@@ -49,20 +49,20 @@
 
 <meta name="description" content="上传一个213M的文件的时候一直报IOerror。首先想到的是php上传文件大小的限制，改为300兆后，不起作用，就感觉是上传的的时候脚本执行的时间太长了，就修改max_input_time 为6000 还是不起作用，琢磨是不是max_input_time解析数据的时间出了问题，最后发现也不是，原来是nginx设置的太小了，改为500m,问题立马解决了。
 php 和 nginx 设置如下
-ngxi">
+ng">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PHP文件上传">
 <meta property="og:url" content="http://blog.soul11201.com/2015/08/05/php-upload-file/index.html">
 <meta property="og:site_name" content="coder 随想录">
 <meta property="og:description" content="上传一个213M的文件的时候一直报IOerror。首先想到的是php上传文件大小的限制，改为300兆后，不起作用，就感觉是上传的的时候脚本执行的时间太长了，就修改max_input_time 为6000 还是不起作用，琢磨是不是max_input_time解析数据的时间出了问题，最后发现也不是，原来是nginx设置的太小了，改为500m,问题立马解决了。
 php 和 nginx 设置如下
-ngxi">
+ng">
 <meta property="og:updated_time" content="2016-03-08T07:42:17.781Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="PHP文件上传">
 <meta name="twitter:description" content="上传一个213M的文件的时候一直报IOerror。首先想到的是php上传文件大小的限制，改为300兆后，不起作用，就感觉是上传的的时候脚本执行的时间太长了，就修改max_input_time 为6000 还是不起作用，琢磨是不是max_input_time解析数据的时间出了问题，最后发现也不是，原来是nginx设置的太小了，改为500m,问题立马解决了。
 php 和 nginx 设置如下
-ngxi">
+ng">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -231,11 +231,11 @@ ngxi">
       
         <span itemprop="articleBody"><p>上传一个213M的文件的时候一直报IOerror。首先想到的是php上传文件大小的限制，改为300兆后，不起作用，就感觉是上传的的时候脚本执行的时间太长了，就修改<code>max_input_time</code> 为6000 还是不起作用，琢磨是不是<code>max_input_time</code>解析数据的时间出了问题，最后发现也不是，原来是nginx设置的太小了，改为500m,问题立马解决了。</p>
 <p>php 和 nginx 设置如下</p>
-<p>ngxin server 里面配置如下<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">     ***</span><br><span class="line">     client_max_body_size 1000M;</span><br><span class="line">     ****</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>php.ini 配置如下<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">file_uploads = On ;是否允许通过HTTP上传文件的开关。默认为ON即是开</span><br><span class="line">upload_max_filesize = 500M ;上传文件上限 </span><br><span class="line">upload_tmp_dir ;文件上传至服务器上存储临时文件的地方，如果没指定就会用系统默认的临时文件夹。</span><br><span class="line">如果要上传比较大的文件，仅仅以上两条还不够，必须把服务器缓存上限调大，把脚本最大执行时间变长 </span><br><span class="line">post_max_size = 500M ; POST给PHP的所能接收的最大值</span><br><span class="line">max_execution_time = 30 ; 每个PHP页面运行的最大时间值 Maximum execution time of each script, in seconds脚本最大执行时间 </span><br><span class="line">max_input_time = 60 ; 每个PHP页面接收数据所需的最大时间 解析一次请求时间上线 Maximum amount of time each script may spend parsing request data </span><br><span class="line">memory_limit = 128M ;  每个PHP页面所吃掉的最大内存 内存上限 Maximum amount of memory a script may consume (128MB)</span><br></pre></td></tr></table></figure></p>
+<p>ngxin server 里面配置如下 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">     ***</span><br><span class="line">     client_max_body_size 1000M;</span><br><span class="line">     ****</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>php.ini 配置如下 <figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">file_uploads = On ;是否允许通过HTTP上传文件的开关。默认为ON即是开</span><br><span class="line">upload_max_filesize = 500M ;上传文件上限 </span><br><span class="line">upload_tmp_dir ;文件上传至服务器上存储临时文件的地方，如果没指定就会用系统默认的临时文件夹。</span><br><span class="line">如果要上传比较大的文件，仅仅以上两条还不够，必须把服务器缓存上限调大，把脚本最大执行时间变长 </span><br><span class="line">post_max_size = 500M ; POST给PHP的所能接收的最大值</span><br><span class="line">max_execution_time = 30 ; 每个PHP页面运行的最大时间值 Maximum execution time of each script, in seconds脚本最大执行时间 </span><br><span class="line">max_input_time = 60 ; 每个PHP页面接收数据所需的最大时间 解析一次请求时间上线 Maximum amount of time each script may spend parsing request data </span><br><span class="line">memory_limit = 128M ;  每个PHP页面所吃掉的最大内存 内存上限 Maximum amount of memory a script may consume (128MB)</span><br></pre></td></tr></table></figure></p>
 <p>相关参数解释</p>
-<p>##参考</p>
-<p><a href="http://www.jb51.net/article/18975.htm" target="_blank" rel="external">http://www.jb51.net/article/18975.htm</a><br><a href="http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml" target="_blank" rel="external">http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml</a></p>
+<h2 id="参考">参考</h2>
+<p>http://www.jb51.net/article/18975.htm http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml</p>
 </span>
       
     </div>
@@ -340,7 +340,7 @@ ngxi">
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">28</span>
+              <span class="site-state-item-count">33</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -354,7 +354,7 @@ ngxi">
 
           <div class="site-state-item site-state-tags">
             <a href="/tags">
-              <span class="site-state-item-count">42</span>
+              <span class="site-state-item-count">43</span>
               <span class="site-state-item-name">标签</span>
               </a>
           </div>
@@ -415,7 +415,7 @@ ngxi">
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">1.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
