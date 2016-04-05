@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.soul11201.com/"/>
-  <updated>2016-03-29T13:54:29.622Z</updated>
+  <updated>2016-04-05T07:43:44.808Z</updated>
   <id>http://blog.soul11201.com/</id>
   
   <author>
@@ -16,15 +16,203 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Linux 内核分析 -- 进程的创建</title>
+    <link href="http://blog.soul11201.com/2016/04/01/mooc-linux-kernel-6/"/>
+    <id>http://blog.soul11201.com/2016/04/01/mooc-linux-kernel-6/</id>
+    <published>2016-04-01T12:20:46.000Z</published>
+    <updated>2016-04-05T07:43:44.808Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;&lt;p&gt;杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 &lt;a href=&quot;http://mooc.study.163.com/course/USTC-1000029000&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://mooc.study.163.com/course/USTC-1000029000&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;&lt;p&gt;杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程  &lt;a href=&quot;http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;阅读理解task_struct数据结构http://codelab.shiyanlou.com/xref/linux-3.18.6/include/linux/sched.h#1235；&lt;/li&gt;
+&lt;li&gt;分析fork函数对应的内核处理过程sys_clone，理解创建一个新进程如何创建和修改task_struct数据结构；&lt;/li&gt;
+&lt;li&gt;使用gdb跟踪分析一个fork系统调用内核处理函数sys_clone ，验证您对Linux系统创建一个新进程的理解,推荐在实验楼Linux虚拟机环境下完成实验。 特别关注新进程是从哪里开始执行的？为什么从那里能顺利执行下去？即执行起点与内核堆栈如何保证一致。&lt;/li&gt;
+&lt;li&gt;根据本周所学知识分析fork函数对应的系统调用处理过程，撰写一篇署名博客，并在博客文章中注明“真实姓名（与最后申请证书的姓名务必一致） + 原创作品转载请注明出处 + 《Linux内核分析》MOOC课程http://mooc.study.163.com/course/USTC-1000029000”，博客内容的具体要求如下：
+&lt;ul&gt;
+&lt;li&gt;题目自拟，内容围绕对Linux系统如何创建一个新进程进行；&lt;/li&gt;
+&lt;li&gt;可以结合实验截图、绘制堆栈状态执行流程图等；&lt;/li&gt;
+&lt;li&gt;博客内容中需要仔细分析新进程的执行起点及对应的堆栈状态等。&lt;/li&gt;
+&lt;li&gt;总结部分需要阐明自己对“Linux系统创建一个新进程”的理解&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;进程简介&quot;&gt;进程简介&lt;/h2&gt;
+&lt;p&gt;进程是处于执行期的程序以及它所管理的资源（如打开的文件、挂起的信号、进程状态、地址空间等等）的总称。注意，程序并不是进程，实际上两个或多个进程不仅有可能执行同一程序，而且还有可能共享地址空间等资源。Linux内核通过一个被称为进程描述符的task_struct结构体来管理进程，这个结构体包含了一个进程所需的所有信息&lt;a href=&quot;#fn1&quot; class=&quot;footnoteRef&quot; id=&quot;fnref1&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id=&quot;task_struct代码分析&quot;&gt;&lt;code&gt;task_struct&lt;/code&gt;代码分析&lt;/h2&gt;
+&lt;h3 id=&quot;进程状态&quot;&gt;进程状态&lt;/h3&gt;
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;//行号   结构成员&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1236&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;volatile&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt; state;	&lt;span class=&quot;comment&quot;&gt;/* -1 unrunnable, 0 runnable, &amp;gt;0 stopped */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;进程的状态，可能取值大概十种，和其他一些相关操作宏　具体参见 &lt;a href=&quot;https://github.com/torvalds/linux/blob/v3.18-rc6/include/linux/sched.h#L193-L249&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;github 代码&lt;/a&gt;，　每种状态的具体含义可以查阅参考资料&lt;a href=&quot;#fn2&quot; class=&quot;footnoteRef&quot; id=&quot;fnref2&quot;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;　 ### 进程内核堆栈&lt;/p&gt;
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1237&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;void&lt;/span&gt; *&lt;span class=&quot;built_in&quot;&gt;stack&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;分配给进程的内核堆栈，分配和释放对应的函数为&lt;code&gt;alloc_thread_info&lt;/code&gt;, &lt;code&gt;free_thread_info&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&quot;进程标志&quot;&gt;进程标志&lt;/h3&gt;
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; flags; &lt;span class=&quot;comment&quot;&gt;/* per process flags, defined below */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;进程标记，其所有可能取值参见　&lt;a href=&quot;https://github.com/torvalds/linux/blob/v3.18-rc6/include/linux/sched.h#L1898-L1927&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;github 上linux代码&lt;/a&gt;,其部分取值含义如下&lt;/p&gt;
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt; &lt;span class=&quot;comment&quot;&gt;/*&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;flags是进程当前的状态标志，具体的如：&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;0x00000002表示进程正在被创建；&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;0x00000004表示进程正准备退出；&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;0x00000040 表示此进程被fork出，但是并没有执行exec；&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;0x00000400表示此进程由于其他进程发送相关信号而被杀死 。&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;*/&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;进程间关系&quot;&gt;进程间关系&lt;/h3&gt;
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1337&lt;/span&gt;	&lt;span class=&quot;comment&quot;&gt;/*&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;1338	 * pointers to (original) parent process, youngest child, younger sibling,&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;1339	 * older sibling, respectively.  (p-&amp;gt;father can be replaced with&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;1340	 * p-&amp;gt;real_parent-&amp;gt;pid)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;1341	 */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1342&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;struct&lt;/span&gt; task_struct __rcu *real_parent; &lt;span class=&quot;comment&quot;&gt;/* real parent process */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1343&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;struct&lt;/span&gt; task_struct __rcu *parent; &lt;span class=&quot;comment&quot;&gt;/* recipient of SIGCHLD, wait4() reports */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1344&lt;/span&gt;	&lt;span class=&quot;comment&quot;&gt;/*&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;1345	 * children/sibling forms the list of my natural children&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;1346	 */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1347&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;struct&lt;/span&gt; list_head children;	&lt;span class=&quot;comment&quot;&gt;/* list of my children */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1348&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;struct&lt;/span&gt; list_head sibling;	&lt;span class=&quot;comment&quot;&gt;/* linkage in my parent&#39;s children list */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1349&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;struct&lt;/span&gt; task_struct *group_leader;	&lt;span class=&quot;comment&quot;&gt;/* threadgroup leader */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;描述进程见关系的一组属性，像父子，兄弟，组&lt;/p&gt;
+&lt;h3 id=&quot;进程调度&quot;&gt;进程调度&lt;/h3&gt;
+&lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1253&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; prio, static_prio, normal_prio;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1254&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; rt_priority;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1255&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;struct&lt;/span&gt; sched_class *sched_class;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1256&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;struct&lt;/span&gt; sched_entity se;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1257&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;struct&lt;/span&gt; sched_rt_entity rt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1258&lt;/span&gt;&lt;span class=&quot;meta&quot;&gt;#&lt;span class=&quot;meta-keyword&quot;&gt;ifdef&lt;/span&gt; CONFIG_CGROUP_SCHED&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1259&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;struct&lt;/span&gt; task_group *sched_task_group;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1260&lt;/span&gt;&lt;span class=&quot;meta&quot;&gt;#&lt;span class=&quot;meta-keyword&quot;&gt;endif&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1261&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;struct&lt;/span&gt; sched_dl_entity dl;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1262&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1263&lt;/span&gt;&lt;span class=&quot;meta&quot;&gt;#&lt;span class=&quot;meta-keyword&quot;&gt;ifdef&lt;/span&gt; CONFIG_PREEMPT_NOTIFIERS&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1264&lt;/span&gt;	&lt;span class=&quot;comment&quot;&gt;/* list of struct preempt_notifier: */&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1265&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;struct&lt;/span&gt; hlist_head preempt_notifiers;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1266&lt;/span&gt;&lt;span class=&quot;meta&quot;&gt;#&lt;span class=&quot;meta-keyword&quot;&gt;endif&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1267&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1268&lt;/span&gt;&lt;span class=&quot;meta&quot;&gt;#&lt;span class=&quot;meta-keyword&quot;&gt;ifdef&lt;/span&gt; CONFIG_BLK_DEV_IO_TRACE&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1269&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; btrace_seq;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1270&lt;/span&gt;&lt;span class=&quot;meta&quot;&gt;#&lt;span class=&quot;meta-keyword&quot;&gt;endif&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1271&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1272&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; policy;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1273&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; nr_cpus_allowed;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;number&quot;&gt;1274&lt;/span&gt;	&lt;span class=&quot;keyword&quot;&gt;cpumask_t&lt;/span&gt; cpus_allowed;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;table&gt;
+&lt;tbody&gt;
+&lt;tr class=&quot;odd&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;static_prio&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;用于保存静态优先级，可以通过nice系统调用来进行修改。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&quot;even&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;rt_priority&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;用于保存实时优先级。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&quot;odd&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;normal_prio&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;的值取决于静态优先级和调度策略。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&quot;even&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;prio&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;用于保存动态优先级。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&quot;odd&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;policy&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;表示进程的调度策略，目前主要有五种&lt;a href=&quot;#fn3&quot; class=&quot;footnoteRef&quot; id=&quot;fnref3&quot;&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&quot;even&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;struct files_structf * files&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;系统打开文件&lt;a href=&quot;#fn4&quot; class=&quot;footnoteRef&quot; id=&quot;fnref4&quot;&gt;&lt;sup&gt;4&lt;/sup&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;其他的还有一些代码介绍可以参考文档&lt;a href=&quot;#fn5&quot; class=&quot;footnoteRef&quot; id=&quot;fnref5&quot;&gt;&lt;sup&gt;5&lt;/sup&gt;&lt;/a&gt;&lt;a href=&quot;#fn6&quot; class=&quot;footnoteRef&quot; id=&quot;fnref6&quot;&gt;&lt;sup&gt;6&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&quot;创建一个新进程在内核中的执行过程&quot;&gt;创建一个新进程在内核中的执行过程&lt;/h2&gt;
+&lt;p&gt;一个用户程序进行fork进程代码样例如下所示： &lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;function&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; &lt;span class=&quot;title&quot;&gt;Fork&lt;/span&gt;&lt;span class=&quot;params&quot;&gt;(&lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; argc,&lt;span class=&quot;keyword&quot;&gt;char&lt;/span&gt;*argv[])&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&amp;#123;                          &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;int&lt;/span&gt; pid;           &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        pid = fork();      &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(pid&amp;lt;&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;)          &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#123;                  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;built_in&quot;&gt;fprintf&lt;/span&gt;(&lt;span class=&quot;built_in&quot;&gt;stderr&lt;/span&gt;,&lt;span class=&quot;string&quot;&gt;&quot;ForkFailed&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                           &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;if&lt;/span&gt;(pid == &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;)&amp;#123; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;this is child process pid:%d\n&quot;&lt;/span&gt;,getpid());&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;span class=&quot;keyword&quot;&gt;else&lt;/span&gt;&amp;#123;             &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;this is Parent Process! pid:%d child pid:%d\n&quot;&lt;/span&gt;,getpid(),pid);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                wait(&lt;span class=&quot;literal&quot;&gt;NULL&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;Child Complete\n&quot;&lt;/span&gt;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;                  &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;上述代码运行的模型大致如下：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;使用fork、vfork、clone 三个系统调用创建一个新进程，最终都是调用do_fork完成进程的创建&lt;/li&gt;
+&lt;li&gt;复制父进程
+&lt;ul&gt;
+&lt;li&gt;复制一个PCB 即&lt;code&gt;task_struct  err = arch_dup_task_struct(tsk, orig);&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;分配新的内核堆栈 &lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;ti = alloc_thread_info_node(tsk, node);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;tsk-&amp;gt;&lt;span class=&quot;built_in&quot;&gt;stack&lt;/span&gt; = ti;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;setup_thread_stack(tsk, orig); &lt;span class=&quot;comment&quot;&gt;//这里只是复制thread_info，而非复制内核堆栈&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;修改复制复制过来的PCB数据，如pid,进程链表，见&lt;code&gt;copy_process&lt;/code&gt;函数&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;父子进程运行 从用户的代码来看函数&lt;code&gt;fork&lt;/code&gt;返回了两次，即在父子进程中各返回一次，父进程从系统调用中返回比较容易理解。子进程从系统调用中返回，继续从&lt;code&gt;fork&lt;/code&gt;处执行，Linux是如何做到的呢？这就涉及子进程的&lt;code&gt;内核堆栈数据状态&lt;/code&gt;和&lt;code&gt;task_struct&lt;/code&gt;中&lt;code&gt;thread&lt;/code&gt;记录的&lt;code&gt;sp&lt;/code&gt;和&lt;code&gt;ip&lt;/code&gt;的一致性问题，这是在哪里设定的？copy_thread in copy_process &lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;*childregs = *current_pt_regs(); &lt;span class=&quot;comment&quot;&gt;//复制内核堆栈&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;childregs-&amp;gt;ax = &lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;; &lt;span class=&quot;comment&quot;&gt;//为什么子进程的fork返回0，这里就是原因！&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;p-&amp;gt;thread.sp = (&lt;span class=&quot;keyword&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt;) childregs; &lt;span class=&quot;comment&quot;&gt;//调度到子进程时的内核栈顶&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;p-&amp;gt;thread.ip = (&lt;span class=&quot;keyword&quot;&gt;unsigned&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;long&lt;/span&gt;) ret_from_fork; &lt;span class=&quot;comment&quot;&gt;//调度到子进程时的第一条指令地址&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;gdb跟踪调试程序&quot;&gt;gdb　跟踪调试程序&lt;/h2&gt;
+&lt;p&gt;程序调用顺序如下所示以缩进格式表示：&lt;/p&gt;
+&lt;blockquote&gt;&lt;ul&gt;
+&lt;li&gt;sys_fork&lt;ul&gt;
+&lt;li&gt;do_fork – 系统内核调用&lt;/li&gt;
+&lt;li&gt;copy_process – 复制父进程的所有信息给子进程&lt;ul&gt;
+&lt;li&gt;dup_task_struct　– 复制父进程PCB信息。&lt;ul&gt;
+&lt;li&gt;alloc_thread_info_node　　– 分配进程内核堆栈&lt;/li&gt;
+&lt;li&gt;arch_dup_task_struct　　　　– 直接父子进程共享，写时复制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;sched_fork – 把新进程设置为 TASK_RUNNING &lt;/li&gt;
+&lt;li&gt;copy_thread　– 　把父进程的寄存器上下文复制给子进程&lt;/li&gt;
+&lt;li&gt;ret_from_fork  – 设置子进程开始执行的位置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;gdb调试断点相关一些指令-ref4&quot;&gt;gdb调试——断点相关一些指令 &lt;a href=&quot;#fn7&quot; class=&quot;footnoteRef&quot; id=&quot;fnref7&quot;&gt;&lt;sup&gt;7&lt;/sup&gt;&lt;/a&gt;&lt;/h3&gt;
+&lt;table&gt;
+&lt;tbody&gt;
+&lt;tr class=&quot;odd&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;b/break&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;设置断点&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&quot;even&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;info breakpoints&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;查看当前设置的断点信息&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&quot;odd&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;disable&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;断点无效，单还是存在&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&quot;even&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;enable&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;断点有效，这两个属于使能指令&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&quot;odd&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;clear/delete&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;两条指令有点不同，delete 更凶猛一些&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&quot;even&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;print&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;打印变量或表达式当前的值&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&quot;odd&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;whatis&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;显示某个变量或表达式值的数据类型&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&quot;even&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;set variable 变量=值&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;给变量赋值,以上命令参考 &lt;a href=&quot;#fn8&quot; class=&quot;footnoteRef&quot; id=&quot;fnref8&quot;&gt;&lt;sup&gt;8&lt;/sup&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&quot;odd&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;save breakpoint&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;保存设置的断点到文件,读取断点设置在启动gdb的时候使用&lt;code&gt;-x&lt;/code&gt;选项指定断点设置文件&lt;a href=&quot;#fn9&quot; class=&quot;footnoteRef&quot; id=&quot;fnref9&quot;&gt;&lt;sup&gt;9&lt;/sup&gt;&lt;/a&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr class=&quot;even&quot;&gt;
+&lt;td align=&quot;left&quot;&gt;help&lt;/td&gt;
+&lt;td align=&quot;left&quot;&gt;帮助，可用于查询指令的详细用法&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;调试中设置的一些断点，并导出到&lt;a href=&quot;/attach.d/fork.bp&quot;&gt;文件&lt;/a&gt; &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;break sys_clone&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;break do_fork&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;break copy_process&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;break dup_task_struct&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;break alloc_thread_info_node&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;break arch_dup_task_struct&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;break copy_thread&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;h2 id=&quot;嵌入到menuosgdb运行调试遇到的问题&quot;&gt;嵌入到MenuOs,gdb运行调试遇到的问题&lt;/h2&gt;
+&lt;ol style=&quot;list-style-type: decimal&quot;&gt;
+&lt;li&gt;执行fork后，进程停止在了子进程，如何发现的呢？利用上次系统调用作业&lt;code&gt;getpid()&lt;/code&gt;查看进程pid发现的。&lt;/li&gt;
+&lt;li&gt;gdb 无法加载进去符号表，还没找到好的解决方法 　原来编译的时候配置有问题，没办法进行跟踪调试，根据第二节的课程文档重新编译了一遍就OK了。根据文档制作了一个&lt;a href=&quot;/attach.d/moocOsEnvBuild.makefile&quot;&gt;Makefile&lt;/a&gt;，下载到一个新文件夹执行　&lt;code&gt;make -f moocOsEnvBuild.makefile install&lt;/code&gt; 确保terminal窗口大小大于&lt;code&gt;80*19&lt;/code&gt;,并且会弹出来一个窗口记得开启下列选项&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;kernel hacking—&amp;gt;Compile.....&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;[*] compile the kernel with debug info&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;等待编译完成，进入menu文件夹执行&lt;code&gt;make qemu&lt;/code&gt;直接启动MenuOs或者&lt;code&gt;make qemu-gdb&lt;/code&gt;启动MenuOs并且使用gdb跟踪调试&lt;/p&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&quot;fn1&quot;&gt;&lt;p&gt;http://blog.csdn.net/npy_lp/article/details/7292563&lt;a href=&quot;#fnref1&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn2&quot;&gt;&lt;p&gt;http://blog.csdn.net/npy_lp/article/details/7292563&lt;a href=&quot;#fnref2&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn3&quot;&gt;&lt;p&gt;http://blog.csdn.net/npy_lp/article/details/7292563&lt;a href=&quot;#fnref3&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn4&quot;&gt;&lt;p&gt;http://www.jianshu.com/p/5ffdd11a93cd&lt;a href=&quot;#fnref4&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn5&quot;&gt;&lt;p&gt;http://blog.csdn.net/npy_lp/article/details/7292563&lt;a href=&quot;#fnref5&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn6&quot;&gt;&lt;p&gt;http://www.2cto.com/os/201201/116810.html&lt;a href=&quot;#fnref6&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn7&quot;&gt;&lt;p&gt;http://www.cnblogs.com/rosesmall/archive/2012/04/13/2445527.html&lt;a href=&quot;#fnref7&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn8&quot;&gt;&lt;p&gt;http://www.cnblogs.com/rosesmall/archive/2012/04/13/2445527.html&lt;a href=&quot;#fnref8&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn9&quot;&gt;&lt;p&gt;http://jingyan.baidu.com/article/f3ad7d0fff191509c3345bd1.html&lt;a href=&quot;#fnref9&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</content>
+    
+    <summary type="html">
+    
+      杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about
+    
+    </summary>
+    
+    
+      <category term="笔记" scheme="http://blog.soul11201.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="mooc" scheme="http://blog.soul11201.com/tags/mooc/"/>
+    
+      <category term="Linux 内核分析" scheme="http://blog.soul11201.com/tags/Linux-%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/"/>
+    
+      <category term="汇编" scheme="http://blog.soul11201.com/tags/%E6%B1%87%E7%BC%96/"/>
+    
+      <category term="C" scheme="http://blog.soul11201.com/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
     <title>ubuntu 一键自动部署 nginx-rtmp</title>
     <link href="http://blog.soul11201.com/2016/03/29/nginx-rtmp-makefile/"/>
     <id>http://blog.soul11201.com/2016/03/29/nginx-rtmp-makefile/</id>
     <published>2016-03-29T12:56:40.000Z</published>
-    <updated>2016-03-29T13:54:29.622Z</updated>
+    <updated>2016-03-31T06:48:28.939Z</updated>
     
-    <content type="html">&lt;blockquote&gt;&lt;p&gt;著作权归作者所有。&lt;br&gt;商业转载请联系作者获得授权，非商业转载请注明出处。&lt;br&gt;作者：杨振振&lt;br&gt;链接：&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;blockquote&gt;
+    <content type="html">&lt;blockquote&gt;
 &lt;p&gt;琐碎细节的东西规范化、流程化，流程规范的东西自动化 —— 忘记从哪里看到的了，欢迎作者联系&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;blockquote&gt;&lt;p&gt;rtmp 笔记:&lt;/p&gt;
@@ -928,34 +1116,6 @@ system_call 断点可以设置，但是程序运行的时候会直接跳过去
       <category term="php" scheme="http://blog.soul11201.com/tags/php/"/>
     
       <category term="环境搭建" scheme="http://blog.soul11201.com/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MonaServer 使用笔记</title>
-    <link href="http://blog.soul11201.com/2015/11/11/MonaServer/"/>
-    <id>http://blog.soul11201.com/2015/11/11/MonaServer/</id>
-    <published>2015-11-11T11:54:48.000Z</published>
-    <updated>2015-12-07T10:43:19.031Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;安装&quot;&gt;安装&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;windows&lt;/strong&gt; 1. &lt;a href=&quot;http://sourceforge.net/projects/monaserver/files/MonaServer_Windows_32.zip/download&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;点击下载运行包&lt;/a&gt; 1. 依赖环境：&lt;strong&gt;&lt;a href=&quot;http://www.microsoft.com/en-us/download/details.aspx?id=40784&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Visual Studio 2013 redistributable packages&lt;/a&gt;&lt;/strong&gt; 2. 双击运行 &lt;strong&gt;MonaServer.exe&lt;/strong&gt;，同级目录下会生成&lt;code&gt;logs/&lt;/code&gt;和&lt;code&gt;www/&lt;/code&gt;两个文件夹，然后重新运行 &lt;strong&gt;MonaServer.exe&lt;/strong&gt;。 1. 配置obs推流。&lt;/p&gt;
-&lt;p&gt;&lt;img src=&quot;/imgs/MonaServer-1.png&quot;&gt; &lt;img src=&quot;/imgs/MonaServer-2.png&quot;&gt;&lt;/p&gt;
-&lt;h2 id=&quot;参考链接&quot;&gt;参考链接&lt;/h2&gt;
-&lt;ol style=&quot;list-style-type: decimal&quot;&gt;
-&lt;li&gt;&lt;a href=&quot;https://obsproject.com/forum/resources/how-to-set-up-your-own-private-rtmfp-server-using-monaserver.153/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;How to set up your own private RTMFP server using MonaServer&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.monaserver.ovh/quickstart.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Quick Start&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&quot;http://www.monaserver.ovh/manual.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;手册&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;安装&quot;&gt;安装&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;windows&lt;/strong&gt; 1. &lt;a href=&quot;http://sourceforge.net/projects/monaserver/files/MonaServer_Windows_32.zip/down
-    
-    </summary>
-    
     
   </entry>
   

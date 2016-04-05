@@ -4,11 +4,177 @@
   
     
     <entry>
+      <title><![CDATA[Linux 内核分析 -- 进程的创建]]></title>
+      <url>http://blog.soul11201.com/2016/04/01/mooc-linux-kernel-6/</url>
+      <content type="html"><![CDATA[<blockquote><p>杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 <a href="http://mooc.study.163.com/course/USTC-1000029000" target="_blank" rel="external">http://mooc.study.163.com/course/USTC-1000029000</a></p>
+</blockquote>
+<blockquote><p>杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程  <a href="http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about" target="_blank" rel="external">http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about</a></p>
+</blockquote>
+<ul>
+<li>阅读理解task_struct数据结构http://codelab.shiyanlou.com/xref/linux-3.18.6/include/linux/sched.h#1235；</li>
+<li>分析fork函数对应的内核处理过程sys_clone，理解创建一个新进程如何创建和修改task_struct数据结构；</li>
+<li>使用gdb跟踪分析一个fork系统调用内核处理函数sys_clone ，验证您对Linux系统创建一个新进程的理解,推荐在实验楼Linux虚拟机环境下完成实验。 特别关注新进程是从哪里开始执行的？为什么从那里能顺利执行下去？即执行起点与内核堆栈如何保证一致。</li>
+<li>根据本周所学知识分析fork函数对应的系统调用处理过程，撰写一篇署名博客，并在博客文章中注明“真实姓名（与最后申请证书的姓名务必一致） + 原创作品转载请注明出处 + 《Linux内核分析》MOOC课程http://mooc.study.163.com/course/USTC-1000029000”，博客内容的具体要求如下：
+<ul>
+<li>题目自拟，内容围绕对Linux系统如何创建一个新进程进行；</li>
+<li>可以结合实验截图、绘制堆栈状态执行流程图等；</li>
+<li>博客内容中需要仔细分析新进程的执行起点及对应的堆栈状态等。</li>
+<li>总结部分需要阐明自己对“Linux系统创建一个新进程”的理解</li>
+</ul></li>
+</ul>
+<h2 id="进程简介">进程简介</h2>
+<p>进程是处于执行期的程序以及它所管理的资源（如打开的文件、挂起的信号、进程状态、地址空间等等）的总称。注意，程序并不是进程，实际上两个或多个进程不仅有可能执行同一程序，而且还有可能共享地址空间等资源。Linux内核通过一个被称为进程描述符的task_struct结构体来管理进程，这个结构体包含了一个进程所需的所有信息<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>。</p>
+<h2 id="task_struct代码分析"><code>task_struct</code>代码分析</h2>
+<h3 id="进程状态">进程状态</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//行号   结构成员</span></span><br><span class="line"><span class="number">1236</span>	<span class="keyword">volatile</span> <span class="keyword">long</span> state;	<span class="comment">/* -1 unrunnable, 0 runnable, &gt;0 stopped */</span></span><br></pre></td></tr></table></figure>
+<p>进程的状态，可能取值大概十种，和其他一些相关操作宏　具体参见 <a href="https://github.com/torvalds/linux/blob/v3.18-rc6/include/linux/sched.h#L193-L249" target="_blank" rel="external">github 代码</a>，　每种状态的具体含义可以查阅参考资料<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>　 ### 进程内核堆栈</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1237</span>	<span class="keyword">void</span> *<span class="built_in">stack</span>;</span><br></pre></td></tr></table></figure>
+<p>分配给进程的内核堆栈，分配和释放对应的函数为<code>alloc_thread_info</code>, <code>free_thread_info</code></p>
+<h3 id="进程标志">进程标志</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> flags; <span class="comment">/* per process flags, defined below */</span></span><br></pre></td></tr></table></figure>
+<p>进程标记，其所有可能取值参见　<a href="https://github.com/torvalds/linux/blob/v3.18-rc6/include/linux/sched.h#L1898-L1927" target="_blank" rel="external">github 上linux代码</a>,其部分取值含义如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/*</span><br><span class="line"> </span><br><span class="line">flags是进程当前的状态标志，具体的如：</span><br><span class="line"> </span><br><span class="line">0x00000002表示进程正在被创建；</span><br><span class="line"> </span><br><span class="line">0x00000004表示进程正准备退出；</span><br><span class="line"> </span><br><span class="line">0x00000040 表示此进程被fork出，但是并没有执行exec；</span><br><span class="line"> </span><br><span class="line">0x00000400表示此进程由于其他进程发送相关信号而被杀死 。</span><br><span class="line"> </span><br><span class="line">*/</span></span><br></pre></td></tr></table></figure>
+<h3 id="进程间关系">进程间关系</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1337</span>	<span class="comment">/*</span><br><span class="line">1338	 * pointers to (original) parent process, youngest child, younger sibling,</span><br><span class="line">1339	 * older sibling, respectively.  (p-&gt;father can be replaced with</span><br><span class="line">1340	 * p-&gt;real_parent-&gt;pid)</span><br><span class="line">1341	 */</span></span><br><span class="line"><span class="number">1342</span>	<span class="keyword">struct</span> task_struct __rcu *real_parent; <span class="comment">/* real parent process */</span></span><br><span class="line"><span class="number">1343</span>	<span class="keyword">struct</span> task_struct __rcu *parent; <span class="comment">/* recipient of SIGCHLD, wait4() reports */</span></span><br><span class="line"><span class="number">1344</span>	<span class="comment">/*</span><br><span class="line">1345	 * children/sibling forms the list of my natural children</span><br><span class="line">1346	 */</span></span><br><span class="line"><span class="number">1347</span>	<span class="keyword">struct</span> list_head children;	<span class="comment">/* list of my children */</span></span><br><span class="line"><span class="number">1348</span>	<span class="keyword">struct</span> list_head sibling;	<span class="comment">/* linkage in my parent's children list */</span></span><br><span class="line"><span class="number">1349</span>	<span class="keyword">struct</span> task_struct *group_leader;	<span class="comment">/* threadgroup leader */</span></span><br></pre></td></tr></table></figure>
+<p>描述进程见关系的一组属性，像父子，兄弟，组</p>
+<h3 id="进程调度">进程调度</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1253</span>	<span class="keyword">int</span> prio, static_prio, normal_prio;</span><br><span class="line"><span class="number">1254</span>	<span class="keyword">unsigned</span> <span class="keyword">int</span> rt_priority;</span><br><span class="line"><span class="number">1255</span>	<span class="keyword">const</span> <span class="keyword">struct</span> sched_class *sched_class;</span><br><span class="line"><span class="number">1256</span>	<span class="keyword">struct</span> sched_entity se;</span><br><span class="line"><span class="number">1257</span>	<span class="keyword">struct</span> sched_rt_entity rt;</span><br><span class="line"><span class="number">1258</span><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_CGROUP_SCHED</span></span><br><span class="line"><span class="number">1259</span>	<span class="keyword">struct</span> task_group *sched_task_group;</span><br><span class="line"><span class="number">1260</span><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="number">1261</span>	<span class="keyword">struct</span> sched_dl_entity dl;</span><br><span class="line"><span class="number">1262</span></span><br><span class="line"><span class="number">1263</span><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_PREEMPT_NOTIFIERS</span></span><br><span class="line"><span class="number">1264</span>	<span class="comment">/* list of struct preempt_notifier: */</span></span><br><span class="line"><span class="number">1265</span>	<span class="keyword">struct</span> hlist_head preempt_notifiers;</span><br><span class="line"><span class="number">1266</span><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="number">1267</span></span><br><span class="line"><span class="number">1268</span><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_BLK_DEV_IO_TRACE</span></span><br><span class="line"><span class="number">1269</span>	<span class="keyword">unsigned</span> <span class="keyword">int</span> btrace_seq;</span><br><span class="line"><span class="number">1270</span><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="number">1271</span></span><br><span class="line"><span class="number">1272</span>	<span class="keyword">unsigned</span> <span class="keyword">int</span> policy;</span><br><span class="line"><span class="number">1273</span>	<span class="keyword">int</span> nr_cpus_allowed;</span><br><span class="line"><span class="number">1274</span>	<span class="keyword">cpumask_t</span> cpus_allowed;</span><br></pre></td></tr></table></figure>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">static_prio</td>
+<td align="left">用于保存静态优先级，可以通过nice系统调用来进行修改。</td>
+</tr>
+<tr class="even">
+<td align="left">rt_priority</td>
+<td align="left">用于保存实时优先级。</td>
+</tr>
+<tr class="odd">
+<td align="left">normal_prio</td>
+<td align="left">的值取决于静态优先级和调度策略。</td>
+</tr>
+<tr class="even">
+<td align="left">prio</td>
+<td align="left">用于保存动态优先级。</td>
+</tr>
+<tr class="odd">
+<td align="left">policy</td>
+<td align="left">表示进程的调度策略，目前主要有五种<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a></td>
+</tr>
+<tr class="even">
+<td align="left">struct files_structf * files</td>
+<td align="left">系统打开文件<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a></td>
+</tr>
+</tbody>
+</table>
+<p>其他的还有一些代码介绍可以参考文档<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a><a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a></p>
+<h2 id="创建一个新进程在内核中的执行过程">创建一个新进程在内核中的执行过程</h2>
+<p>一个用户程序进行fork进程代码样例如下所示： <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Fork</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span>*argv[])</span></span><br><span class="line"></span>&#123;                          </span><br><span class="line">        <span class="keyword">int</span> pid;           </span><br><span class="line">        pid = fork();      </span><br><span class="line">        <span class="keyword">if</span>(pid&lt;<span class="number">0</span>)          </span><br><span class="line">        &#123;                  </span><br><span class="line">                <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>,<span class="string">"ForkFailed"</span>);</span><br><span class="line">                           </span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(pid == <span class="number">0</span>)&#123; </span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"this is child process pid:%d\n"</span>,getpid());</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;             </span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"this is Parent Process! pid:%d child pid:%d\n"</span>,getpid(),pid);</span><br><span class="line">                wait(<span class="literal">NULL</span>);</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"Child Complete\n"</span>);</span><br><span class="line">        &#125;                  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上述代码运行的模型大致如下：</p>
+<ul>
+<li>使用fork、vfork、clone 三个系统调用创建一个新进程，最终都是调用do_fork完成进程的创建</li>
+<li>复制父进程
+<ul>
+<li>复制一个PCB 即<code>task_struct  err = arch_dup_task_struct(tsk, orig);</code></li>
+<li><p>分配新的内核堆栈 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ti = alloc_thread_info_node(tsk, node);</span><br><span class="line"></span><br><span class="line">tsk-&gt;<span class="built_in">stack</span> = ti;</span><br><span class="line"></span><br><span class="line">setup_thread_stack(tsk, orig); <span class="comment">//这里只是复制thread_info，而非复制内核堆栈</span></span><br></pre></td></tr></table></figure></p></li>
+<li><p>修改复制复制过来的PCB数据，如pid,进程链表，见<code>copy_process</code>函数</p></li>
+</ul></li>
+<li>父子进程运行 从用户的代码来看函数<code>fork</code>返回了两次，即在父子进程中各返回一次，父进程从系统调用中返回比较容易理解。子进程从系统调用中返回，继续从<code>fork</code>处执行，Linux是如何做到的呢？这就涉及子进程的<code>内核堆栈数据状态</code>和<code>task_struct</code>中<code>thread</code>记录的<code>sp</code>和<code>ip</code>的一致性问题，这是在哪里设定的？copy_thread in copy_process <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">*childregs = *current_pt_regs(); <span class="comment">//复制内核堆栈</span></span><br><span class="line"></span><br><span class="line">childregs-&gt;ax = <span class="number">0</span>; <span class="comment">//为什么子进程的fork返回0，这里就是原因！</span></span><br><span class="line"></span><br><span class="line">p-&gt;thread.sp = (<span class="keyword">unsigned</span> <span class="keyword">long</span>) childregs; <span class="comment">//调度到子进程时的内核栈顶</span></span><br><span class="line"></span><br><span class="line">p-&gt;thread.ip = (<span class="keyword">unsigned</span> <span class="keyword">long</span>) ret_from_fork; <span class="comment">//调度到子进程时的第一条指令地址</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="gdb跟踪调试程序">gdb　跟踪调试程序</h2>
+<p>程序调用顺序如下所示以缩进格式表示：</p>
+<blockquote><ul>
+<li>sys_fork<ul>
+<li>do_fork – 系统内核调用</li>
+<li>copy_process – 复制父进程的所有信息给子进程<ul>
+<li>dup_task_struct　– 复制父进程PCB信息。<ul>
+<li>alloc_thread_info_node　　– 分配进程内核堆栈</li>
+<li>arch_dup_task_struct　　　　– 直接父子进程共享，写时复制</li>
+</ul>
+</li>
+<li>sched_fork – 把新进程设置为 TASK_RUNNING </li>
+<li>copy_thread　– 　把父进程的寄存器上下文复制给子进程</li>
+<li>ret_from_fork  – 设置子进程开始执行的位置</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="gdb调试断点相关一些指令-ref4">gdb调试——断点相关一些指令 <a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a></h3>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">b/break</td>
+<td align="left">设置断点</td>
+</tr>
+<tr class="even">
+<td align="left">info breakpoints</td>
+<td align="left">查看当前设置的断点信息</td>
+</tr>
+<tr class="odd">
+<td align="left">disable</td>
+<td align="left">断点无效，单还是存在</td>
+</tr>
+<tr class="even">
+<td align="left">enable</td>
+<td align="left">断点有效，这两个属于使能指令</td>
+</tr>
+<tr class="odd">
+<td align="left">clear/delete</td>
+<td align="left">两条指令有点不同，delete 更凶猛一些</td>
+</tr>
+<tr class="even">
+<td align="left">print</td>
+<td align="left">打印变量或表达式当前的值</td>
+</tr>
+<tr class="odd">
+<td align="left">whatis</td>
+<td align="left">显示某个变量或表达式值的数据类型</td>
+</tr>
+<tr class="even">
+<td align="left">set variable 变量=值</td>
+<td align="left">给变量赋值,以上命令参考 <a href="#fn8" class="footnoteRef" id="fnref8"><sup>8</sup></a></td>
+</tr>
+<tr class="odd">
+<td align="left">save breakpoint</td>
+<td align="left">保存设置的断点到文件,读取断点设置在启动gdb的时候使用<code>-x</code>选项指定断点设置文件<a href="#fn9" class="footnoteRef" id="fnref9"><sup>9</sup></a></td>
+</tr>
+<tr class="even">
+<td align="left">help</td>
+<td align="left">帮助，可用于查询指令的详细用法</td>
+</tr>
+</tbody>
+</table>
+<p>调试中设置的一些断点，并导出到<a href="/attach.d/fork.bp">文件</a> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">break sys_clone</span><br><span class="line">break do_fork</span><br><span class="line">break copy_process</span><br><span class="line">break dup_task_struct</span><br><span class="line">break alloc_thread_info_node</span><br><span class="line">break arch_dup_task_struct</span><br><span class="line">break copy_thread</span><br></pre></td></tr></table></figure></p>
+<h2 id="嵌入到menuosgdb运行调试遇到的问题">嵌入到MenuOs,gdb运行调试遇到的问题</h2>
+<ol style="list-style-type: decimal">
+<li>执行fork后，进程停止在了子进程，如何发现的呢？利用上次系统调用作业<code>getpid()</code>查看进程pid发现的。</li>
+<li>gdb 无法加载进去符号表，还没找到好的解决方法 　原来编译的时候配置有问题，没办法进行跟踪调试，根据第二节的课程文档重新编译了一遍就OK了。根据文档制作了一个<a href="/attach.d/moocOsEnvBuild.makefile">Makefile</a>，下载到一个新文件夹执行　<code>make -f moocOsEnvBuild.makefile install</code> 确保terminal窗口大小大于<code>80*19</code>,并且会弹出来一个窗口记得开启下列选项</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kernel hacking—&gt;Compile.....</span><br><span class="line">[*] compile the kernel with debug info</span><br></pre></td></tr></table></figure>
+<p>等待编译完成，进入menu文件夹执行<code>make qemu</code>直接启动MenuOs或者<code>make qemu-gdb</code>启动MenuOs并且使用gdb跟踪调试</p>
+<div class="footnotes">
+<hr>
+<ol>
+<li id="fn1"><p>http://blog.csdn.net/npy_lp/article/details/7292563<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>http://blog.csdn.net/npy_lp/article/details/7292563<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>http://blog.csdn.net/npy_lp/article/details/7292563<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>http://www.jianshu.com/p/5ffdd11a93cd<a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>http://blog.csdn.net/npy_lp/article/details/7292563<a href="#fnref5">↩</a></p></li>
+<li id="fn6"><p>http://www.2cto.com/os/201201/116810.html<a href="#fnref6">↩</a></p></li>
+<li id="fn7"><p>http://www.cnblogs.com/rosesmall/archive/2012/04/13/2445527.html<a href="#fnref7">↩</a></p></li>
+<li id="fn8"><p>http://www.cnblogs.com/rosesmall/archive/2012/04/13/2445527.html<a href="#fnref8">↩</a></p></li>
+<li id="fn9"><p>http://jingyan.baidu.com/article/f3ad7d0fff191509c3345bd1.html<a href="#fnref9">↩</a></p></li>
+</ol>
+</div>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[ubuntu 一键自动部署 nginx-rtmp]]></title>
       <url>http://blog.soul11201.com/2016/03/29/nginx-rtmp-makefile/</url>
-      <content type="html"><![CDATA[<blockquote><p>著作权归作者所有。<br>商业转载请联系作者获得授权，非商业转载请注明出处。<br>作者：杨振振<br>链接：</p>
-</blockquote>
-<blockquote>
+      <content type="html"><![CDATA[<blockquote>
 <p>琐碎细节的东西规范化、流程化，流程规范的东西自动化 —— 忘记从哪里看到的了，欢迎作者联系</p>
 </blockquote>
 <blockquote><p>rtmp 笔记:</p>

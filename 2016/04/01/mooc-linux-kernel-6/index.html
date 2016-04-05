@@ -1,0 +1,884 @@
+<!doctype html>
+<html class="theme-next use-motion theme-next-mist">
+<head>
+  
+
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+  <link rel="stylesheet" type="text/css" href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5"/>
+
+
+
+  
+    <link href='//fonts.lug.ustc.edu.cn/css?family=Lato:300,400,700,400italic&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+  
+
+
+<link rel="stylesheet" type="text/css" href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" />
+
+<link rel="stylesheet" type="text/css" href="/css/main.css?v=0.4.5.2"/>
+
+
+    <meta name="description" content="好记性不如烂笔头" />
+
+
+
+  <meta name="keywords" content="笔记,mooc,Linux 内核分析,汇编,C," />
+
+
+
+  <link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml" />
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
+
+
+<meta name="description" content="杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux 内核分析 -- 进程的创建">
+<meta property="og:url" content="http://blog.soul11201.com/2016/04/01/mooc-linux-kernel-6/index.html">
+<meta property="og:site_name" content="coder 随想录">
+<meta property="og:description" content="杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about">
+<meta property="og:updated_time" content="2016-04-05T07:43:44.808Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux 内核分析 -- 进程的创建">
+<meta name="twitter:description" content="杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about">
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: 'post'
+  };
+</script>
+
+
+
+  <title> Linux 内核分析 -- 进程的创建 | coder 随想录 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  <!--[if lte IE 8]>
+  <div style=' clear: both; height: 59px; padding:0 0 0 15px; position: relative;margin:0 auto;'>
+    <a href="http://windows.microsoft.com/en-US/internet-explorer/products/ie/home?ocid=ie6_countdown_bannercode">
+      <img src="http://7u2nvr.com1.z0.glb.clouddn.com/picouterie.jpg" border="0" height="42" width="820"
+           alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today or use other browser ,like chrome firefox safari."
+           style='margin-left:auto;margin-right:auto;display: block;'/>
+    </a>
+  </div>
+<![endif]-->
+  
+
+
+
+
+
+
+  <div class="container one-column page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">coder 随想录</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle">好习惯受益终生</p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu ">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div id="content" class="content"> 
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Linux 内核分析 -- 进程的创建
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            发表于
+            <time itemprop="dateCreated" datetime="2016-04-01T20:20:46+08:00" content="2016-04-01">
+              2016-04-01
+            </time>
+          </span>
+
+          
+
+          
+            
+              <span class="post-comments-count">
+                &nbsp; | &nbsp;
+                <a href="/2016/04/01/mooc-linux-kernel-6/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/01/mooc-linux-kernel-6/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body">
+
+      
+      
+
+      
+        <span itemprop="articleBody"><blockquote><p>杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 <a href="http://mooc.study.163.com/course/USTC-1000029000" target="_blank" rel="external">http://mooc.study.163.com/course/USTC-1000029000</a></p>
+</blockquote>
+<blockquote><p>杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程  <a href="http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about" target="_blank" rel="external">http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about</a></p>
+</blockquote>
+<ul>
+<li>阅读理解task_struct数据结构http://codelab.shiyanlou.com/xref/linux-3.18.6/include/linux/sched.h#1235；</li>
+<li>分析fork函数对应的内核处理过程sys_clone，理解创建一个新进程如何创建和修改task_struct数据结构；</li>
+<li>使用gdb跟踪分析一个fork系统调用内核处理函数sys_clone ，验证您对Linux系统创建一个新进程的理解,推荐在实验楼Linux虚拟机环境下完成实验。 特别关注新进程是从哪里开始执行的？为什么从那里能顺利执行下去？即执行起点与内核堆栈如何保证一致。</li>
+<li>根据本周所学知识分析fork函数对应的系统调用处理过程，撰写一篇署名博客，并在博客文章中注明“真实姓名（与最后申请证书的姓名务必一致） + 原创作品转载请注明出处 + 《Linux内核分析》MOOC课程http://mooc.study.163.com/course/USTC-1000029000”，博客内容的具体要求如下：
+<ul>
+<li>题目自拟，内容围绕对Linux系统如何创建一个新进程进行；</li>
+<li>可以结合实验截图、绘制堆栈状态执行流程图等；</li>
+<li>博客内容中需要仔细分析新进程的执行起点及对应的堆栈状态等。</li>
+<li>总结部分需要阐明自己对“Linux系统创建一个新进程”的理解</li>
+</ul></li>
+</ul>
+<h2 id="进程简介">进程简介</h2>
+<p>进程是处于执行期的程序以及它所管理的资源（如打开的文件、挂起的信号、进程状态、地址空间等等）的总称。注意，程序并不是进程，实际上两个或多个进程不仅有可能执行同一程序，而且还有可能共享地址空间等资源。Linux内核通过一个被称为进程描述符的task_struct结构体来管理进程，这个结构体包含了一个进程所需的所有信息<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>。</p>
+<h2 id="task_struct代码分析"><code>task_struct</code>代码分析</h2>
+<h3 id="进程状态">进程状态</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//行号   结构成员</span></span><br><span class="line"><span class="number">1236</span>	<span class="keyword">volatile</span> <span class="keyword">long</span> state;	<span class="comment">/* -1 unrunnable, 0 runnable, &gt;0 stopped */</span></span><br></pre></td></tr></table></figure>
+<p>进程的状态，可能取值大概十种，和其他一些相关操作宏　具体参见 <a href="https://github.com/torvalds/linux/blob/v3.18-rc6/include/linux/sched.h#L193-L249" target="_blank" rel="external">github 代码</a>，　每种状态的具体含义可以查阅参考资料<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>　 ### 进程内核堆栈</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1237</span>	<span class="keyword">void</span> *<span class="built_in">stack</span>;</span><br></pre></td></tr></table></figure>
+<p>分配给进程的内核堆栈，分配和释放对应的函数为<code>alloc_thread_info</code>, <code>free_thread_info</code></p>
+<h3 id="进程标志">进程标志</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">unsigned</span> <span class="keyword">int</span> flags; <span class="comment">/* per process flags, defined below */</span></span><br></pre></td></tr></table></figure>
+<p>进程标记，其所有可能取值参见　<a href="https://github.com/torvalds/linux/blob/v3.18-rc6/include/linux/sched.h#L1898-L1927" target="_blank" rel="external">github 上linux代码</a>,其部分取值含义如下</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/*</span><br><span class="line"> </span><br><span class="line">flags是进程当前的状态标志，具体的如：</span><br><span class="line"> </span><br><span class="line">0x00000002表示进程正在被创建；</span><br><span class="line"> </span><br><span class="line">0x00000004表示进程正准备退出；</span><br><span class="line"> </span><br><span class="line">0x00000040 表示此进程被fork出，但是并没有执行exec；</span><br><span class="line"> </span><br><span class="line">0x00000400表示此进程由于其他进程发送相关信号而被杀死 。</span><br><span class="line"> </span><br><span class="line">*/</span></span><br></pre></td></tr></table></figure>
+<h3 id="进程间关系">进程间关系</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1337</span>	<span class="comment">/*</span><br><span class="line">1338	 * pointers to (original) parent process, youngest child, younger sibling,</span><br><span class="line">1339	 * older sibling, respectively.  (p-&gt;father can be replaced with</span><br><span class="line">1340	 * p-&gt;real_parent-&gt;pid)</span><br><span class="line">1341	 */</span></span><br><span class="line"><span class="number">1342</span>	<span class="keyword">struct</span> task_struct __rcu *real_parent; <span class="comment">/* real parent process */</span></span><br><span class="line"><span class="number">1343</span>	<span class="keyword">struct</span> task_struct __rcu *parent; <span class="comment">/* recipient of SIGCHLD, wait4() reports */</span></span><br><span class="line"><span class="number">1344</span>	<span class="comment">/*</span><br><span class="line">1345	 * children/sibling forms the list of my natural children</span><br><span class="line">1346	 */</span></span><br><span class="line"><span class="number">1347</span>	<span class="keyword">struct</span> list_head children;	<span class="comment">/* list of my children */</span></span><br><span class="line"><span class="number">1348</span>	<span class="keyword">struct</span> list_head sibling;	<span class="comment">/* linkage in my parent's children list */</span></span><br><span class="line"><span class="number">1349</span>	<span class="keyword">struct</span> task_struct *group_leader;	<span class="comment">/* threadgroup leader */</span></span><br></pre></td></tr></table></figure>
+<p>描述进程见关系的一组属性，像父子，兄弟，组</p>
+<h3 id="进程调度">进程调度</h3>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">1253</span>	<span class="keyword">int</span> prio, static_prio, normal_prio;</span><br><span class="line"><span class="number">1254</span>	<span class="keyword">unsigned</span> <span class="keyword">int</span> rt_priority;</span><br><span class="line"><span class="number">1255</span>	<span class="keyword">const</span> <span class="keyword">struct</span> sched_class *sched_class;</span><br><span class="line"><span class="number">1256</span>	<span class="keyword">struct</span> sched_entity se;</span><br><span class="line"><span class="number">1257</span>	<span class="keyword">struct</span> sched_rt_entity rt;</span><br><span class="line"><span class="number">1258</span><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_CGROUP_SCHED</span></span><br><span class="line"><span class="number">1259</span>	<span class="keyword">struct</span> task_group *sched_task_group;</span><br><span class="line"><span class="number">1260</span><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="number">1261</span>	<span class="keyword">struct</span> sched_dl_entity dl;</span><br><span class="line"><span class="number">1262</span></span><br><span class="line"><span class="number">1263</span><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_PREEMPT_NOTIFIERS</span></span><br><span class="line"><span class="number">1264</span>	<span class="comment">/* list of struct preempt_notifier: */</span></span><br><span class="line"><span class="number">1265</span>	<span class="keyword">struct</span> hlist_head preempt_notifiers;</span><br><span class="line"><span class="number">1266</span><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="number">1267</span></span><br><span class="line"><span class="number">1268</span><span class="meta">#<span class="meta-keyword">ifdef</span> CONFIG_BLK_DEV_IO_TRACE</span></span><br><span class="line"><span class="number">1269</span>	<span class="keyword">unsigned</span> <span class="keyword">int</span> btrace_seq;</span><br><span class="line"><span class="number">1270</span><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line"><span class="number">1271</span></span><br><span class="line"><span class="number">1272</span>	<span class="keyword">unsigned</span> <span class="keyword">int</span> policy;</span><br><span class="line"><span class="number">1273</span>	<span class="keyword">int</span> nr_cpus_allowed;</span><br><span class="line"><span class="number">1274</span>	<span class="keyword">cpumask_t</span> cpus_allowed;</span><br></pre></td></tr></table></figure>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">static_prio</td>
+<td align="left">用于保存静态优先级，可以通过nice系统调用来进行修改。</td>
+</tr>
+<tr class="even">
+<td align="left">rt_priority</td>
+<td align="left">用于保存实时优先级。</td>
+</tr>
+<tr class="odd">
+<td align="left">normal_prio</td>
+<td align="left">的值取决于静态优先级和调度策略。</td>
+</tr>
+<tr class="even">
+<td align="left">prio</td>
+<td align="left">用于保存动态优先级。</td>
+</tr>
+<tr class="odd">
+<td align="left">policy</td>
+<td align="left">表示进程的调度策略，目前主要有五种<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a></td>
+</tr>
+<tr class="even">
+<td align="left">struct files_structf * files</td>
+<td align="left">系统打开文件<a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a></td>
+</tr>
+</tbody>
+</table>
+<p>其他的还有一些代码介绍可以参考文档<a href="#fn5" class="footnoteRef" id="fnref5"><sup>5</sup></a><a href="#fn6" class="footnoteRef" id="fnref6"><sup>6</sup></a></p>
+<h2 id="创建一个新进程在内核中的执行过程">创建一个新进程在内核中的执行过程</h2>
+<p>一个用户程序进行fork进程代码样例如下所示： <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Fork</span><span class="params">(<span class="keyword">int</span> argc,<span class="keyword">char</span>*argv[])</span></span><br><span class="line"></span>&#123;                          </span><br><span class="line">        <span class="keyword">int</span> pid;           </span><br><span class="line">        pid = fork();      </span><br><span class="line">        <span class="keyword">if</span>(pid&lt;<span class="number">0</span>)          </span><br><span class="line">        &#123;                  </span><br><span class="line">                <span class="built_in">fprintf</span>(<span class="built_in">stderr</span>,<span class="string">"ForkFailed"</span>);</span><br><span class="line">                           </span><br><span class="line">        &#125;<span class="keyword">else</span> <span class="keyword">if</span>(pid == <span class="number">0</span>)&#123; </span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"this is child process pid:%d\n"</span>,getpid());</span><br><span class="line">        &#125;<span class="keyword">else</span>&#123;             </span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"this is Parent Process! pid:%d child pid:%d\n"</span>,getpid(),pid);</span><br><span class="line">                wait(<span class="literal">NULL</span>);</span><br><span class="line">                <span class="built_in">printf</span>(<span class="string">"Child Complete\n"</span>);</span><br><span class="line">        &#125;                  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上述代码运行的模型大致如下：</p>
+<ul>
+<li>使用fork、vfork、clone 三个系统调用创建一个新进程，最终都是调用do_fork完成进程的创建</li>
+<li>复制父进程
+<ul>
+<li>复制一个PCB 即<code>task_struct  err = arch_dup_task_struct(tsk, orig);</code></li>
+<li><p>分配新的内核堆栈 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ti = alloc_thread_info_node(tsk, node);</span><br><span class="line"></span><br><span class="line">tsk-&gt;<span class="built_in">stack</span> = ti;</span><br><span class="line"></span><br><span class="line">setup_thread_stack(tsk, orig); <span class="comment">//这里只是复制thread_info，而非复制内核堆栈</span></span><br></pre></td></tr></table></figure></p></li>
+<li><p>修改复制复制过来的PCB数据，如pid,进程链表，见<code>copy_process</code>函数</p></li>
+</ul></li>
+<li>父子进程运行 从用户的代码来看函数<code>fork</code>返回了两次，即在父子进程中各返回一次，父进程从系统调用中返回比较容易理解。子进程从系统调用中返回，继续从<code>fork</code>处执行，Linux是如何做到的呢？这就涉及子进程的<code>内核堆栈数据状态</code>和<code>task_struct</code>中<code>thread</code>记录的<code>sp</code>和<code>ip</code>的一致性问题，这是在哪里设定的？copy_thread in copy_process <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">*childregs = *current_pt_regs(); <span class="comment">//复制内核堆栈</span></span><br><span class="line"></span><br><span class="line">childregs-&gt;ax = <span class="number">0</span>; <span class="comment">//为什么子进程的fork返回0，这里就是原因！</span></span><br><span class="line"></span><br><span class="line">p-&gt;thread.sp = (<span class="keyword">unsigned</span> <span class="keyword">long</span>) childregs; <span class="comment">//调度到子进程时的内核栈顶</span></span><br><span class="line"></span><br><span class="line">p-&gt;thread.ip = (<span class="keyword">unsigned</span> <span class="keyword">long</span>) ret_from_fork; <span class="comment">//调度到子进程时的第一条指令地址</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="gdb跟踪调试程序">gdb　跟踪调试程序</h2>
+<p>程序调用顺序如下所示以缩进格式表示：</p>
+<blockquote><ul>
+<li>sys_fork<ul>
+<li>do_fork – 系统内核调用</li>
+<li>copy_process – 复制父进程的所有信息给子进程<ul>
+<li>dup_task_struct　– 复制父进程PCB信息。<ul>
+<li>alloc_thread_info_node　　– 分配进程内核堆栈</li>
+<li>arch_dup_task_struct　　　　– 直接父子进程共享，写时复制</li>
+</ul>
+</li>
+<li>sched_fork – 把新进程设置为 TASK_RUNNING </li>
+<li>copy_thread　– 　把父进程的寄存器上下文复制给子进程</li>
+<li>ret_from_fork  – 设置子进程开始执行的位置</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="gdb调试断点相关一些指令-ref4">gdb调试——断点相关一些指令 <a href="#fn7" class="footnoteRef" id="fnref7"><sup>7</sup></a></h3>
+<table>
+<tbody>
+<tr class="odd">
+<td align="left">b/break</td>
+<td align="left">设置断点</td>
+</tr>
+<tr class="even">
+<td align="left">info breakpoints</td>
+<td align="left">查看当前设置的断点信息</td>
+</tr>
+<tr class="odd">
+<td align="left">disable</td>
+<td align="left">断点无效，单还是存在</td>
+</tr>
+<tr class="even">
+<td align="left">enable</td>
+<td align="left">断点有效，这两个属于使能指令</td>
+</tr>
+<tr class="odd">
+<td align="left">clear/delete</td>
+<td align="left">两条指令有点不同，delete 更凶猛一些</td>
+</tr>
+<tr class="even">
+<td align="left">print</td>
+<td align="left">打印变量或表达式当前的值</td>
+</tr>
+<tr class="odd">
+<td align="left">whatis</td>
+<td align="left">显示某个变量或表达式值的数据类型</td>
+</tr>
+<tr class="even">
+<td align="left">set variable 变量=值</td>
+<td align="left">给变量赋值,以上命令参考 <a href="#fn8" class="footnoteRef" id="fnref8"><sup>8</sup></a></td>
+</tr>
+<tr class="odd">
+<td align="left">save breakpoint</td>
+<td align="left">保存设置的断点到文件,读取断点设置在启动gdb的时候使用<code>-x</code>选项指定断点设置文件<a href="#fn9" class="footnoteRef" id="fnref9"><sup>9</sup></a></td>
+</tr>
+<tr class="even">
+<td align="left">help</td>
+<td align="left">帮助，可用于查询指令的详细用法</td>
+</tr>
+</tbody>
+</table>
+<p>调试中设置的一些断点，并导出到<a href="/attach.d/fork.bp">文件</a> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">break sys_clone</span><br><span class="line">break do_fork</span><br><span class="line">break copy_process</span><br><span class="line">break dup_task_struct</span><br><span class="line">break alloc_thread_info_node</span><br><span class="line">break arch_dup_task_struct</span><br><span class="line">break copy_thread</span><br></pre></td></tr></table></figure></p>
+<h2 id="嵌入到menuosgdb运行调试遇到的问题">嵌入到MenuOs,gdb运行调试遇到的问题</h2>
+<ol style="list-style-type: decimal">
+<li>执行fork后，进程停止在了子进程，如何发现的呢？利用上次系统调用作业<code>getpid()</code>查看进程pid发现的。</li>
+<li>gdb 无法加载进去符号表，还没找到好的解决方法 　原来编译的时候配置有问题，没办法进行跟踪调试，根据第二节的课程文档重新编译了一遍就OK了。根据文档制作了一个<a href="/attach.d/moocOsEnvBuild.makefile">Makefile</a>，下载到一个新文件夹执行　<code>make -f moocOsEnvBuild.makefile install</code> 确保terminal窗口大小大于<code>80*19</code>,并且会弹出来一个窗口记得开启下列选项</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kernel hacking—&gt;Compile.....</span><br><span class="line">[*] compile the kernel with debug info</span><br></pre></td></tr></table></figure>
+<p>等待编译完成，进入menu文件夹执行<code>make qemu</code>直接启动MenuOs或者<code>make qemu-gdb</code>启动MenuOs并且使用gdb跟踪调试</p>
+<div class="footnotes">
+<hr>
+<ol>
+<li id="fn1"><p>http://blog.csdn.net/npy_lp/article/details/7292563<a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>http://blog.csdn.net/npy_lp/article/details/7292563<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>http://blog.csdn.net/npy_lp/article/details/7292563<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>http://www.jianshu.com/p/5ffdd11a93cd<a href="#fnref4">↩</a></p></li>
+<li id="fn5"><p>http://blog.csdn.net/npy_lp/article/details/7292563<a href="#fnref5">↩</a></p></li>
+<li id="fn6"><p>http://www.2cto.com/os/201201/116810.html<a href="#fnref6">↩</a></p></li>
+<li id="fn7"><p>http://www.cnblogs.com/rosesmall/archive/2012/04/13/2445527.html<a href="#fnref7">↩</a></p></li>
+<li id="fn8"><p>http://www.cnblogs.com/rosesmall/archive/2012/04/13/2445527.html<a href="#fnref8">↩</a></p></li>
+<li id="fn9"><p>http://jingyan.baidu.com/article/f3ad7d0fff191509c3345bd1.html<a href="#fnref9">↩</a></p></li>
+</ol>
+</div>
+</span>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+      
+         <div class="copyright">
+            <p><span>本文标题:</span><a href="/2016/04/01/mooc-linux-kernel-6/">Linux 内核分析 -- 进程的创建</a></p>
+            <p><span>文章作者:</span><a href="/" title="访问 soul11201 的个人博客">soul11201</a></p>
+            <p><span>发布时间:</span>2016年4月1日 - 20时04分</p>
+            <p><span>最后更新:</span>2016年4月5日 - 15时04分</p>
+            <p><span>原始链接:</span><a href="/2016/04/01/mooc-linux-kernel-6/" title="Linux 内核分析 -- 进程的创建">http://blog.soul11201.com/2016/04/01/mooc-linux-kernel-6/</a></p>
+            <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" title="Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)">"Attribution-NonCommercial 4.0"</a></p>
+            <p><span>转载请保留以上信息。</span></p>
+         </div>
+      
+
+      
+        <div class="post-tags">
+          
+            <a href="/tags/笔记/" rel="tag">#笔记</a>
+          
+            <a href="/tags/mooc/" rel="tag">#mooc</a>
+          
+            <a href="/tags/Linux-内核分析/" rel="tag">#Linux 内核分析</a>
+          
+            <a href="/tags/汇编/" rel="tag">#汇编</a>
+          
+            <a href="/tags/C/" rel="tag">#C</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/03/29/nginx-rtmp-makefile/" rel="next" title="ubuntu 一键自动部署 nginx-rtmp">
+                <i class="fa fa-chevron-left"></i> ubuntu 一键自动部署 nginx-rtmp
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+ </div>
+
+        
+            <!-- 多说热评文章-->
+            <p>热评文章</p>
+            <div class="ds-top-threads" data-range="weekly" data-num-items="4"></div>
+        
+
+        
+          <div class="comments" id="comments">
+            
+              <div class="ds-thread" data-thread-key="2016/04/01/mooc-linux-kernel-6/"
+                   data-title="Linux 内核分析 -- 进程的创建" data-url="http://blog.soul11201.com/2016/04/01/mooc-linux-kernel-6/">
+              </div>
+            
+          </div>
+        
+      </div>
+
+      
+        
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" src="/images/default_avatar.jpg" alt="soul11201" itemprop="image"/>
+          <p class="site-author-name" itemprop="name">soul11201</p>
+        </div>
+        <p class="site-description motion-element" itemprop="description">好记性不如烂笔头</p>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          <div class="site-state-item site-state-categories">
+            
+              <span class="site-state-item-count">0</span>
+              <span class="site-state-item-name">分类</span>
+              
+          </div>
+
+          <div class="site-state-item site-state-tags">
+            <a href="/tags">
+              <span class="site-state-item-count">43</span>
+              <span class="site-state-item-name">标签</span>
+              </a>
+          </div>
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="menu-item-icon icon-next-feed"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/noname007" target="_blank">
+                  <i class="fa fa-github"></i> github
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://weibo.com/soul11201" target="_blank">
+                  <i class="fa fa-weibo"></i> weibo
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://douban.com/people/yzwd" target="_blank">
+                  <i class="fa fa-douban"></i> douban
+                </a>
+              </span>
+            
+              <span class="links-of-author-item">
+                <a href="http://www.zhihu.com/people/soul11201" target="_blank">
+                  <i class="fa fa-zhihu"></i> zhihu
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc-indicator-top post-toc-indicator"></div>
+          <div class="post-toc">
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进程简介"><span class="nav-number">1.</span> <span class="nav-text">进程简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#task_struct代码分析"><span class="nav-number">2.</span> <span class="nav-text">task_struct代码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#进程状态"><span class="nav-number">2.1.</span> <span class="nav-text">进程状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程标志"><span class="nav-number">2.2.</span> <span class="nav-text">进程标志</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程间关系"><span class="nav-number">2.3.</span> <span class="nav-text">进程间关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程调度"><span class="nav-number">2.4.</span> <span class="nav-text">进程调度</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建一个新进程在内核中的执行过程"><span class="nav-number">3.</span> <span class="nav-text">创建一个新进程在内核中的执行过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gdb跟踪调试程序"><span class="nav-number">4.</span> <span class="nav-text">gdb　跟踪调试程序</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#gdb调试断点相关一些指令-ref4"><span class="nav-number">4.1.</span> <span class="nav-text">gdb调试——断点相关一些指令 7</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#嵌入到menuosgdb运行调试遇到的问题"><span class="nav-number">5.</span> <span class="nav-text">嵌入到MenuOs,gdb运行调试遇到的问题</span></a></li></ol></div>
+            
+          </div>
+          <div class="post-toc-indicator-bottom post-toc-indicator"></div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+      
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner"> <div class="copyright" >
+  
+  &copy;  2015 - 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="icon-next-heart fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">soul11201</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="http://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+
+ </div>
+    </footer>
+
+    <div class="back-to-top"></div>
+  </div>
+
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  
+  
+    
+
+  
+    
+  
+
+  <script type="text/javascript">
+    var duoshuoQuery = {short_name:"soul11201"};
+    (function() {
+      var ds = document.createElement('script');
+      ds.type = 'text/javascript';ds.async = true;
+      ds.id = 'duoshuo-script';
+      ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+      ds.charset = 'UTF-8';
+      (document.getElementsByTagName('head')[0]
+      || document.getElementsByTagName('body')[0]).appendChild(ds);
+    })();
+  </script>
+    
+
+    
+  
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="/js/fancy-box.js?v=0.4.5.2"></script>
+
+
+  <script type="text/javascript" src="/js/helpers.js?v=0.4.5.2"></script>
+  
+
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js"></script>
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js"></script>
+
+  <script type="text/javascript" src="/js/motion_global.js?v=0.4.5.2" id="motion.global"></script>
+
+
+
+
+  <script type="text/javascript" src="/js/nav-toggle.js?v=0.4.5.2"></script>
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  
+<script type="text/javascript" src="/js/bootstrap.scrollspy.js?v=0.4.5.2" id="bootstrap.scrollspy.custom"></script>
+
+
+<script type="text/javascript" id="sidebar.toc.highlight">
+  $(document).ready(function () {
+    var tocSelector = '.post-toc';
+    var $tocSelector = $(tocSelector);
+    var activeCurrentSelector = '.active-current';
+
+    $tocSelector
+      .on('activate.bs.scrollspy', function () {
+        var $currentActiveElement = $(tocSelector + ' .active').last();
+
+        removeCurrentActiveClass();
+        $currentActiveElement.addClass('active-current');
+
+        $tocSelector[0].scrollTop = $currentActiveElement.position().top;
+      })
+      .on('clear.bs.scrollspy', function () {
+        removeCurrentActiveClass();
+      });
+
+    function removeCurrentActiveClass () {
+      $(tocSelector + ' ' + activeCurrentSelector)
+        .removeClass(activeCurrentSelector.substring(1));
+    }
+
+    function processTOC () {
+      getTOCMaxHeight();
+      toggleTOCOverflowIndicators();
+    }
+
+    function getTOCMaxHeight () {
+      var height = $('.sidebar').height() -
+                   $tocSelector.position().top -
+                   $('.post-toc-indicator-bottom').height();
+
+      $tocSelector.css('height', height);
+
+      return height;
+    }
+
+    function toggleTOCOverflowIndicators () {
+      tocOverflowIndicator(
+        '.post-toc-indicator-top',
+        $tocSelector.scrollTop() > 0 ? 'show' : 'hide'
+      );
+
+      tocOverflowIndicator(
+        '.post-toc-indicator-bottom',
+        $tocSelector.scrollTop() >= $tocSelector.find('ol').height() - $tocSelector.height() ? 'hide' : 'show'
+      )
+    }
+
+    $(document).on('sidebar.motion.complete', function () {
+      processTOC();
+    });
+
+    $('body').scrollspy({ target: tocSelector });
+    $(window).on('resize', function () {
+      if ( $('.sidebar').hasClass('sidebar-active') ) {
+        processTOC();
+      }
+    });
+
+    onScroll($tocSelector);
+
+    function onScroll (element) {
+      element.on('mousewheel DOMMouseScroll', function (event) {
+          var oe = event.originalEvent;
+          var delta = oe.wheelDelta || -oe.detail;
+
+          this.scrollTop += ( delta < 0 ? 1 : -1 ) * 30;
+          event.preventDefault();
+
+          toggleTOCOverflowIndicators();
+      });
+    }
+
+    function tocOverflowIndicator (indicator, action) {
+      var $indicator = $(indicator);
+      var opacity = action === 'show' ? 0.4 : 0;
+      $indicator.velocity ?
+        $indicator.velocity('stop').velocity({
+          opacity: opacity
+        }, { duration: 100 }) :
+        $indicator.stop().animate({
+          opacity: opacity
+        }, 100);
+    }
+
+  });
+</script>
+
+<script type="text/javascript" id="sidebar.nav">
+  $(document).ready(function () {
+    var html = $('html');
+    var TAB_ANIMATE_DURATION = 200;
+    var hasVelocity = $.isFunction(html.velocity);
+
+    $('.sidebar-nav li').on('click', function () {
+      var item = $(this);
+      var activeTabClassName = 'sidebar-nav-active';
+      var activePanelClassName = 'sidebar-panel-active';
+      if (item.hasClass(activeTabClassName)) {
+        return;
+      }
+
+      var currentTarget = $('.' + activePanelClassName);
+      var target = $('.' + item.data('target'));
+
+      hasVelocity ?
+        currentTarget.velocity('transition.slideUpOut', TAB_ANIMATE_DURATION, function () {
+          target
+            .velocity('stop')
+            .velocity('transition.slideDownIn', TAB_ANIMATE_DURATION)
+            .addClass(activePanelClassName);
+        }) :
+        currentTarget.animate({ opacity: 0 }, TAB_ANIMATE_DURATION, function () {
+          currentTarget.hide();
+          target
+            .stop()
+            .css({'opacity': 0, 'display': 'block'})
+            .animate({ opacity: 1 }, TAB_ANIMATE_DURATION, function () {
+              currentTarget.removeClass(activePanelClassName);
+              target.addClass(activePanelClassName);
+            });
+        });
+
+      item.siblings().removeClass(activeTabClassName);
+      item.addClass(activeTabClassName);
+    });
+
+    $('.post-toc a').on('click', function (e) {
+      e.preventDefault();
+      var targetSelector = escapeSelector(this.getAttribute('href'));
+      var offset = $(targetSelector).offset().top;
+      hasVelocity ?
+        html.velocity('stop').velocity('scroll', {
+          offset: offset  + 'px',
+          mobileHA: false
+        }) :
+        $('html, body').stop().animate({
+          scrollTop: offset
+        }, 500);
+    });
+
+    // Expand sidebar on post detail page by default, when post has a toc.
+    var $tocContent = $('.post-toc-content');
+    if (isDesktop() && CONFIG.sidebar === 'post') {
+      if ($tocContent.length > 0 && $tocContent.html().trim().length > 0) {
+        displaySidebar();
+      }
+    }
+  });
+</script>
+
+
+
+  <script type="text/javascript">
+    $(document).ready(function () {
+      if (CONFIG.sidebar === 'always') {
+        displaySidebar();
+      }
+      if (isMobile()) {
+        FastClick.attach(document.body);
+      }
+
+      motionIntegrator.bootstrap();
+    });
+  </script>
+
+  
+  
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+      }
+    });
+  </script>
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Queue(function() {
+      var all = MathJax.Hub.getAllJax(), i;
+      for (i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';
+      }
+    });
+  </script>
+
+  
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/MathJax.js"></script>
+    <script type="text/javascript" src="http://cdn.staticfile.org/mathjax/2.4.0/config/TeX-AMS-MML_HTMLorMML.js"></script>
+  
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/lazyload.js"></script>
+  <script type="text/javascript">
+    $(function () {
+      $("#posts").find('img').lazyload({
+        placeholder: "/images/loading.gif",
+        effect: "fadeIn"
+      });
+    });
+  </script>
+</body>
+</html>
