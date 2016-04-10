@@ -53,7 +53,7 @@
 <meta property="og:url" content="http://blog.soul11201.com/2016/04/01/mooc-linux-kernel-6/index.html">
 <meta property="og:site_name" content="coder 随想录">
 <meta property="og:description" content="杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about">
-<meta property="og:updated_time" content="2016-04-05T07:43:44.808Z">
+<meta property="og:updated_time" content="2016-04-08T11:29:49.758Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux 内核分析 -- 进程的创建">
 <meta name="twitter:description" content="杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about">
@@ -367,8 +367,10 @@
 <h2 id="嵌入到menuosgdb运行调试遇到的问题">嵌入到MenuOs,gdb运行调试遇到的问题</h2>
 <ol style="list-style-type: decimal">
 <li>执行fork后，进程停止在了子进程，如何发现的呢？利用上次系统调用作业<code>getpid()</code>查看进程pid发现的。</li>
-<li>gdb 无法加载进去符号表，还没找到好的解决方法 　原来编译的时候配置有问题，没办法进行跟踪调试，根据第二节的课程文档重新编译了一遍就OK了。根据文档制作了一个<a href="/attach.d/moocOsEnvBuild.makefile">Makefile</a>，下载到一个新文件夹执行　<code>make -f moocOsEnvBuild.makefile install</code> 确保terminal窗口大小大于<code>80*19</code>,并且会弹出来一个窗口记得开启下列选项</li>
+<li>gdb 无法加载进去符号表，还没找到好的解决方法 　原来编译的时候配置有问题，没办法进行跟踪调试，根据第二节的课程文档重新编译了一遍就OK了。根据文档制作了一个<a href="/attach.d/moocOsEnvBuild.makefile">Makefile</a>，下载到一个新文件夹执行</li>
 </ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://blog.soul11201.com/attach.d/moocOsEnvBuild.makefile &amp;&amp; make -f moocOsEnvBuild.makefile install</span><br></pre></td></tr></table></figure>
+<p>确保terminal窗口大小大于<code>80*19</code>,并且会弹出来一个窗口记得开启下列选项</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kernel hacking—&gt;Compile.....</span><br><span class="line">[*] compile the kernel with debug info</span><br></pre></td></tr></table></figure>
 <p>等待编译完成，进入menu文件夹执行<code>make qemu</code>直接启动MenuOs或者<code>make qemu-gdb</code>启动MenuOs并且使用gdb跟踪调试</p>
 <div class="footnotes">
@@ -396,7 +398,7 @@
             <p><span>本文标题:</span><a href="/2016/04/01/mooc-linux-kernel-6/">Linux 内核分析 -- 进程的创建</a></p>
             <p><span>文章作者:</span><a href="/" title="访问 soul11201 的个人博客">soul11201</a></p>
             <p><span>发布时间:</span>2016年4月1日 - 20时04分</p>
-            <p><span>最后更新:</span>2016年4月5日 - 15时04分</p>
+            <p><span>最后更新:</span>2016年4月8日 - 19时04分</p>
             <p><span>原始链接:</span><a href="/2016/04/01/mooc-linux-kernel-6/" title="Linux 内核分析 -- 进程的创建">http://blog.soul11201.com/2016/04/01/mooc-linux-kernel-6/</a></p>
             <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" title="Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)">"Attribution-NonCommercial 4.0"</a></p>
             <p><span>转载请保留以上信息。</span></p>
@@ -430,6 +432,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/08/16-04-08/" rel="prev" title="加班调bug谁之过？">
+                加班调bug谁之过？ <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -502,7 +508,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">34</span>
+              <span class="site-state-item-count">36</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

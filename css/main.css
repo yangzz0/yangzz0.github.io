@@ -961,7 +961,7 @@ body {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #c80bff;
+  background: #e9ebff;
 }
 .sidebar-nav {
   margin: 0 0 20px;
@@ -2233,7 +2233,7 @@ mobie()
     text-align: center;
   }
 }
-.copyright {
+.post-footer .copyright {
   width: 85%;
   margin: 40px auto 0 auto;
   max-width: 45em;
@@ -2244,15 +2244,15 @@ mobie()
   background: rgba(255,255,255,0.4);
   border: 1px solid #d3d3d3;
 }
-.copyright span {
+.post-footer .copyright span {
   color: #b5b5b5;
   font-weight: bold;
   margin-right: 1em;
 }
-.copyright a {
+.post-footer .copyright a {
   color: #808080;
 }
-.copyright a:hover {
+.post-footer .copyright a:hover {
   font-weight: bold;
   color: #a3d2a3;
   text-decoration: underline;

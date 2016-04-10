@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.soul11201.com/"/>
-  <updated>2016-04-05T07:43:44.808Z</updated>
+  <updated>2016-04-08T11:12:48.311Z</updated>
   <id>http://blog.soul11201.com/</id>
   
   <author>
@@ -16,11 +16,87 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Linux 内核分析 -- 装载</title>
+    <link href="http://blog.soul11201.com/2016/04/08/mooc-linux-kernel-7/"/>
+    <id>http://blog.soul11201.com/2016/04/08/mooc-linux-kernel-7/</id>
+    <published>2016-04-08T11:09:41.000Z</published>
+    <updated>2016-04-08T11:12:48.311Z</updated>
+    
+    <content type="html">&lt;blockquote&gt;&lt;p&gt;杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 &lt;a href=&quot;http://mooc.study.163.com/course/USTC-1000029000&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://mooc.study.163.com/course/USTC-1000029000&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;blockquote&gt;&lt;p&gt;杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程  &lt;a href=&quot;http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;!-- 1. 理解编译链接的过程和ELF可执行文件格式，详细内容参考本周第一节；​
+2. 编程使用exec*库函数加载一个可执行文件，动态链接分为可执行程序装载时动态链接和运行时动态链接，编程练习动态链接库的这两种使用方式，详细内容参考本周第二节；
+3. 使用gdb跟踪分析一个execve系统调用内核处理函数sys_execve ，验证您对Linux系统加载可执行程序所需处理过程的理解，详细内容参考本周第三节；推荐在实验楼Linux虚拟机环境下完成实验。
+特别关注新的可执行程序是从哪里开始执行的？为什么execve系统调用返回后新的可执行程序能顺利执行？对于静态链接的可执行程序和动态链接的可执行程序execve系统调用返回时会有什么不同？
+
+根据本周所学知识分析exec*函数对应的系统调用处理过程，撰写一篇署名博客，并在博客文章中注明“真实姓名（与最后申请证书的姓名务必一致） + 原创作品转载请注明出处 + 《Linux内核分析》MOOC课程http://mooc.study.163.com/course/USTC-1000029000 ”，博客内容的具体要求如下：
+题目自拟，内容围绕对Linux内核如何装载和启动一个可执行程序；
+可以结合实验截图、ELF可执行文件格式、用户态的相关代码等；
+博客内容中需要仔细分析新可执行程序的执行起点及对应的堆栈状态等。
+总结部分需要阐明自己对“Linux内核装载和启动一个可执行程序”的理解 --&gt;
+</content>
+    
+    <summary type="html">
+    
+      杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about
+    
+    </summary>
+    
+    
+      <category term="笔记" scheme="http://blog.soul11201.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+      <category term="mooc" scheme="http://blog.soul11201.com/tags/mooc/"/>
+    
+      <category term="Linux 内核分析" scheme="http://blog.soul11201.com/tags/Linux-%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/"/>
+    
+      <category term="汇编" scheme="http://blog.soul11201.com/tags/%E6%B1%87%E7%BC%96/"/>
+    
+      <category term="C" scheme="http://blog.soul11201.com/tags/C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>加班调bug谁之过？</title>
+    <link href="http://blog.soul11201.com/2016/04/08/16-04-08/"/>
+    <id>http://blog.soul11201.com/2016/04/08/16-04-08/</id>
+    <published>2016-04-08T09:18:02.000Z</published>
+    <updated>2016-04-08T11:04:18.747Z</updated>
+    
+    <content type="html">&lt;p&gt;昨天app客户端出现一个问题，最后发现是使用&lt;!-- 用C#委托和事件 --&gt;封装的一个pub/sub模式的问题。与之事件的发布写在了构造函数中，但pub/sub中与之相关的发布者、订阅者对象却在此后才会实例化。&lt;!-- 为什么这样写呢？ --&gt;&lt;!-- 构造函数的功能是用来初始化，一般用来解决成员变量的初始化，或者说是对外部的依赖问题 --&gt;这件事该赖谁呢？写这个pub/sub模式的，还是在构造函数里面写事件发布者的？&lt;!-- 判断这个问题，下面从这两个人的角色简单总结一下。 --&gt;&lt;/p&gt;
+&lt;p&gt;问题出现在了构造函数里面，构造函数一般用来做&lt;code&gt;一些初始化的工作，像对成员变量的初值的初始化，实现依赖注入，对一些数据信息的预处理&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;这样来看到底是谁的责任，就跟代码所起的作用相关了&lt;/p&gt;
+&lt;p&gt;如果这段代码是应用和用户之间的交互相关的逻辑问题，那么很明显不该把这段事件发布相关代码写到构造函数中。像Yii2框架中继承于&lt;code&gt;Object&lt;/code&gt;的类，每次类创建完成之后，就会自动执行&lt;code&gt;Object&lt;/code&gt; 的 &lt;code&gt;init()&lt;/code&gt; 这个函数。加上这么一层，就实现了框架的和使用人员的初始化流程给分开，防止使用框架的人在依赖到框架的时候，还未初始化情况的出现。&lt;/p&gt;
+&lt;p&gt;要是两段都是核心处理相关的代码呢？看来也只能是开发的两位成员没有协调好这个顺序问题了&lt;/p&gt;
+&lt;!-- 归根结底就是代码是核心基础代码，还是应用层业务逻辑代码与何时调用的问题。 --&gt;
+&lt;!-- 
+&gt;其实他们都是开发人员，这里只是用开发与用户用来比喻一个人程序依赖另一个人的程序，比如框架的开发者就是开发人员，二使用框架的人就是用户、
+ --&gt;
+&lt;!-- 
+
+依赖注入容器和自动加载
+ --&gt;
+&lt;!-- 要是两段都是核心处理相关的代码呢？看来也只能是开发的两个成员协调好这个顺序问题了商讨一下调用次序了 --&gt;
+</content>
+    
+    <summary type="html">
+    
+      著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处
+    
+    </summary>
+    
+    
+      <category term="笔记" scheme="http://blog.soul11201.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
     <title>Linux 内核分析 -- 进程的创建</title>
     <link href="http://blog.soul11201.com/2016/04/01/mooc-linux-kernel-6/"/>
     <id>http://blog.soul11201.com/2016/04/01/mooc-linux-kernel-6/</id>
     <published>2016-04-01T12:20:46.000Z</published>
-    <updated>2016-04-05T07:43:44.808Z</updated>
+    <updated>2016-04-08T11:29:49.758Z</updated>
     
     <content type="html">&lt;blockquote&gt;&lt;p&gt;杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 &lt;a href=&quot;http://mooc.study.163.com/course/USTC-1000029000&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://mooc.study.163.com/course/USTC-1000029000&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -166,8 +242,10 @@
 &lt;h2 id=&quot;嵌入到menuosgdb运行调试遇到的问题&quot;&gt;嵌入到MenuOs,gdb运行调试遇到的问题&lt;/h2&gt;
 &lt;ol style=&quot;list-style-type: decimal&quot;&gt;
 &lt;li&gt;执行fork后，进程停止在了子进程，如何发现的呢？利用上次系统调用作业&lt;code&gt;getpid()&lt;/code&gt;查看进程pid发现的。&lt;/li&gt;
-&lt;li&gt;gdb 无法加载进去符号表，还没找到好的解决方法 　原来编译的时候配置有问题，没办法进行跟踪调试，根据第二节的课程文档重新编译了一遍就OK了。根据文档制作了一个&lt;a href=&quot;/attach.d/moocOsEnvBuild.makefile&quot;&gt;Makefile&lt;/a&gt;，下载到一个新文件夹执行　&lt;code&gt;make -f moocOsEnvBuild.makefile install&lt;/code&gt; 确保terminal窗口大小大于&lt;code&gt;80*19&lt;/code&gt;,并且会弹出来一个窗口记得开启下列选项&lt;/li&gt;
+&lt;li&gt;gdb 无法加载进去符号表，还没找到好的解决方法 　原来编译的时候配置有问题，没办法进行跟踪调试，根据第二节的课程文档重新编译了一遍就OK了。根据文档制作了一个&lt;a href=&quot;/attach.d/moocOsEnvBuild.makefile&quot;&gt;Makefile&lt;/a&gt;，下载到一个新文件夹执行&lt;/li&gt;
 &lt;/ol&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;wget http://blog.soul11201.com/attach.d/moocOsEnvBuild.makefile &amp;amp;&amp;amp; make -f moocOsEnvBuild.makefile install&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+&lt;p&gt;确保terminal窗口大小大于&lt;code&gt;80*19&lt;/code&gt;,并且会弹出来一个窗口记得开启下列选项&lt;/p&gt;
 &lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;kernel hacking—&amp;gt;Compile.....&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;[*] compile the kernel with debug info&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
 &lt;p&gt;等待编译完成，进入menu文件夹执行&lt;code&gt;make qemu&lt;/code&gt;直接启动MenuOs或者&lt;code&gt;make qemu-gdb&lt;/code&gt;启动MenuOs并且使用gdb跟踪调试&lt;/p&gt;
 &lt;div class=&quot;footnotes&quot;&gt;
@@ -1002,120 +1080,6 @@ system_call 断点可以设置，但是程序运行的时候会直接跳过去
     
     
       <category term="mathjax" scheme="http://blog.soul11201.com/tags/mathjax/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>碎语</title>
-    <link href="http://blog.soul11201.com/2015/11/22/2015.11.22.7/"/>
-    <id>http://blog.soul11201.com/2015/11/22/2015.11.22.7/</id>
-    <published>2015-11-22T13:09:37.000Z</published>
-    <updated>2015-12-07T10:43:49.107Z</updated>
-    
-    <content type="html">&lt;h2 id=&quot;一些问题&quot;&gt;一些问题&lt;/h2&gt;
-&lt;h3 id=&quot;内容选择困难症&quot;&gt;内容选择困难症&lt;/h3&gt;
-&lt;blockquote&gt;
-&lt;p&gt;做ppt演讲的时候，该讲什么内容。自己会的感觉太简单，那就是1+1，别人应该都会，讲出来没意思，要么不懂感觉这个好像才有讲的价值。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;内容选取的标准搞错了，不应该根据自己感觉是什么就是什么来作为取舍标准。应根据内容及其结构、 &lt;del&gt;是什么&lt;/del&gt;，&lt;del&gt;有哪些基本问题，基本问题应该勾勒出基本的框架结构。以及每个问题所需的&lt;/del&gt; 为了描述清楚这个结构而应说明的基本概念、术语、公理等最小基本元素集合来作为取舍标准。&lt;/p&gt;
-&lt;h3 id=&quot;关联困难&quot;&gt;关联困难&lt;/h3&gt;
-&lt;blockquote&gt;
-&lt;p&gt;不能理解句子在说什么&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;实则是未能理解句子所表达的含义，理解透要表达的内容。可能是关联思维不好&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;要解决的问题&lt;/li&gt;
-&lt;li&gt;相关内容&lt;/li&gt;
-&lt;li&gt;图形&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;如何提高效率&quot;&gt;如何提高效率？&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;与人交流&lt;/li&gt;
-&lt;li&gt;信息获取的技巧&lt;/li&gt;
-&lt;li&gt;使用工具&lt;/li&gt;
-&lt;li&gt;避免副作用&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&quot;碎碎念&quot;&gt;碎碎念&lt;/h2&gt;
-&lt;p&gt;思绪来的也快去的也快，想的很明白的二次探测定理现在也忘记是怎么回事了，记一记笔记，把当时相关的一些原理梳理一下，总结一下自己的感悟还是很有必要的。&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h2 id=&quot;一些问题&quot;&gt;一些问题&lt;/h2&gt;
-&lt;h3 id=&quot;内容选择困难症&quot;&gt;内容选择困难症&lt;/h3&gt;
-&lt;blockquote&gt;
-&lt;p&gt;做ppt演讲的时候，该讲什么内容。自己会的感觉太简单，那就是1+1，别人应该都会，讲出来没意思，要么不懂感觉这个好像才有讲的价值。&lt;/
-    
-    </summary>
-    
-    
-      <category term="杂记" scheme="http://blog.soul11201.com/tags/%E6%9D%82%E8%AE%B0/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>php 开发环境搭建</title>
-    <link href="http://blog.soul11201.com/2015/11/17/lnmp-%E7%8E%AF%E5%A2%83-%E6%90%AD%E5%BB%BA/"/>
-    <id>http://blog.soul11201.com/2015/11/17/lnmp-环境-搭建/</id>
-    <published>2015-11-17T12:08:24.000Z</published>
-    <updated>2016-02-22T06:04:48.215Z</updated>
-    
-    <content type="html">&lt;p&gt;个人使用的方式有两种&lt;/p&gt;
-&lt;ol style=&quot;list-style-type: decimal&quot;&gt;
-&lt;li&gt;lamp/lnmp 环境&lt;/li&gt;
-&lt;li&gt;php 自带的webserver&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h1 id=&quot;php-自带的webserver&quot;&gt;php 自带的webserver&lt;/h1&gt;
-&lt;p&gt;配置搭建比较简单，一条命令即可以下实现一个本地server &lt;code&gt;php -S 0.0.0.0:8010&lt;/code&gt;。在浏览器中就可以访问。&lt;/p&gt;
-&lt;h1 id=&quot;lnmp-环境-搭建&quot;&gt;lnmp 环境 搭建&lt;/h1&gt;
-&lt;h2 id=&quot;整体结构&quot;&gt;整体结构&lt;/h2&gt;
-&lt;div class=&quot;figure&quot;&gt;
-&lt;img src=&quot;http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg&quot; alt=&quot;盗用一张图&quot;&gt;
-&lt;p class=&quot;caption&quot;&gt;盗用一张图&lt;/p&gt;
-&lt;/div&gt;
-&lt;h2 id=&quot;安装&quot;&gt;安装&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;nginx&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;可以手动编译安装，也可以是使用&lt;code&gt;apt-get&lt;/code&gt;方式安装。第二种方式版本较低。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;fpm、mysql&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;荐&lt;code&gt;apt-get&lt;/code&gt;方式安装，便捷。&lt;/p&gt;
-&lt;h2 id=&quot;配置&quot;&gt;配置&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;nginx &lt;/strong&gt;&lt;/p&gt;
-&lt;figure class=&quot;highlight xquery&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt; server &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    listen &lt;span class=&quot;number&quot;&gt;8082&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    #server_name localhost;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    root /data/codes/sevenga_tuitui/backend;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    index index.php;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    location / &amp;#123; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        try_files $uri $uri/ /index.php?$args;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        # upload_limit_rate &lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;m;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    location ~ \.php$ &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        try_files $uri =&lt;span class=&quot;number&quot;&gt;404&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        include fastcgi_params;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        fastcgi_pass &lt;span class=&quot;number&quot;&gt;127.0&lt;/span&gt;.&lt;span class=&quot;number&quot;&gt;0&lt;/span&gt;.&lt;span class=&quot;number&quot;&gt;1&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;9000&lt;/span&gt;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        fastcgi_index index.php;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        fastcgi_param PATH_INFO $fastcgi_script_name;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    error_page &lt;span class=&quot;number&quot;&gt;500&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;502&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;503&lt;/span&gt; &lt;span class=&quot;number&quot;&gt;504&lt;/span&gt; /&lt;span class=&quot;number&quot;&gt;50&lt;/span&gt;x.html;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    location = /&lt;span class=&quot;number&quot;&gt;50&lt;/span&gt;x.html &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        root html;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;   &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;&lt;strong&gt;fpm&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;配置文件 &lt;code&gt;/etc/php5/fpm/pool.d/www.conf&lt;/code&gt;,设置fpm监听端口和nginx配置一致&lt;/p&gt;
-&lt;figure class=&quot;highlight ini&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;attr&quot;&gt;listen&lt;/span&gt; =&lt;span class=&quot;number&quot;&gt;127.0&lt;/span&gt;.&lt;span class=&quot;number&quot;&gt;0.1&lt;/span&gt;:&lt;span class=&quot;number&quot;&gt;9000&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;h2 id=&quot;faq&quot;&gt;FAQ&lt;/h2&gt;
-&lt;h4 id=&quot;mysql-安装过程未设置密码.用root空密码登陆报-error-1045-28000-错误&quot;&gt;mysql 安装过程未设置密码.。用root、空密码登陆报 &lt;code&gt;ERROR 1045 (28000)&lt;/code&gt; 错误。&lt;/h4&gt;
-&lt;figure class=&quot;highlight brainfuck&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;/etc/init&lt;/span&gt;&lt;span class=&quot;string&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;d/mysql&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;stop&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;mysqld_safe&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;user=mysql&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;skip&lt;/span&gt;&lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;grant&lt;/span&gt;&lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;tables&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;skip&lt;/span&gt;&lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;networking&amp;amp;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;comment&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;mysql&lt;/span&gt; &lt;span class=&quot;literal&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;comment&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;root&lt;/span&gt; &lt;span class=&quot;comment&quot;&gt;mysql&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;更改sql用户密码&lt;/p&gt;
-&lt;figure class=&quot;highlight sql&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;update&lt;/span&gt; mysql.&lt;span class=&quot;keyword&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;set&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;password&lt;/span&gt;=&lt;span class=&quot;keyword&quot;&gt;PASSWORD&lt;/span&gt;（&lt;span class=&quot;string&quot;&gt;&#39;新密码&#39;&lt;/span&gt;） &lt;span class=&quot;keyword&quot;&gt;where&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;User&lt;/span&gt;=&lt;span class=&quot;string&quot;&gt;&#39;root&#39;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;keyword&quot;&gt;flush&lt;/span&gt; &lt;span class=&quot;keyword&quot;&gt;privileges&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;重启数据库：&lt;/p&gt;
-&lt;p&gt;&lt;code&gt;/etc/init.d/mysql restart&lt;/code&gt;&lt;/p&gt;
-&lt;h2 id=&quot;参考&quot;&gt;参考&lt;/h2&gt;
-&lt;ol style=&quot;list-style-type: decimal&quot;&gt;
-&lt;li&gt;&lt;a href=&quot;http://laokaddk.blog.51cto.com/368606/1323292&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;ubuntu 系统解决mysql连接问题（ERROR 1045 (28000): Access denied for user ‘root’@‘localhost’ (using password: NO)）&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;个人使用的方式有两种&lt;/p&gt;
-&lt;ol style=&quot;list-style-type: decimal&quot;&gt;
-&lt;li&gt;lamp/lnmp 环境&lt;/li&gt;
-&lt;li&gt;php 自带的webserver&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h1 id=&quot;php-自带的webserver&quot;
-    
-    </summary>
-    
-    
-      <category term="笔记" scheme="http://blog.soul11201.com/tags/%E7%AC%94%E8%AE%B0/"/>
-    
-      <category term="lnmp" scheme="http://blog.soul11201.com/tags/lnmp/"/>
-    
-      <category term="php" scheme="http://blog.soul11201.com/tags/php/"/>
-    
-      <category term="环境搭建" scheme="http://blog.soul11201.com/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/"/>
     
   </entry>
   

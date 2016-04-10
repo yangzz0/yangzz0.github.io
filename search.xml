@@ -4,6 +4,46 @@
   
     
     <entry>
+      <title><![CDATA[Linux 内核分析 -- 装载]]></title>
+      <url>http://blog.soul11201.com/2016/04/08/mooc-linux-kernel-7/</url>
+      <content type="html"><![CDATA[<blockquote><p>杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 <a href="http://mooc.study.163.com/course/USTC-1000029000" target="_blank" rel="external">http://mooc.study.163.com/course/USTC-1000029000</a></p>
+</blockquote>
+<blockquote><p>杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程  <a href="http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about" target="_blank" rel="external">http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about</a></p>
+</blockquote>
+<!-- 1. 理解编译链接的过程和ELF可执行文件格式，详细内容参考本周第一节；​
+2. 编程使用exec*库函数加载一个可执行文件，动态链接分为可执行程序装载时动态链接和运行时动态链接，编程练习动态链接库的这两种使用方式，详细内容参考本周第二节；
+3. 使用gdb跟踪分析一个execve系统调用内核处理函数sys_execve ，验证您对Linux系统加载可执行程序所需处理过程的理解，详细内容参考本周第三节；推荐在实验楼Linux虚拟机环境下完成实验。
+特别关注新的可执行程序是从哪里开始执行的？为什么execve系统调用返回后新的可执行程序能顺利执行？对于静态链接的可执行程序和动态链接的可执行程序execve系统调用返回时会有什么不同？
+
+根据本周所学知识分析exec*函数对应的系统调用处理过程，撰写一篇署名博客，并在博客文章中注明“真实姓名（与最后申请证书的姓名务必一致） + 原创作品转载请注明出处 + 《Linux内核分析》MOOC课程http://mooc.study.163.com/course/USTC-1000029000 ”，博客内容的具体要求如下：
+题目自拟，内容围绕对Linux内核如何装载和启动一个可执行程序；
+可以结合实验截图、ELF可执行文件格式、用户态的相关代码等；
+博客内容中需要仔细分析新可执行程序的执行起点及对应的堆栈状态等。
+总结部分需要阐明自己对“Linux内核装载和启动一个可执行程序”的理解 -->
+]]></content>
+    </entry>
+    
+    <entry>
+      <title><![CDATA[加班调bug谁之过？]]></title>
+      <url>http://blog.soul11201.com/2016/04/08/16-04-08/</url>
+      <content type="html"><![CDATA[<p>昨天app客户端出现一个问题，最后发现是使用<!-- 用C#委托和事件 -->封装的一个pub/sub模式的问题。与之事件的发布写在了构造函数中，但pub/sub中与之相关的发布者、订阅者对象却在此后才会实例化。<!-- 为什么这样写呢？ --><!-- 构造函数的功能是用来初始化，一般用来解决成员变量的初始化，或者说是对外部的依赖问题 -->这件事该赖谁呢？写这个pub/sub模式的，还是在构造函数里面写事件发布者的？<!-- 判断这个问题，下面从这两个人的角色简单总结一下。 --></p>
+<p>问题出现在了构造函数里面，构造函数一般用来做<code>一些初始化的工作，像对成员变量的初值的初始化，实现依赖注入，对一些数据信息的预处理</code>。</p>
+<p>这样来看到底是谁的责任，就跟代码所起的作用相关了</p>
+<p>如果这段代码是应用和用户之间的交互相关的逻辑问题，那么很明显不该把这段事件发布相关代码写到构造函数中。像Yii2框架中继承于<code>Object</code>的类，每次类创建完成之后，就会自动执行<code>Object</code> 的 <code>init()</code> 这个函数。加上这么一层，就实现了框架的和使用人员的初始化流程给分开，防止使用框架的人在依赖到框架的时候，还未初始化情况的出现。</p>
+<p>要是两段都是核心处理相关的代码呢？看来也只能是开发的两位成员没有协调好这个顺序问题了</p>
+<!-- 归根结底就是代码是核心基础代码，还是应用层业务逻辑代码与何时调用的问题。 -->
+<!-- 
+>其实他们都是开发人员，这里只是用开发与用户用来比喻一个人程序依赖另一个人的程序，比如框架的开发者就是开发人员，二使用框架的人就是用户、
+ -->
+<!-- 
+
+依赖注入容器和自动加载
+ -->
+<!-- 要是两段都是核心处理相关的代码呢？看来也只能是开发的两个成员协调好这个顺序问题了商讨一下调用次序了 -->
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Linux 内核分析 -- 进程的创建]]></title>
       <url>http://blog.soul11201.com/2016/04/01/mooc-linux-kernel-6/</url>
       <content type="html"><![CDATA[<blockquote><p>杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 <a href="http://mooc.study.163.com/course/USTC-1000029000" target="_blank" rel="external">http://mooc.study.163.com/course/USTC-1000029000</a></p>
@@ -150,8 +190,10 @@
 <h2 id="嵌入到menuosgdb运行调试遇到的问题">嵌入到MenuOs,gdb运行调试遇到的问题</h2>
 <ol style="list-style-type: decimal">
 <li>执行fork后，进程停止在了子进程，如何发现的呢？利用上次系统调用作业<code>getpid()</code>查看进程pid发现的。</li>
-<li>gdb 无法加载进去符号表，还没找到好的解决方法 　原来编译的时候配置有问题，没办法进行跟踪调试，根据第二节的课程文档重新编译了一遍就OK了。根据文档制作了一个<a href="/attach.d/moocOsEnvBuild.makefile">Makefile</a>，下载到一个新文件夹执行　<code>make -f moocOsEnvBuild.makefile install</code> 确保terminal窗口大小大于<code>80*19</code>,并且会弹出来一个窗口记得开启下列选项</li>
+<li>gdb 无法加载进去符号表，还没找到好的解决方法 　原来编译的时候配置有问题，没办法进行跟踪调试，根据第二节的课程文档重新编译了一遍就OK了。根据文档制作了一个<a href="/attach.d/moocOsEnvBuild.makefile">Makefile</a>，下载到一个新文件夹执行</li>
 </ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://blog.soul11201.com/attach.d/moocOsEnvBuild.makefile &amp;&amp; make -f moocOsEnvBuild.makefile install</span><br></pre></td></tr></table></figure>
+<p>确保terminal窗口大小大于<code>80*19</code>,并且会弹出来一个窗口记得开启下列选项</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kernel hacking—&gt;Compile.....</span><br><span class="line">[*] compile the kernel with debug info</span><br></pre></td></tr></table></figure>
 <p>等待编译完成，进入menu文件夹执行<code>make qemu</code>直接启动MenuOs或者<code>make qemu-gdb</code>启动MenuOs并且使用gdb跟踪调试</p>
 <div class="footnotes">
