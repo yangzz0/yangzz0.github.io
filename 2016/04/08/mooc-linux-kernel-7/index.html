@@ -54,7 +54,7 @@
 <meta property="og:site_name" content="coder 随想录">
 <meta property="og:description" content="杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about">
 <meta property="og:image" content="http://blog.soul11201.com/imgs/gcc-build-process.png">
-<meta property="og:updated_time" content="2016-04-11T07:00:35.698Z">
+<meta property="og:updated_time" content="2016-04-11T07:17:48.475Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux 内核分析 -- 装载">
 <meta name="twitter:description" content="杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about">
@@ -259,7 +259,9 @@
 <li>一个共享文件（如Linux中的.so,.dso文件）即动态链接库，保存着代码和合适的数据，链接方式有两种，静态链接（装载时连接），动态链接（程序运行时连接）</li>
 </ul>
 <h2 id="动态链接库的这两种使用方式">动态链接库的这两种使用方式</h2>
-<h2 id="gdb跟踪execve系统调用">gdb跟踪<code>execve</code>系统调用</h2>
+<h2 id="gdb跟踪execve系统调用-可执行程序的装载过程">gdb跟踪<code>execve</code>系统调用 — 可执行程序的装载过程</h2>
+<p>设置断点</p>
+<p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">b sys_execve</span><br><span class="line">b load_elf_binary</span><br><span class="line">b start_thread</span><br></pre></td></tr></table></figure></p>
 <p>从哪里开始执行的</p>
 <div class="footnotes">
 <hr>
@@ -314,6 +316,10 @@
           </div>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/04/11/mooc-linux-kernel-8/" rel="prev" title="Linux 内核分析 -- 进程调度实现原理简单分析">
+                Linux 内核分析 -- 进程调度实现原理简单分析 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -386,7 +392,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">36</span>
+              <span class="site-state-item-count">37</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -461,7 +467,7 @@
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#编译链接的过程elf文件格式"><span class="nav-number">1.</span> <span class="nav-text">编译链接的过程，ELF文件格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态链接库的这两种使用方式"><span class="nav-number"></span> <span class="nav-text">动态链接库的这两种使用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gdb跟踪execve系统调用"><span class="nav-number"></span> <span class="nav-text">gdb跟踪execve系统调用</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#编译链接的过程elf文件格式"><span class="nav-number">1.</span> <span class="nav-text">编译链接的过程，ELF文件格式</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态链接库的这两种使用方式"><span class="nav-number"></span> <span class="nav-text">动态链接库的这两种使用方式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gdb跟踪execve系统调用-可执行程序的装载过程"><span class="nav-number"></span> <span class="nav-text">gdb跟踪execve系统调用 — 可执行程序的装载过程</span></a></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
