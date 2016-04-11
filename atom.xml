@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://blog.soul11201.com/"/>
-  <updated>2016-04-08T11:12:48.311Z</updated>
+  <updated>2016-04-11T07:00:35.698Z</updated>
   <id>http://blog.soul11201.com/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="http://blog.soul11201.com/2016/04/08/mooc-linux-kernel-7/"/>
     <id>http://blog.soul11201.com/2016/04/08/mooc-linux-kernel-7/</id>
     <published>2016-04-08T11:09:41.000Z</published>
-    <updated>2016-04-08T11:12:48.311Z</updated>
+    <updated>2016-04-11T07:00:35.698Z</updated>
     
     <content type="html">&lt;blockquote&gt;&lt;p&gt;杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 &lt;a href=&quot;http://mooc.study.163.com/course/USTC-1000029000&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;http://mooc.study.163.com/course/USTC-1000029000&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -36,6 +36,36 @@
 可以结合实验截图、ELF可执行文件格式、用户态的相关代码等；
 博客内容中需要仔细分析新可执行程序的执行起点及对应的堆栈状态等。
 总结部分需要阐明自己对“Linux内核装载和启动一个可执行程序”的理解 --&gt;
+&lt;h3 id=&quot;编译链接的过程elf文件格式&quot;&gt;编译链接的过程，ELF文件格式&lt;/h3&gt;
+&lt;div class=&quot;figure&quot;&gt;
+&lt;img src=&quot;/imgs/gcc-build-process.png&quot; title=&quot;生成可执行程序的过程&quot; style=&quot;width:100.0%&quot;&gt;
+
+&lt;/div&gt;
+&lt;p&gt;生成可执行程序的过程 &lt;a href=&quot;#fn1&quot; class=&quot;footnoteRef&quot; id=&quot;fnref1&quot;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;C代码（.c）经过编译器预处理生成中间代码（图中未显示），然后编译成汇编代码（.asm）&lt;/li&gt;
+&lt;li&gt;汇编代码（.asm）经过 汇编器，生成目标文件（.o）&lt;/li&gt;
+&lt;li&gt;目标文件（.o） 经过链接器，链接成可执行文件（.out）&lt;/li&gt;
+&lt;li&gt;OS将可执行文件加载到内存里执行.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;其中，.o文件 和 可执行文件，都是目标文件，Linux上面目标文件格式是 &lt;code&gt;Elf&lt;/code&gt;,window上面是&lt;code&gt;PE格式&lt;/code&gt;。&lt;/p&gt;
+&lt;p&gt;ELF格式的目标文件种类&lt;a href=&quot;#fn2&quot; class=&quot;footnoteRef&quot; id=&quot;fnref2&quot;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;,&lt;a href=&quot;#fn3&quot; class=&quot;footnoteRef&quot; id=&quot;fnref3&quot;&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;可重定位（relocatable）文件，保存着代码和适当的数据，用来和其它的object文件一起来创建一个可执行文件或者是一个共享文件（主要是.o文件）&lt;/li&gt;
+&lt;li&gt;可执行（executable）文件，保存着一个用来执行的程序，该文件指出了exec(BA_OS)如何来创建程序进程映象（操作系统怎么样把可执行文件加载起来并且从哪里开始执行）&lt;/li&gt;
+&lt;li&gt;一个共享文件（如Linux中的.so,.dso文件）即动态链接库，保存着代码和合适的数据，链接方式有两种，静态链接（装载时连接），动态链接（程序运行时连接）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id=&quot;动态链接库的这两种使用方式&quot;&gt;动态链接库的这两种使用方式&lt;/h2&gt;
+&lt;h2 id=&quot;gdb跟踪execve系统调用&quot;&gt;gdb跟踪&lt;code&gt;execve&lt;/code&gt;系统调用&lt;/h2&gt;
+&lt;p&gt;从哪里开始执行的&lt;/p&gt;
+&lt;div class=&quot;footnotes&quot;&gt;
+&lt;hr&gt;
+&lt;ol&gt;
+&lt;li id=&quot;fn1&quot;&gt;&lt;p&gt;&lt;a href=&quot;http://www.jianshu.com/p/dee889469bdd&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;梅花小筑&lt;/a&gt;&lt;a href=&quot;#fnref1&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn2&quot;&gt;&lt;p&gt;&lt;a href=&quot;http://www.jianshu.com/p/dee889469bdd&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;梅花小筑&lt;/a&gt;&lt;a href=&quot;#fnref2&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&quot;fn3&quot;&gt;&lt;p&gt;&lt;a href=&quot;http://item.jd.com/10067200.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;程序员的自我修养：链接、装载与库&lt;/a&gt;&lt;a href=&quot;#fnref3&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
 </content>
     
     <summary type="html">

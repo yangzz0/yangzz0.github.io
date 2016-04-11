@@ -20,6 +20,36 @@
 可以结合实验截图、ELF可执行文件格式、用户态的相关代码等；
 博客内容中需要仔细分析新可执行程序的执行起点及对应的堆栈状态等。
 总结部分需要阐明自己对“Linux内核装载和启动一个可执行程序”的理解 -->
+<h3 id="编译链接的过程elf文件格式">编译链接的过程，ELF文件格式</h3>
+<div class="figure">
+<img src="/imgs/gcc-build-process.png" title="生成可执行程序的过程" style="width:100.0%">
+
+</div>
+<p>生成可执行程序的过程 <a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a></p>
+<ul>
+<li>C代码（.c）经过编译器预处理生成中间代码（图中未显示），然后编译成汇编代码（.asm）</li>
+<li>汇编代码（.asm）经过 汇编器，生成目标文件（.o）</li>
+<li>目标文件（.o） 经过链接器，链接成可执行文件（.out）</li>
+<li>OS将可执行文件加载到内存里执行.</li>
+</ul>
+<p>其中，.o文件 和 可执行文件，都是目标文件，Linux上面目标文件格式是 <code>Elf</code>,window上面是<code>PE格式</code>。</p>
+<p>ELF格式的目标文件种类<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a>,<a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a></p>
+<ul>
+<li>可重定位（relocatable）文件，保存着代码和适当的数据，用来和其它的object文件一起来创建一个可执行文件或者是一个共享文件（主要是.o文件）</li>
+<li>可执行（executable）文件，保存着一个用来执行的程序，该文件指出了exec(BA_OS)如何来创建程序进程映象（操作系统怎么样把可执行文件加载起来并且从哪里开始执行）</li>
+<li>一个共享文件（如Linux中的.so,.dso文件）即动态链接库，保存着代码和合适的数据，链接方式有两种，静态链接（装载时连接），动态链接（程序运行时连接）</li>
+</ul>
+<h2 id="动态链接库的这两种使用方式">动态链接库的这两种使用方式</h2>
+<h2 id="gdb跟踪execve系统调用">gdb跟踪<code>execve</code>系统调用</h2>
+<p>从哪里开始执行的</p>
+<div class="footnotes">
+<hr>
+<ol>
+<li id="fn1"><p><a href="http://www.jianshu.com/p/dee889469bdd" target="_blank" rel="external">梅花小筑</a><a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p><a href="http://www.jianshu.com/p/dee889469bdd" target="_blank" rel="external">梅花小筑</a><a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p><a href="http://item.jd.com/10067200.html" target="_blank" rel="external">程序员的自我修养：链接、装载与库</a><a href="#fnref3">↩</a></p></li>
+</ol>
+</div>
 ]]></content>
     </entry>
     
