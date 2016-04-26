@@ -61,7 +61,7 @@
     <link href="http://blog.soul11201.com/2016/04/15/pointer-reference-mem/"/>
     <id>http://blog.soul11201.com/2016/04/15/pointer-reference-mem/</id>
     <published>2016-04-15T04:39:41.000Z</published>
-    <updated>2016-04-15T06:08:35.492Z</updated>
+    <updated>2016-04-19T11:32:30.960Z</updated>
     
     <content type="html">&lt;blockquote&gt;
 &lt;ol style=&quot;list-style-type: decimal&quot;&gt;
@@ -71,7 +71,16 @@
 &lt;li&gt;类的函数中可以使用&lt;code&gt;delete this&lt;/code&gt;吗？&lt;/li&gt;
 &lt;/ol&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;谁使用谁回收&lt;/p&gt;
+&lt;h2 id=&quot;引用&quot;&gt;引用&lt;/h2&gt;
+&lt;p&gt;一般类型引用格式是：&lt;code&gt;T a,&amp;amp;b = a&lt;/code&gt;表示变量a,b指向了同一块内存区域。可以使用如下方式验证 &lt;figure class=&quot;highlight c&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;%x\n&quot;&lt;/span&gt;,&amp;amp;a);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;built_in&quot;&gt;printf&lt;/span&gt;(&lt;span class=&quot;string&quot;&gt;&quot;%x\n&quot;&lt;/span&gt;,&amp;amp;b);&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;&lt;/p&gt;
+&lt;p&gt;指针类类型的引用：&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;T *a,*b = a&lt;/code&gt; 在内存中有两块内存区域。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;T *a,*&amp;amp;b = a&lt;/code&gt; 内存中有一块内存区域&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;int *a = new int&lt;/code&gt; 在堆上申请一块内存区域，地址赋值给a。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;delete a&lt;/code&gt; 回收&lt;code&gt;a&lt;/code&gt;所指向的堆上的内存。但是&lt;code&gt;a == NULL&lt;/code&gt;不一定成立&lt;/p&gt;
+&lt;!-- 指针b是指针a的引用 --&gt;
+&lt;h2 id=&quot;指针deletenew&quot;&gt;指针、delete、new&lt;/h2&gt;
+&lt;p&gt;内存使用的基本规则: &amp;gt;谁使用谁回收&lt;/p&gt;
 </content>
     
     <summary type="html">

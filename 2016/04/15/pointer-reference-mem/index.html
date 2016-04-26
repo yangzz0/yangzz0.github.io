@@ -53,7 +53,7 @@
 <meta property="og:url" content="http://blog.soul11201.com/2016/04/15/pointer-reference-mem/index.html">
 <meta property="og:site_name" content="coder 随想录">
 <meta property="og:description" content="著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处">
-<meta property="og:updated_time" content="2016-04-15T06:08:35.492Z">
+<meta property="og:updated_time" content="2016-04-19T11:32:30.960Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="指针、引用与内存">
 <meta name="twitter:description" content="著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处">
@@ -231,7 +231,16 @@
 <li>类的函数中可以使用<code>delete this</code>吗？</li>
 </ol>
 </blockquote>
-<p>谁使用谁回收</p>
+<h2 id="引用">引用</h2>
+<p>一般类型引用格式是：<code>T a,&amp;b = a</code>表示变量a,b指向了同一块内存区域。可以使用如下方式验证 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"%x\n"</span>,&amp;a);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%x\n"</span>,&amp;b);</span><br></pre></td></tr></table></figure></p>
+<p>指针类类型的引用：</p>
+<p><code>T *a,*b = a</code> 在内存中有两块内存区域。</p>
+<p><code>T *a,*&amp;b = a</code> 内存中有一块内存区域</p>
+<p><code>int *a = new int</code> 在堆上申请一块内存区域，地址赋值给a。</p>
+<p><code>delete a</code> 回收<code>a</code>所指向的堆上的内存。但是<code>a == NULL</code>不一定成立</p>
+<!-- 指针b是指针a的引用 -->
+<h2 id="指针deletenew">指针、delete、new</h2>
+<p>内存使用的基本规则: &gt;谁使用谁回收</p>
 </span>
       
     </div>
@@ -243,7 +252,7 @@
             <p><span>本文标题:</span><a href="/2016/04/15/pointer-reference-mem/">指针、引用与内存</a></p>
             <p><span>文章作者:</span><a href="/" title="访问 soul11201 的个人博客">soul11201</a></p>
             <p><span>发布时间:</span>2016年4月15日 - 12时04分</p>
-            <p><span>最后更新:</span>2016年4月15日 - 14时04分</p>
+            <p><span>最后更新:</span>2016年4月19日 - 19时04分</p>
             <p><span>原始链接:</span><a href="/2016/04/15/pointer-reference-mem/" title="指针、引用与内存">http://blog.soul11201.com/2016/04/15/pointer-reference-mem/</a></p>
             <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" title="Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)">"Attribution-NonCommercial 4.0"</a></p>
             <p><span>转载请保留以上信息。</span></p>
@@ -422,7 +431,7 @@
           <div class="post-toc">
             
             
-              <p class="post-toc-empty">此文章未包含目录</p>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引用"><span class="nav-number">1.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指针deletenew"><span class="nav-number">2.</span> <span class="nav-text">指针、delete、new</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
