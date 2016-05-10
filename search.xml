@@ -4,6 +4,71 @@
   
     
     <entry>
+      <title><![CDATA[dig]]></title>
+      <url>http://blog.soul11201.com/2016/05/07/2016-05-07-dig/</url>
+      <content type="html"><![CDATA[<!-- 
+>1. dig 是什么？
+>1. 能用来做什么
+>1. 输出结果表示什么 
+
+-->
+<h2 id="dig-是什么">dig 是什么？</h2>
+<p>dig 是一个调试dns server相关问题的工具。比nslookup,host 功能更强悍，或许是现在最好使的工具。</p>
+<h2 id="能用来做什么">能用来做什么</h2>
+<ul>
+<li>解析域名的A记录</li>
+<li>解析域名的MX记录</li>
+<li>解析域名的CNAME记录</li>
+<li>解析域名的NS记录</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dig soul11201.com  ;;A 记录</span><br><span class="line">dig ns soul11201.com ;;ns 记录</span><br><span class="line">dig CNAME soul11201.com ;;CNAME 记录</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在指定的ns上解析域名的A记录</li>
+</ul>
+<blockquote>
+<p>dig <span class="citation">@223.125.43.67</span> -p 2345 www.google.com</p>
+</blockquote>
+<h2 id="输出结果表示什么">输出结果表示什么</h2>
+<p>输出的结果是dns<code>响应报文</code>和<code>请求报文查询问题</code>的可读形式，分别在下面三个区域中 <code>Question/Answer/Authority sections</code>。dns报文查询和响应格式详细参考经典著作<code>TCPv1,14</code><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>。或者简单的可以参考一下<a href="http://www.cnblogs.com/feng-qi/archive/2013/05/05/DNS_packet_analysis.html" target="_blank" rel="external">这篇文章</a></p>
+<p>输出结果大概分为下面几个区域：</p>
+<ul>
+<li><code>Header</code>: 展示版本信息</li>
+<li><code>QUESTION SECTION</code>: dns请求报文查询的问题，默认是<code>A</code>类型的查询</li>
+<li><code>ANSWER SECTION</code>: 从dns收到的应答报文</li>
+<li><code>AUTHORITY SECTION</code>: 授权的dns</li>
+<li><code>ADDITIONAL SECTION</code>:授权dns的ip</li>
+<li><code>Stats section</code>:最下面的统计部分，包括执行查询的时间和实际进行dns应答的机器ip和端口</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">; &lt;&lt;&gt;&gt; DiG 9.9.5-3ubuntu0.8-Ubuntu &lt;&lt;&gt;&gt; redhat.com</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 61818</span><br><span class="line">;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 4, ADDITIONAL: 5</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 4096</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;redhat.com.            IN  A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">redhat.com.     600 IN  A   209.132.183.105</span><br><span class="line"></span><br><span class="line">;; AUTHORITY SECTION:</span><br><span class="line">redhat.com.     384 IN  NS  ns2.redhat.com.</span><br><span class="line">redhat.com.     384 IN  NS  ns4.redhat.com.</span><br><span class="line">redhat.com.     384 IN  NS  ns1.redhat.com.</span><br><span class="line">redhat.com.     384 IN  NS  ns3.redhat.com.</span><br><span class="line"></span><br><span class="line">;; ADDITIONAL SECTION:</span><br><span class="line">ns3.redhat.com.     30  IN  A   209.132.176.100</span><br><span class="line">ns4.redhat.com.     393 IN  A   209.132.188.218</span><br><span class="line">ns2.redhat.com.     9   IN  A   209.132.183.2</span><br><span class="line">ns1.redhat.com.     175 IN  A   209.132.186.218</span><br><span class="line"></span><br><span class="line">;; Query time: 2010 msec</span><br><span class="line">;; SERVER: 127.0.1.1#53(127.0.1.1)</span><br><span class="line">;; WHEN: Sat May 07 11:53:30 CST 2016</span><br><span class="line">;; MSG SIZE  rcvd: 191</span><br></pre></td></tr></table></figure>
+<p><strong>输出结果控制</strong></p>
+<p>对于上面的输出结果区域，通过下面的选项是可以控制是否显示的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+nocomments – 关闭 comment lines</span><br><span class="line">+noauthority – 关闭 authority section</span><br><span class="line">+noadditional – 关闭 additional section</span><br><span class="line">+nostats – 关闭 stats section</span><br><span class="line">+noanswer – 关闭 answer section</span><br><span class="line">+noall  - 关闭所有</span><br></pre></td></tr></table></figure>
+<p>只显示answer记录:</p>
+<blockquote>
+<p>dig redhat.com +nocomments +noquestion +noauthority +noadditional +nostats</p>
+</blockquote>
+<p>或者</p>
+<blockquote>
+<p>dig redhat.com +noall +answer</p>
+</blockquote>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="http://www.linuxnix.com/surendras-dig-notes/" target="_blank" rel="external">DIG command explained with examples in Linux</a></li>
+<li><a href="https://mediatemple.net/community/products/grid/204644130/understanding-the-dig-command" target="_blank" rel="external">UNDERSTANDING THE DIG COMMAND</a></li>
+<li><a href="http://www.cyberciti.biz/faq/linux-unix-dig-command-examples-usage-syntax/dig-command-output/" target="_blank" rel="external">Understanding the dig command output</a></li>
+<li><a href="http://www.thegeekstuff.com/2012/02/dig-command-examples/" target="_blank" rel="external">10 Linux DIG Command Examples for DNS Lookup</a></li>
+</ul>
+<h2 id="tips">tips</h2>
+<div class="footnotes">
+<hr>
+<ol>
+<li id="fn1"><p>TCP/IP 详解卷1：协议，第14章 dns：域名系统<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
+]]></content>
+    </entry>
+    
+    <entry>
       <title><![CDATA[Linux 内核分析 -- Linux内核学习总结]]></title>
       <url>http://blog.soul11201.com/2016/04/18/mooc-linux-kernel-9/</url>
       <content type="html"><![CDATA[<blockquote><p>杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 <a href="http://mooc.study.163.com/course/USTC-1000029000" target="_blank" rel="external">http://mooc.study.163.com/course/USTC-1000029000</a></p>
@@ -18,13 +83,25 @@
 将您之前的所有博客作业做成目录列表放在博客中；
 总结部分：您在学习《Linux内核分析》课程中最大的收获？学习完《Linux内核分析》课程后您最大的遗憾是什么？
 请提交博客文章URL到MOOC平台。 -->
-<p>http://blog.soul11201.com/tags/Linux-%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/</p>
+<p><a href="http://blog.soul11201.com/tags/Linux-%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/">所有作业目录列表</a></p>
+<h2 id="简单的学习总结">简单的学习总结</h2>
+<ol style="list-style-type: decimal">
+<li><p>选修这门课，是很早以前就想学Linux内核相关的内容，当发现这门课程的时候，选修那就是在自然而然的事情了。当听完以后，发现孟老师讲授的方式特别符合自己的听的方式，也感觉这是一门锻炼动手能力好课程。</p></li>
+<li><p>学习时间，也没什么大块的时间区学习，基本上就是见缝插针，利用午休，晚饭后休息的，每个小时休息一会的，小片段时间的一点点的接上的，也幸亏每集视频都不太长适合这种零碎时间学习。作业也基本上都是在周日有时间的时候才能做，有一次作业都到周日晚上８点了才想起来没有做，想着放弃吧，又心有不甘。决定还是做一下吧，能做多少做多少。最后成绩还不错，让我感觉只要认真的去写、做，总能收到对应的回报。</p></li>
+<li><p>这门课最大是收获就是基本上会使用了gdb和写一写简单的makefile，对嵌入式汇编现在看起来，至少没有以前那么头大了，慢慢的还能看懂,掌握住了基本的调试内核的技巧。其次硬着头皮啃完了课程推荐的一本书《程序员的自我修养》，基本上是粗读吧，很多内容没有掌握，但是心里面，建立起来了一个大的框架，也基本上有一个概念。</p></li>
+<li><p>实验环境用的实验楼真是奇卡无比，所以自己在本地搭建了一套环境，并且写成了makefile,基本上找个Ubuntu（个人偏好）系统　make 一下环境就搞定了。</p></li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wget http://blog.soul11201.com/attach.d/moocOsEnvBuild.makefile &amp;&amp; make -f moocOsEnvBuild.makefile install</span><br></pre></td></tr></table></figure>
+<ol start="5" style="list-style-type: decimal">
+<li><p>这门课程基本上全是围绕操作系统的六大主题中的一个主题－－进程调度这个主题做铺垫展开的。如庖丁解牛，讲述原理，和调试技巧，这是很受用的技术。但是对于我来说，学完这门课程基本上算是入个门。虽说进程调度算是核心的内容，但是其他几个主题亦不容小觑，还需要自己找一些其他书籍前来阅读。</p></li>
+<li><p>最后有幸见到了孟老师，感觉孟老师本人和视频中一样比较风趣。哈哈。。</p></li>
+</ol>
 ]]></content>
     </entry>
     
     <entry>
       <title><![CDATA[指针、引用与内存]]></title>
-      <url>http://blog.soul11201.com/2016/04/15/pointer-reference-mem/</url>
+      <url>http://blog.soul11201.com/2016/04/15/2016-04-15-pointer-reference-mem/</url>
       <content type="html"><![CDATA[<blockquote>
 <ol style="list-style-type: decimal">
 <li>指针两个变量之间的关系是什么,<code>T *a,*b = a</code>;</li>

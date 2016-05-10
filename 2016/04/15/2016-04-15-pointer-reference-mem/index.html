@@ -36,7 +36,7 @@
 
 
 
-  <meta name="keywords" content="gdb," />
+  <meta name="keywords" content="笔记,c/c++," />
 
 
 
@@ -47,169 +47,16 @@
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
 
 
-<meta name="description" content="☆ gdb
-启动gdb后
-
-
-
-参数
-含义
-
-
-
-
-b/breakpoint
-断点
-
-
-p print
-打印输出变量
-
-
-r
-
-
-
-attach
-
-
-
-watch
-
-
-
-c
-
-
-
-bt
-
-
-
-up
-
-
-
-list
-
-
-
-info macro
-例 info macro NGX_OK
-
-
-macro">
+<meta name="description" content="著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处">
 <meta property="og:type" content="article">
-<meta property="og:title" content="调试工具">
-<meta property="og:url" content="http://blog.soul11201.com/2015/09/23/debug-tools/index.html">
+<meta property="og:title" content="指针、引用与内存">
+<meta property="og:url" content="http://blog.soul11201.com/2016/04/15/2016-04-15-pointer-reference-mem/index.html">
 <meta property="og:site_name" content="coder 随想录">
-<meta property="og:description" content="☆ gdb
-启动gdb后
-
-
-
-参数
-含义
-
-
-
-
-b/breakpoint
-断点
-
-
-p print
-打印输出变量
-
-
-r
-
-
-
-attach
-
-
-
-watch
-
-
-
-c
-
-
-
-bt
-
-
-
-up
-
-
-
-list
-
-
-
-info macro
-例 info macro NGX_OK
-
-
-macro">
-<meta property="og:updated_time" content="2016-03-09T07:40:09.773Z">
+<meta property="og:description" content="著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处">
+<meta property="og:updated_time" content="2016-04-19T11:32:30.960Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="调试工具">
-<meta name="twitter:description" content="☆ gdb
-启动gdb后
-
-
-
-参数
-含义
-
-
-
-
-b/breakpoint
-断点
-
-
-p print
-打印输出变量
-
-
-r
-
-
-
-attach
-
-
-
-watch
-
-
-
-c
-
-
-
-bt
-
-
-
-up
-
-
-
-list
-
-
-
-info macro
-例 info macro NGX_OK
-
-
-macro">
+<meta name="twitter:title" content="指针、引用与内存">
+<meta name="twitter:description" content="著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -221,7 +68,7 @@ macro">
 
 
 
-  <title> 调试工具 | coder 随想录 </title>
+  <title> 指针、引用与内存 | coder 随想录 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -336,7 +183,7 @@ macro">
             
             
               
-                调试工具
+                指针、引用与内存
               
             
           </h1>
@@ -345,8 +192,8 @@ macro">
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-09-23T18:22:00+08:00" content="2015-09-23">
-              2015-09-23
+            <time itemprop="dateCreated" datetime="2016-04-15T12:39:41+08:00" content="2016-04-15">
+              2016-04-15
             </time>
           </span>
 
@@ -356,8 +203,8 @@ macro">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/09/23/debug-tools/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/23/debug-tools/" itemprop="commentsCount"></span>
+                <a href="/2016/04/15/2016-04-15-pointer-reference-mem/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/04/15/2016-04-15-pointer-reference-mem/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -376,108 +223,24 @@ macro">
       
 
       
-        <span itemprop="articleBody"><h2 id="gdb">☆ gdb</h2>
-<p>启动gdb后</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">参数</th>
-<th align="left">含义</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">b/breakpoint</td>
-<td align="left">断点</td>
-</tr>
-<tr class="even">
-<td align="left">p print</td>
-<td align="left">打印输出变量</td>
-</tr>
-<tr class="odd">
-<td align="left">r</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">attach</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">watch</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">c</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">bt</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">up</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">list</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">info macro</td>
-<td align="left">例 info macro NGX_OK</td>
-</tr>
-<tr class="odd">
-<td align="left">macro expand</td>
-<td align="left"></td>
-</tr>
-</tbody>
-</table>
-<h2 id="ulimit">☆ ulimit</h2>
-<p>-c unlimited</p>
-<h2 id="tcpdump">☆ tcpdump</h2>
-<table>
-<thead>
-<tr class="header">
-<th align="left">选项</th>
-<th align="left">含义</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">t</td>
-<td align="left">时间戳</td>
-</tr>
-<tr class="even">
-<td align="left">x</td>
-<td align="left">十六进制显示数据包</td>
-</tr>
-<tr class="odd">
-<td align="left">X</td>
-<td align="left">十六进制显示数据包,同时会对应显示对应的ASCII码表</td>
-</tr>
-<tr class="even">
-<td align="left">i</td>
-<td align="left">后跟网卡名字，如<code>eth0</code></td>
-</tr>
-<tr class="odd">
-<td align="left">src</td>
-<td align="left">源地址</td>
-</tr>
-<tr class="even">
-<td align="left">dst</td>
-<td align="left">目标地址</td>
-</tr>
-<tr class="odd">
-<td align="left">and</td>
-<td align="left">逻辑与</td>
-</tr>
-<tr class="even">
-<td align="left">or</td>
-<td align="left">逻辑或</td>
-</tr>
-</tbody>
-</table>
-<p><code>tcpdump  -i eth0 -Xnt &quot;(src 192.168.1.194 and dst 192.168.1.183) or (src 192.168.1.183 and dst 192.168.1.194)&quot;</code></p>
+        <span itemprop="articleBody"><blockquote>
+<ol style="list-style-type: decimal">
+<li>指针两个变量之间的关系是什么,<code>T *a,*b = a</code>;</li>
+<li>引用两个变量之间的关系是什么,<code>T *a,* &amp;b = a</code>？</li>
+<li>delete后堆上数据有没有回收怎么判断？</li>
+<li>类的函数中可以使用<code>delete this</code>吗？</li>
+</ol>
+</blockquote>
+<h2 id="引用">引用</h2>
+<p>一般类型引用格式是：<code>T a,&amp;b = a</code>表示变量a,b指向了同一块内存区域。可以使用如下方式验证 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">printf</span>(<span class="string">"%x\n"</span>,&amp;a);</span><br><span class="line"><span class="built_in">printf</span>(<span class="string">"%x\n"</span>,&amp;b);</span><br></pre></td></tr></table></figure></p>
+<p>指针类类型的引用：</p>
+<p><code>T *a,*b = a</code> 在内存中有两块内存区域。</p>
+<p><code>T *a,*&amp;b = a</code> 内存中有一块内存区域</p>
+<p><code>int *a = new int</code> 在堆上申请一块内存区域，地址赋值给a。</p>
+<p><code>delete a</code> 回收<code>a</code>所指向的堆上的内存。但是<code>a == NULL</code>不一定成立</p>
+<!-- 指针b是指针a的引用 -->
+<h2 id="指针deletenew">指针、delete、new</h2>
+<p>内存使用的基本规则: &gt;谁使用谁回收</p>
 </span>
       
     </div>
@@ -486,11 +249,11 @@ macro">
       
       
          <div class="copyright">
-            <p><span>本文标题:</span><a href="/2015/09/23/debug-tools/">调试工具</a></p>
+            <p><span>本文标题:</span><a href="/2016/04/15/2016-04-15-pointer-reference-mem/">指针、引用与内存</a></p>
             <p><span>文章作者:</span><a href="/" title="访问 soul11201 的个人博客">soul11201</a></p>
-            <p><span>发布时间:</span>2015年9月23日 - 18时09分</p>
-            <p><span>最后更新:</span>2016年3月9日 - 15时03分</p>
-            <p><span>原始链接:</span><a href="/2015/09/23/debug-tools/" title="调试工具">http://blog.soul11201.com/2015/09/23/debug-tools/</a></p>
+            <p><span>发布时间:</span>2016年4月15日 - 12时04分</p>
+            <p><span>最后更新:</span>2016年4月19日 - 19时04分</p>
+            <p><span>原始链接:</span><a href="/2016/04/15/2016-04-15-pointer-reference-mem/" title="指针、引用与内存">http://blog.soul11201.com/2016/04/15/2016-04-15-pointer-reference-mem/</a></p>
             <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" title="Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)">"Attribution-NonCommercial 4.0"</a></p>
             <p><span>转载请保留以上信息。</span></p>
          </div>
@@ -499,7 +262,9 @@ macro">
       
         <div class="post-tags">
           
-            <a href="/tags/gdb/" rel="tag">#gdb</a>
+            <a href="/tags/笔记/" rel="tag">#笔记</a>
+          
+            <a href="/tags/c-c/" rel="tag">#c/c++</a>
           
         </div>
       
@@ -508,16 +273,16 @@ macro">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/18/lua-metatable/" rel="next" title="元表、元方法">
-                <i class="fa fa-chevron-left"></i> 元表、元方法
+              <a href="/2016/04/14/serach-engin-tips/" rel="next" title="一些搜索技巧">
+                <i class="fa fa-chevron-left"></i> 一些搜索技巧
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2015/10/13/c-incldue/" rel="prev" title="c incldue 文件包含">
-                c incldue 文件包含 <i class="fa fa-chevron-right"></i>
+              <a href="/2016/04/18/mooc-linux-kernel-9/" rel="prev" title="Linux 内核分析 -- Linux内核学习总结">
+                Linux 内核分析 -- Linux内核学习总结 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -547,8 +312,8 @@ macro">
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/09/23/debug-tools/"
-                   data-title="调试工具" data-url="http://blog.soul11201.com/2015/09/23/debug-tools/">
+              <div class="ds-thread" data-thread-key="2016/04/15/2016-04-15-pointer-reference-mem/"
+                   data-title="指针、引用与内存" data-url="http://blog.soul11201.com/2016/04/15/2016-04-15-pointer-reference-mem/">
               </div>
             
           </div>
@@ -666,7 +431,7 @@ macro">
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#gdb"><span class="nav-number">1.</span> <span class="nav-text">☆ gdb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ulimit"><span class="nav-number">2.</span> <span class="nav-text">☆ ulimit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tcpdump"><span class="nav-number">3.</span> <span class="nav-text">☆ tcpdump</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引用"><span class="nav-number">1.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指针deletenew"><span class="nav-number">2.</span> <span class="nav-text">指针、delete、new</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>

@@ -36,7 +36,7 @@
 
 
 
-  <meta name="keywords" content="gdb," />
+  <meta name="keywords" content="笔记," />
 
 
 
@@ -47,169 +47,16 @@
   <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=0.4.5.2" />
 
 
-<meta name="description" content="☆ gdb
-启动gdb后
-
-
-
-参数
-含义
-
-
-
-
-b/breakpoint
-断点
-
-
-p print
-打印输出变量
-
-
-r
-
-
-
-attach
-
-
-
-watch
-
-
-
-c
-
-
-
-bt
-
-
-
-up
-
-
-
-list
-
-
-
-info macro
-例 info macro NGX_OK
-
-
-macro">
+<meta name="description" content="著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处">
 <meta property="og:type" content="article">
-<meta property="og:title" content="调试工具">
-<meta property="og:url" content="http://blog.soul11201.com/2015/09/23/debug-tools/index.html">
+<meta property="og:title" content="dig">
+<meta property="og:url" content="http://blog.soul11201.com/2016/05/07/2016-05-07-dig/index.html">
 <meta property="og:site_name" content="coder 随想录">
-<meta property="og:description" content="☆ gdb
-启动gdb后
-
-
-
-参数
-含义
-
-
-
-
-b/breakpoint
-断点
-
-
-p print
-打印输出变量
-
-
-r
-
-
-
-attach
-
-
-
-watch
-
-
-
-c
-
-
-
-bt
-
-
-
-up
-
-
-
-list
-
-
-
-info macro
-例 info macro NGX_OK
-
-
-macro">
-<meta property="og:updated_time" content="2016-03-09T07:40:09.773Z">
+<meta property="og:description" content="著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处">
+<meta property="og:updated_time" content="2016-05-07T11:58:01.277Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="调试工具">
-<meta name="twitter:description" content="☆ gdb
-启动gdb后
-
-
-
-参数
-含义
-
-
-
-
-b/breakpoint
-断点
-
-
-p print
-打印输出变量
-
-
-r
-
-
-
-attach
-
-
-
-watch
-
-
-
-c
-
-
-
-bt
-
-
-
-up
-
-
-
-list
-
-
-
-info macro
-例 info macro NGX_OK
-
-
-macro">
+<meta name="twitter:title" content="dig">
+<meta name="twitter:description" content="著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处">
 
 
 <script type="text/javascript" id="hexo.configuration">
@@ -221,7 +68,7 @@ macro">
 
 
 
-  <title> 调试工具 | coder 随想录 </title>
+  <title> dig | coder 随想录 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -336,7 +183,7 @@ macro">
             
             
               
-                调试工具
+                dig
               
             
           </h1>
@@ -345,8 +192,8 @@ macro">
         <div class="post-meta">
           <span class="post-time">
             发表于
-            <time itemprop="dateCreated" datetime="2015-09-23T18:22:00+08:00" content="2015-09-23">
-              2015-09-23
+            <time itemprop="dateCreated" datetime="2016-05-07T11:27:37+08:00" content="2016-05-07">
+              2016-05-07
             </time>
           </span>
 
@@ -356,8 +203,8 @@ macro">
             
               <span class="post-comments-count">
                 &nbsp; | &nbsp;
-                <a href="/2015/09/23/debug-tools/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count ds-thread-count" data-thread-key="2015/09/23/debug-tools/" itemprop="commentsCount"></span>
+                <a href="/2016/05/07/2016-05-07-dig/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count ds-thread-count" data-thread-key="2016/05/07/2016-05-07-dig/" itemprop="commentsCount"></span>
                 </a>
               </span>
             
@@ -376,108 +223,65 @@ macro">
       
 
       
-        <span itemprop="articleBody"><h2 id="gdb">☆ gdb</h2>
-<p>启动gdb后</p>
-<table>
-<thead>
-<tr class="header">
-<th align="left">参数</th>
-<th align="left">含义</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">b/breakpoint</td>
-<td align="left">断点</td>
-</tr>
-<tr class="even">
-<td align="left">p print</td>
-<td align="left">打印输出变量</td>
-</tr>
-<tr class="odd">
-<td align="left">r</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">attach</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">watch</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">c</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">bt</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">up</td>
-<td align="left"></td>
-</tr>
-<tr class="odd">
-<td align="left">list</td>
-<td align="left"></td>
-</tr>
-<tr class="even">
-<td align="left">info macro</td>
-<td align="left">例 info macro NGX_OK</td>
-</tr>
-<tr class="odd">
-<td align="left">macro expand</td>
-<td align="left"></td>
-</tr>
-</tbody>
-</table>
-<h2 id="ulimit">☆ ulimit</h2>
-<p>-c unlimited</p>
-<h2 id="tcpdump">☆ tcpdump</h2>
-<table>
-<thead>
-<tr class="header">
-<th align="left">选项</th>
-<th align="left">含义</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">t</td>
-<td align="left">时间戳</td>
-</tr>
-<tr class="even">
-<td align="left">x</td>
-<td align="left">十六进制显示数据包</td>
-</tr>
-<tr class="odd">
-<td align="left">X</td>
-<td align="left">十六进制显示数据包,同时会对应显示对应的ASCII码表</td>
-</tr>
-<tr class="even">
-<td align="left">i</td>
-<td align="left">后跟网卡名字，如<code>eth0</code></td>
-</tr>
-<tr class="odd">
-<td align="left">src</td>
-<td align="left">源地址</td>
-</tr>
-<tr class="even">
-<td align="left">dst</td>
-<td align="left">目标地址</td>
-</tr>
-<tr class="odd">
-<td align="left">and</td>
-<td align="left">逻辑与</td>
-</tr>
-<tr class="even">
-<td align="left">or</td>
-<td align="left">逻辑或</td>
-</tr>
-</tbody>
-</table>
-<p><code>tcpdump  -i eth0 -Xnt &quot;(src 192.168.1.194 and dst 192.168.1.183) or (src 192.168.1.183 and dst 192.168.1.194)&quot;</code></p>
+        <span itemprop="articleBody"><!-- 
+>1. dig 是什么？
+>1. 能用来做什么
+>1. 输出结果表示什么 
+
+-->
+<h2 id="dig-是什么">dig 是什么？</h2>
+<p>dig 是一个调试dns server相关问题的工具。比nslookup,host 功能更强悍，或许是现在最好使的工具。</p>
+<h2 id="能用来做什么">能用来做什么</h2>
+<ul>
+<li>解析域名的A记录</li>
+<li>解析域名的MX记录</li>
+<li>解析域名的CNAME记录</li>
+<li>解析域名的NS记录</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dig soul11201.com  ;;A 记录</span><br><span class="line">dig ns soul11201.com ;;ns 记录</span><br><span class="line">dig CNAME soul11201.com ;;CNAME 记录</span><br></pre></td></tr></table></figure>
+<ul>
+<li>在指定的ns上解析域名的A记录</li>
+</ul>
+<blockquote>
+<p>dig <span class="citation">@223.125.43.67</span> -p 2345 www.google.com</p>
+</blockquote>
+<h2 id="输出结果表示什么">输出结果表示什么</h2>
+<p>输出的结果是dns<code>响应报文</code>和<code>请求报文查询问题</code>的可读形式，分别在下面三个区域中 <code>Question/Answer/Authority sections</code>。dns报文查询和响应格式详细参考经典著作<code>TCPv1,14</code><a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>。或者简单的可以参考一下<a href="http://www.cnblogs.com/feng-qi/archive/2013/05/05/DNS_packet_analysis.html" target="_blank" rel="external">这篇文章</a></p>
+<p>输出结果大概分为下面几个区域：</p>
+<ul>
+<li><code>Header</code>: 展示版本信息</li>
+<li><code>QUESTION SECTION</code>: dns请求报文查询的问题，默认是<code>A</code>类型的查询</li>
+<li><code>ANSWER SECTION</code>: 从dns收到的应答报文</li>
+<li><code>AUTHORITY SECTION</code>: 授权的dns</li>
+<li><code>ADDITIONAL SECTION</code>:授权dns的ip</li>
+<li><code>Stats section</code>:最下面的统计部分，包括执行查询的时间和实际进行dns应答的机器ip和端口</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line">; &lt;&lt;&gt;&gt; DiG 9.9.5-3ubuntu0.8-Ubuntu &lt;&lt;&gt;&gt; redhat.com</span><br><span class="line">;; global options: +cmd</span><br><span class="line">;; Got answer:</span><br><span class="line">;; -&gt;&gt;HEADER&lt;&lt;- opcode: QUERY, status: NOERROR, id: 61818</span><br><span class="line">;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 4, ADDITIONAL: 5</span><br><span class="line"></span><br><span class="line">;; OPT PSEUDOSECTION:</span><br><span class="line">; EDNS: version: 0, flags:; udp: 4096</span><br><span class="line">;; QUESTION SECTION:</span><br><span class="line">;redhat.com.            IN  A</span><br><span class="line"></span><br><span class="line">;; ANSWER SECTION:</span><br><span class="line">redhat.com.     600 IN  A   209.132.183.105</span><br><span class="line"></span><br><span class="line">;; AUTHORITY SECTION:</span><br><span class="line">redhat.com.     384 IN  NS  ns2.redhat.com.</span><br><span class="line">redhat.com.     384 IN  NS  ns4.redhat.com.</span><br><span class="line">redhat.com.     384 IN  NS  ns1.redhat.com.</span><br><span class="line">redhat.com.     384 IN  NS  ns3.redhat.com.</span><br><span class="line"></span><br><span class="line">;; ADDITIONAL SECTION:</span><br><span class="line">ns3.redhat.com.     30  IN  A   209.132.176.100</span><br><span class="line">ns4.redhat.com.     393 IN  A   209.132.188.218</span><br><span class="line">ns2.redhat.com.     9   IN  A   209.132.183.2</span><br><span class="line">ns1.redhat.com.     175 IN  A   209.132.186.218</span><br><span class="line"></span><br><span class="line">;; Query time: 2010 msec</span><br><span class="line">;; SERVER: 127.0.1.1#53(127.0.1.1)</span><br><span class="line">;; WHEN: Sat May 07 11:53:30 CST 2016</span><br><span class="line">;; MSG SIZE  rcvd: 191</span><br></pre></td></tr></table></figure>
+<p><strong>输出结果控制</strong></p>
+<p>对于上面的输出结果区域，通过下面的选项是可以控制是否显示的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+nocomments – 关闭 comment lines</span><br><span class="line">+noauthority – 关闭 authority section</span><br><span class="line">+noadditional – 关闭 additional section</span><br><span class="line">+nostats – 关闭 stats section</span><br><span class="line">+noanswer – 关闭 answer section</span><br><span class="line">+noall  - 关闭所有</span><br></pre></td></tr></table></figure>
+<p>只显示answer记录:</p>
+<blockquote>
+<p>dig redhat.com +nocomments +noquestion +noauthority +noadditional +nostats</p>
+</blockquote>
+<p>或者</p>
+<blockquote>
+<p>dig redhat.com +noall +answer</p>
+</blockquote>
+<h2 id="参考">参考</h2>
+<ul>
+<li><a href="http://www.linuxnix.com/surendras-dig-notes/" target="_blank" rel="external">DIG command explained with examples in Linux</a></li>
+<li><a href="https://mediatemple.net/community/products/grid/204644130/understanding-the-dig-command" target="_blank" rel="external">UNDERSTANDING THE DIG COMMAND</a></li>
+<li><a href="http://www.cyberciti.biz/faq/linux-unix-dig-command-examples-usage-syntax/dig-command-output/" target="_blank" rel="external">Understanding the dig command output</a></li>
+<li><a href="http://www.thegeekstuff.com/2012/02/dig-command-examples/" target="_blank" rel="external">10 Linux DIG Command Examples for DNS Lookup</a></li>
+</ul>
+<h2 id="tips">tips</h2>
+<div class="footnotes">
+<hr>
+<ol>
+<li id="fn1"><p>TCP/IP 详解卷1：协议，第14章 dns：域名系统<a href="#fnref1">↩</a></p></li>
+</ol>
+</div>
 </span>
       
     </div>
@@ -486,11 +290,11 @@ macro">
       
       
          <div class="copyright">
-            <p><span>本文标题:</span><a href="/2015/09/23/debug-tools/">调试工具</a></p>
+            <p><span>本文标题:</span><a href="/2016/05/07/2016-05-07-dig/">dig</a></p>
             <p><span>文章作者:</span><a href="/" title="访问 soul11201 的个人博客">soul11201</a></p>
-            <p><span>发布时间:</span>2015年9月23日 - 18时09分</p>
-            <p><span>最后更新:</span>2016年3月9日 - 15时03分</p>
-            <p><span>原始链接:</span><a href="/2015/09/23/debug-tools/" title="调试工具">http://blog.soul11201.com/2015/09/23/debug-tools/</a></p>
+            <p><span>发布时间:</span>2016年5月7日 - 11时05分</p>
+            <p><span>最后更新:</span>2016年5月7日 - 19时05分</p>
+            <p><span>原始链接:</span><a href="/2016/05/07/2016-05-07-dig/" title="dig">http://blog.soul11201.com/2016/05/07/2016-05-07-dig/</a></p>
             <p><span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" title="Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)">"Attribution-NonCommercial 4.0"</a></p>
             <p><span>转载请保留以上信息。</span></p>
          </div>
@@ -499,7 +303,7 @@ macro">
       
         <div class="post-tags">
           
-            <a href="/tags/gdb/" rel="tag">#gdb</a>
+            <a href="/tags/笔记/" rel="tag">#笔记</a>
           
         </div>
       
@@ -508,17 +312,13 @@ macro">
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2015/09/18/lua-metatable/" rel="next" title="元表、元方法">
-                <i class="fa fa-chevron-left"></i> 元表、元方法
+              <a href="/2016/04/18/mooc-linux-kernel-9/" rel="next" title="Linux 内核分析 -- Linux内核学习总结">
+                <i class="fa fa-chevron-left"></i> Linux 内核分析 -- Linux内核学习总结
               </a>
             
           </div>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2015/10/13/c-incldue/" rel="prev" title="c incldue 文件包含">
-                c incldue 文件包含 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -547,8 +347,8 @@ macro">
         
           <div class="comments" id="comments">
             
-              <div class="ds-thread" data-thread-key="2015/09/23/debug-tools/"
-                   data-title="调试工具" data-url="http://blog.soul11201.com/2015/09/23/debug-tools/">
+              <div class="ds-thread" data-thread-key="2016/05/07/2016-05-07-dig/"
+                   data-title="dig" data-url="http://blog.soul11201.com/2016/05/07/2016-05-07-dig/">
               </div>
             
           </div>
@@ -666,7 +466,7 @@ macro">
           <div class="post-toc">
             
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#gdb"><span class="nav-number">1.</span> <span class="nav-text">☆ gdb</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ulimit"><span class="nav-number">2.</span> <span class="nav-text">☆ ulimit</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tcpdump"><span class="nav-number">3.</span> <span class="nav-text">☆ tcpdump</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#dig-是什么"><span class="nav-number">1.</span> <span class="nav-text">dig 是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#能用来做什么"><span class="nav-number">2.</span> <span class="nav-text">能用来做什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#输出结果表示什么"><span class="nav-number">3.</span> <span class="nav-text">输出结果表示什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tips"><span class="nav-number">5.</span> <span class="nav-text">tips</span></a></li></ol></div>
             
           </div>
           <div class="post-toc-indicator-bottom post-toc-indicator"></div>
