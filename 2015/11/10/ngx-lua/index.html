@@ -16,22 +16,23 @@
   <meta name="author" content="soul11201">
   <meta name="keywords" content="">
   
-    <meta name="description" content="##跟ngx有关的函数、变量 ###ngx.header 响应头设置 重定向:ngx.header.Location ###ngx.exit(404) 断开连接，同时设置响应的状态码 ###ngx.log(log_level,log_info1,log_info2,....) 打印日志到ngx日志。第一个是日志级别如ngx.ERR ##应用 ###获取post和get中的参数 123456789l">
+    <meta name="description" content="跟ngx有关的函数、变量 ngx.header 响应头设置 重定向:ngx.header.Location ngx.exit(404) 断开连接，同时设置响应的状态码 ngx.log(log_level,log_info1,log_info2,....) 打印日志到ngx日志。第一个是日志级别如ngx.ERR 应用 获取post和get中的参数 123456789local args &#x3D; &amp;#12">
 <meta property="og:type" content="article">
-<meta property="og:title" content="ngx-lua 笔记总计">
+<meta property="og:title" content="ngx-lua 笔记总结">
 <meta property="og:url" content="http://blog.soul11201.com/2015/11/10/ngx-lua/index.html">
 <meta property="og:site_name" content="coder 随想录">
-<meta property="og:description" content="##跟ngx有关的函数、变量 ###ngx.header 响应头设置 重定向:ngx.header.Location ###ngx.exit(404) 断开连接，同时设置响应的状态码 ###ngx.log(log_level,log_info1,log_info2,....) 打印日志到ngx日志。第一个是日志级别如ngx.ERR ##应用 ###获取post和get中的参数 123456789l">
+<meta property="og:description" content="跟ngx有关的函数、变量 ngx.header 响应头设置 重定向:ngx.header.Location ngx.exit(404) 断开连接，同时设置响应的状态码 ngx.log(log_level,log_info1,log_info2,....) 打印日志到ngx日志。第一个是日志级别如ngx.ERR 应用 获取post和get中的参数 123456789local args &#x3D; &amp;#12">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-11-10T12:27:52.000Z">
-<meta property="article:modified_time" content="2023-11-08T05:14:52.466Z">
+<meta property="article:modified_time" content="2024-01-21T15:21:06.520Z">
 <meta property="article:author" content="soul11201">
-<meta property="article:tag" content="ngx-lua">
+<meta property="article:tag" content="Lua">
+<meta property="article:tag" content="OpenResty">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>ngx-lua 笔记总计 - coder 随想录</title>
+  <title>ngx-lua 笔记总结 - coder 随想录</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -69,7 +70,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -91,15 +92,17 @@
   
 
   
-
-  
     
   
 
 
 
   
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
 </head>
 
 
@@ -131,7 +134,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -143,7 +146,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -155,7 +158,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -167,7 +170,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -179,7 +182,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -191,7 +194,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -227,7 +230,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="ngx-lua 笔记总计"></span>
+            <span id="subtitle" data-typed-text="ngx-lua 笔记总结"></span>
           
         </div>
 
@@ -251,7 +254,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          730 字
+          188 字
         
       </span>
     
@@ -263,7 +266,7 @@
         
         
           <!-- compatible with older versions-->
-          7 分钟
+          2 分钟
         
       </span>
     
@@ -300,29 +303,33 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">ngx-lua 笔记总计</h1>
+            <h1 id="seo-header">ngx-lua 笔记总结</h1>
             
             
               <div class="markdown-body">
                 
-                <p>##跟ngx有关的函数、变量</p>
-<p>###ngx.header</p>
+                <h2 id="跟ngx有关的函数变量">跟ngx有关的函数、变量</h2>
+<h3 id="ngx.header">ngx.header</h3>
 <p>响应头设置</p>
 <p>重定向:<code>ngx.header.Location</code></p>
-<p>###ngx.exit(404) 断开连接，同时设置响应的状态码</p>
-<p>###ngx.log(log_level,log_info1,log_info2,....)</p>
+<h3 id="ngx.exit404">ngx.exit(404)</h3>
+<p>断开连接，同时设置响应的状态码</p>
+<h3
+id="ngx.loglog_levellog_info1log_info2....">ngx.log(log_level,log_info1,log_info2,....)</h3>
 <p>打印日志到ngx日志。第一个是日志级别如<code>ngx.ERR</code></p>
-<p>##应用 ###获取post和get中的参数</p>
+<h2 id="应用">应用</h2>
+<h3 id="获取post和get中的参数">获取post和get中的参数</h3>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-keyword">local</span> args = &#123;&#125;<br><span class="hljs-keyword">if</span> <span class="hljs-string">&quot;GET&quot;</span> == r_m <span class="hljs-keyword">or</span> <span class="hljs-string">&quot;HEAD&quot;</span> == r_m <span class="hljs-keyword">then</span><br>    ngx.<span class="hljs-built_in">log</span>(ngx.ERR,<span class="hljs-string">&quot;GET============&quot;</span>)<br>    args = ngx.req.get_uri_args()<br><span class="hljs-keyword">elseif</span> <span class="hljs-string">&quot;POST&quot;</span> == r_m <span class="hljs-keyword">then</span><br>    ngx.req.read_body()<br>    args = ngx.req.get_post_args()<br>    ngx.<span class="hljs-built_in">log</span>(ngx.ERR,<span class="hljs-string">&quot;POSTD-----------&quot;</span>)<br><span class="hljs-keyword">end</span>  <br></code></pre></td></tr></table></figure>
 <!-- ##细节 -->
 <!-- ## -->
-<p>###遍历出来请求中的数据并打印到日志</p>
+<h3
+id="遍历出来请求中的数据并打印到日志">遍历出来请求中的数据并打印到日志</h3>
 <p>pairs -- table</p>
 <p>ipairs -- 数组</p>
 <figure class="highlight lua"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs lua"><span class="hljs-keyword">for</span> k,v <span class="hljs-keyword">in</span> <span class="hljs-built_in">pairs</span>(args) <span class="hljs-keyword">do</span><br>    ngx.<span class="hljs-built_in">log</span>(ngx.ERR,<span class="hljs-string">&quot;=====k=====&gt;&quot;</span>,<span class="hljs-built_in">type</span>(k),<span class="hljs-string">&quot;:&quot;</span>,k, <span class="hljs-string">&quot; ====v===&gt;&quot;</span>,<span class="hljs-built_in">type</span>(v),<span class="hljs-string">&quot;:&quot;</span>,v)<br><span class="hljs-keyword">end</span>  <br></code></pre></td></tr></table></figure>
-<p>##ngx 指令</p>
-<p>###rewrite <code>rewrite reg new flag</code></p>
+<h2 id="ngx-指令">ngx 指令</h2>
+<h3 id="rewrite">rewrite</h3>
+<p><code>rewrite reg new flag</code></p>
 <p>匹配失败，则继续往下执行，就当什么都没发生过</p>
 <p>具体使用 http://www.nginx.cn/216.html</p>
 
@@ -333,11 +340,41 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF/OpenResty/" class="category-chain-item">OpenResty</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/ngx-lua/">#ngx-lua</a>
+        <a href="/tags/Lua/" class="print-no-link">#Lua</a>
+      
+        <a href="/tags/OpenResty/" class="print-no-link">#OpenResty</a>
       
     </div>
   
@@ -349,7 +386,7 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>ngx-lua 笔记总计</div>
+      <div>ngx-lua 笔记总结</div>
       <div>http://blog.soul11201.com/2015/11/10/ngx-lua/</div>
     </div>
     <div class="license-meta">
@@ -373,7 +410,7 @@
             
               
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
                     <i class="iconfont icon-by"></i>
                   </span>
@@ -394,9 +431,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2015/11/10/ngx-lua/" title="ngx-lua 笔记总结">
+                      <a href="/2015/11/11/MonaServer/" title="MonaServer 使用笔记">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">ngx-lua 笔记总结</span>
+                        <span class="hidden-mobile">MonaServer 使用笔记</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -496,9 +533,22 @@
   
 
 
+  
+  
 
 
 
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
 
 
     
@@ -687,6 +737,49 @@
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
 
   <script defer src="/js/leancloud.js" ></script>
 

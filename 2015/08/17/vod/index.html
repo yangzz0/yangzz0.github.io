@@ -16,19 +16,19 @@
   <meta name="author" content="soul11201">
   <meta name="keywords" content="">
   
-    <meta name="description" content="对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求: &gt;- play - play_temp_path - play_local_path 1234567891011#本地文件application vod &amp;#123;    play &#x2F;var&#x2F;flvs;&amp;#125;#网络中的文件application vod_http &amp;#123;">
+    <meta name="description" content="对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求: &gt;- play - play_temp_path - play_local_path 1234567891011#本地文件application vod &#123;    play &#x2F;var&#x2F;flvs;&#125;#网络中的文件application vod_http &#123;">
 <meta property="og:type" content="article">
 <meta property="og:title" content="nginx 点播">
 <meta property="og:url" content="http://blog.soul11201.com/2015/08/17/vod/index.html">
 <meta property="og:site_name" content="coder 随想录">
-<meta property="og:description" content="对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求: &gt;- play - play_temp_path - play_local_path 1234567891011#本地文件application vod &amp;#123;    play &#x2F;var&#x2F;flvs;&amp;#125;#网络中的文件application vod_http &amp;#123;">
+<meta property="og:description" content="对于点播功能， nginx-rtmp-module 模块只提供了三条相关命令,但是能满足基本的要求: &gt;- play - play_temp_path - play_local_path 1234567891011#本地文件application vod &#123;    play &#x2F;var&#x2F;flvs;&#125;#网络中的文件application vod_http &#123;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-08-17T06:54:36.000Z">
-<meta property="article:modified_time" content="2023-11-08T05:14:52.467Z">
+<meta property="article:modified_time" content="2024-01-21T16:45:55.568Z">
 <meta property="article:author" content="soul11201">
 <meta property="article:tag" content="nginx">
-<meta property="article:tag" content="rtmp">
 <meta property="article:tag" content="nginx-rtmp-module">
+<meta property="article:tag" content="rtmp">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -71,7 +71,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -93,15 +93,17 @@
   
 
   
-
-  
     
   
 
 
 
   
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
 </head>
 
 
@@ -133,7 +135,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -145,7 +147,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -157,7 +159,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -169,7 +171,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -181,7 +183,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -193,7 +195,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -253,7 +255,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.2k 字
+          508 字
         
       </span>
     
@@ -265,7 +267,7 @@
         
         
           <!-- compatible with older versions-->
-          10 分钟
+          5 分钟
         
       </span>
     
@@ -302,8 +304,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">nginx 点播</h1>
+            <h1 id="seo-header">nginx 点播</h1>
             
             
               <div class="markdown-body">
@@ -351,15 +352,36 @@ play_temp_path - play_local_path</p>
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E9%9F%B3%E8%A7%86%E9%A2%91/" class="category-chain-item">音视频</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/nginx/">#nginx</a>
+        <a href="/tags/nginx/" class="print-no-link">#nginx</a>
       
-        <a href="/tags/rtmp/">#rtmp</a>
+        <a href="/tags/nginx-rtmp-module/" class="print-no-link">#nginx-rtmp-module</a>
       
-        <a href="/tags/nginx-rtmp-module/">#nginx-rtmp-module</a>
+        <a href="/tags/rtmp/" class="print-no-link">#rtmp</a>
       
     </div>
   
@@ -395,7 +417,7 @@ play_temp_path - play_local_path</p>
             
               
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
                     <i class="iconfont icon-by"></i>
                   </span>
@@ -416,9 +438,9 @@ play_temp_path - play_local_path</p>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2015/08/17/vod/" title="nginx 点播">
+                      <a href="/2015/09/06/rtmp/" title="nginx-rtmp-module 总结">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">nginx 点播</span>
+                        <span class="hidden-mobile">nginx-rtmp-module 总结</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -518,9 +540,22 @@ play_temp_path - play_local_path</p>
   
 
 
+  
+  
 
 
 
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
 
 
     
@@ -709,6 +744,49 @@ play_temp_path - play_local_path</p>
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
 
   <script defer src="/js/leancloud.js" ></script>
 

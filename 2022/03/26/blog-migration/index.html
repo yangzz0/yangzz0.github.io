@@ -18,21 +18,26 @@
   
     <meta name="description" content="著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处">
 <meta property="og:type" content="article">
-<meta property="og:title" content="博客迁移">
+<meta property="og:title" content="迁回 Hexo">
 <meta property="og:url" content="http://blog.soul11201.com/2022/03/26/blog-migration/index.html">
 <meta property="og:site_name" content="coder 随想录">
 <meta property="og:description" content="著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-03-26T11:18:34.000Z">
-<meta property="article:modified_time" content="2023-11-08T05:14:52.463Z">
+<meta property="article:modified_time" content="2024-01-21T16:19:21.298Z">
 <meta property="article:author" content="soul11201">
-<meta property="article:tag" content="笔记">
-<meta property="article:tag" content="穷折腾">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="Emacs">
+<meta property="article:tag" content="Markdown">
+<meta property="article:tag" content="Fluid">
+<meta property="article:tag" content="Waline">
+<meta property="article:tag" content="Jekyll">
+<meta property="article:tag" content="Org">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>博客迁移 - coder 随想录</title>
+  <title>迁回 Hexo - coder 随想录</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -70,7 +75,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -92,15 +97,17 @@
   
 
   
-
-  
     
   
 
 
 
   
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
 </head>
 
 
@@ -132,7 +139,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -144,7 +151,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -156,7 +163,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -168,7 +175,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -180,7 +187,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -192,7 +199,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -228,7 +235,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="博客迁移"></span>
+            <span id="subtitle" data-typed-text="迁回 Hexo"></span>
           
         </div>
 
@@ -252,7 +259,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.5k 字
+          491 字
         
       </span>
     
@@ -264,7 +271,7 @@
         
         
           <!-- compatible with older versions-->
-          13 分钟
+          5 分钟
         
       </span>
     
@@ -301,27 +308,21 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">博客迁移</h1>
+            <h1 id="seo-header">迁回 Hexo</h1>
             
             
               <div class="markdown-body">
                 
                 <h2 id="hexo-2-jekyll">Hexo 2 Jekyll</h2>
 <p>Hexo
-是最早使用的工具，样式确实很精美，使用也时相当人性化，主题切换也是很方便，抱着不折腾难受死的心态，16年的时候切换到了
-Jekyll。Jekyll
-我能得到什么好处呢，我不知道，但是不折腾我会很难受，总有一些妄念，折腾了就能写出好文章了。</p>
+是最早使用的工具，样式精美，主题切换也是很方，便部署工具友好。年轻总爱折腾，16年切换到了
+Jekyll。Jekeyll
+主题很多，但切换麻烦。本地构建预览，每隔一段时间总是莫名的出一些问题，小问题不死人但很恶心人。</p>
 <h2 id="jekyll-2-org">Jekyll 2 Org</h2>
-<p>使用 Jekyll
-也总感觉这里不太对劲，哪里也不太对劲，隐约感觉也不是我要找的工具。有段时间
-感觉 Markdown 好难用，用 Emacs Org 感觉很爽，折腾了一段时间 Org
-，也发现有些不如人意的地方，主题真是太难看了，虽然说要要做一个重视内容的而不是形式的人，对我这种每天大量阅读电子屏幕的人，排版真的很影响阅读的心情，真是无法妥协。</p>
+<p>有段时间用 Emacs 很上头， 感觉 Markdown 好难用，折腾了一段时间
+Org。DIY 友好，运维部署稍微有点麻烦。</p>
 <h2 id="hexo">Hexo</h2>
-<p>总是想很多东西，但是一到写的时候不知何处下笔，思绪万千，抓耳挠腮。都说读书破万卷，下笔入有神，这是鬼扯，越写越有神才对。</p>
-<p>也可能年纪大了，想法也变了，不想着折腾了，有个方便的工具用着能凑合凑合兑付着就挺好：方便速记，也能生成不错的排版方便沟通交流就挺好。</p>
-<p>也不胡乱想了，贪多求全总不那么现实，用时间来慢慢的磨平不完美的地方，也只有时间能。</p>
-<p>前段时间就想着牵回来了，这么多年了，牵回来也每个头绪，心烦意乱，往后拖延~</p>
+<p>对于工具简单前段时间就想着牵回来了，这么多年了，牵回来也每个头绪，心烦意乱，往后拖延~</p>
 <p>最近看 Manjaro 电报群 的劝退文
 https://blog.zhullyb.top/2021/01/01/Why-I-dont-recommend-Manjaro/
 发现这个Hexo主题不错，Fluid<sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><span
@@ -335,7 +336,7 @@ class="hint--top hint--rounded"
 aria-label="https://coldnew.github.io/hexo-org-example/2017/03/05/getting-started-with-hexo-and-org-mode/">[2]</span></a></sup><sup id="fnref:4" class="footnote-ref"><a href="#fn:4" rel="footnote"><span
 class="hint--top hint--rounded"
 aria-label="https://leimingshan.com/posts/d9017f30/">[4]</span></a></sup></p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><code class="hljs sh">//以下指令均在Hexo目录下操作，先定位到Hexo目录<br>//查看当前版本，判断是否需要升级<br>&gt; hexo version<br><br>//全局升级hexo-cli<br>&gt; npm i hexo-cli -g<br><br>//再次查看版本，看hexo-cli是否升级成功<br>&gt; hexo version<br><br>//安装npm-check，若已安装可以跳过<br>&gt; npm install -g npm-check<br><br>//检查系统插件是否需要升级<br>&gt; npm-check<br><br>//安装npm-upgrade，若已安装可以跳过<br>&gt; npm install -g npm-upgrade<br><br>//更新package.json<br>&gt; npm-upgrade<br><br>//更新全局插件<br>&gt; npm update -g<br><br>//更新系统插件<br>&gt; npm update --save<br><br>//再次查看版本，判断是否升级成功<br>&gt; hexo version<br><br></code></pre></td></tr></table></figure>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><code class="hljs sh">// 配置镜像源<br>&gt; npm config <span class="hljs-built_in">set</span> registry https://registry.npmmirror.com<br><br>//以下指令均在Hexo目录下操作，先定位到Hexo目录<br>//查看当前版本，判断是否需要升级<br>&gt; hexo version<br><br>//全局升级hexo-cli<br>&gt; npm i hexo-cli -g<br><br>//再次查看版本，看hexo-cli是否升级成功<br>&gt; hexo version<br><br>//安装npm-check，若已安装可以跳过<br>&gt; npm install -g npm-check<br><br>//检查系统插件是否需要升级<br>&gt; npm-check<br><br>//安装npm-upgrade，若已安装可以跳过<br>&gt; npm install -g npm-upgrade<br><br>//更新package.json<br>&gt; npm-upgrade<br><br>//更新全局插件<br>&gt; npm update -g<br><br>//更新系统插件<br>&gt; npm update --save<br><br>//再次查看版本，判断是否升级成功<br>&gt; hexo version<br><br>// 安装 hexo 依赖<br>&gt; npm i -d<br><br>// 更新 hexo 依赖<br>&gt; npm update -d<br></code></pre></td></tr></table></figure>
 <p>Hexo + Fluid + Waline + Emacs + Markdown
 就是以后的写字基本工具了。</p>
 <section class="footnotes">
@@ -376,13 +377,44 @@ class="footnote-text"><span>https://leimingshan.com/posts/d9017f30/
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E7%AC%94%E8%AE%B0/">#笔记</a>
+        <a href="/tags/Hexo/" class="print-no-link">#Hexo</a>
       
-        <a href="/tags/%E7%A9%B7%E6%8A%98%E8%85%BE/">#穷折腾</a>
+        <a href="/tags/Emacs/" class="print-no-link">#Emacs</a>
+      
+        <a href="/tags/Markdown/" class="print-no-link">#Markdown</a>
+      
+        <a href="/tags/Fluid/" class="print-no-link">#Fluid</a>
+      
+        <a href="/tags/Waline/" class="print-no-link">#Waline</a>
+      
+        <a href="/tags/Jekyll/" class="print-no-link">#Jekyll</a>
+      
+        <a href="/tags/Org/" class="print-no-link">#Org</a>
       
     </div>
   
@@ -394,7 +426,7 @@ class="footnote-text"><span>https://leimingshan.com/posts/d9017f30/
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>博客迁移</div>
+      <div>迁回 Hexo</div>
       <div>http://blog.soul11201.com/2022/03/26/blog-migration/</div>
     </div>
     <div class="license-meta">
@@ -418,7 +450,7 @@ class="footnote-text"><span>https://leimingshan.com/posts/d9017f30/
             
               
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
                     <i class="iconfont icon-by"></i>
                   </span>
@@ -449,8 +481,8 @@ class="footnote-text"><span>https://leimingshan.com/posts/d9017f30/
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/03/25/gongzuojuzhuzheng/" title="工作居住证">
-                        <span class="hidden-mobile">工作居住证</span>
+                      <a href="/2022/03/18/manjaro/" title="manjaro 使用攻略">
+                        <span class="hidden-mobile">manjaro 使用攻略</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -541,9 +573,22 @@ class="footnote-text"><span>https://leimingshan.com/posts/d9017f30/
   
 
 
+  
+  
 
 
 
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
 
 
     
@@ -732,6 +777,49 @@ class="footnote-text"><span>https://leimingshan.com/posts/d9017f30/
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
 
   <script defer src="/js/leancloud.js" ></script>
 

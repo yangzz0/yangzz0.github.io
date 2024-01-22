@@ -24,7 +24,7 @@
 <meta property="og:description" content="目录 {:toc}    系统交互的过程中，对数据的接收方来说，对数据的格式、内容的校检、验证至关重要。 比如后端在接受注册用户的数据时候，会对传送过来的邮箱、手机号、用户密码、填 写的外链url、注册地点ip等每种格式都需要验证是否符合对应的规范，有时还需要根据 数据库中的现有数据，判断新注册的登陆用户名是否重复,有时不只是单纯的验证某一项， 需要依赖对其他的项的验证结果来决定是否验证,比如邮">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2018-08-07T12:11:39.000Z">
-<meta property="article:modified_time" content="2023-11-08T05:14:52.450Z">
+<meta property="article:modified_time" content="2024-01-21T16:28:06.178Z">
 <meta property="article:author" content="soul11201">
 <meta property="article:tag" content="php">
 <meta property="article:tag" content="yii2">
@@ -74,7 +74,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -96,15 +96,17 @@
   
 
   
-
-  
     
   
 
 
 
   
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
 </head>
 
 
@@ -136,7 +138,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -148,7 +150,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -160,7 +162,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -172,7 +174,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -184,7 +186,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -196,7 +198,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -256,7 +258,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          4.3k 字
+          1.7k 字
         
       </span>
     
@@ -268,7 +270,7 @@
         
         
           <!-- compatible with older versions-->
-          36 分钟
+          15 分钟
         
       </span>
     
@@ -305,8 +307,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">yii2 数据模型 -- 基于场景的验证</h1>
+            <h1 id="seo-header">yii2 数据模型 -- 基于场景的验证</h1>
             
             
               <div class="markdown-body">
@@ -415,8 +416,22 @@ attribute</h2>
     
       <span class="category-chain">
         
-  <a href="/categories/%E9%9A%8F%E7%AC%94/" class="category-chain-item">随笔</a>
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
   
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF/PHP/" class="category-chain-item">PHP</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF/PHP/Yii2/" class="category-chain-item">Yii2</a>
+  
+  
+
+  
+
   
 
       </span>
@@ -430,17 +445,17 @@ attribute</h2>
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/php/">#php</a>
+        <a href="/tags/php/" class="print-no-link">#php</a>
       
-        <a href="/tags/yii2/">#yii2</a>
+        <a href="/tags/yii2/" class="print-no-link">#yii2</a>
       
-        <a href="/tags/Model/">#Model</a>
+        <a href="/tags/Model/" class="print-no-link">#Model</a>
       
-        <a href="/tags/%E5%9F%BA%E4%BA%8E%E5%9C%BA%E6%99%AF%E7%9A%84%E9%AA%8C%E8%AF%81/">#基于场景的验证</a>
+        <a href="/tags/%E5%9F%BA%E4%BA%8E%E5%9C%BA%E6%99%AF%E7%9A%84%E9%AA%8C%E8%AF%81/" class="print-no-link">#基于场景的验证</a>
       
-        <a href="/tags/%E8%A7%84%E5%88%99/">#规则</a>
+        <a href="/tags/%E8%A7%84%E5%88%99/" class="print-no-link">#规则</a>
       
-        <a href="/tags/%E5%9C%BA%E6%99%AF/">#场景</a>
+        <a href="/tags/%E5%9C%BA%E6%99%AF/" class="print-no-link">#场景</a>
       
     </div>
   
@@ -476,7 +491,7 @@ attribute</h2>
             
               
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
                     <i class="iconfont icon-by"></i>
                   </span>
@@ -497,9 +512,9 @@ attribute</h2>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2019/08/29/deadlock/" title="工作中的死锁">
+                      <a href="/2019/07/20/tan-song/" title="谈&#34;怂&#34;">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">工作中的死锁</span>
+                        <span class="hidden-mobile">谈&#34;怂&#34;</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -507,8 +522,8 @@ attribute</h2>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2018/04/08/weiboad-kafka-socket-bug/" title="weiboad-kafka-socket-bug">
-                        <span class="hidden-mobile">weiboad-kafka-socket-bug</span>
+                      <a href="/2018/05/08/clousure/" title="闭包闲扯">
+                        <span class="hidden-mobile">闭包闲扯</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
@@ -599,9 +614,22 @@ attribute</h2>
   
 
 
+  
+  
 
 
 
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
 
 
     
@@ -790,6 +818,49 @@ attribute</h2>
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
 
   <script defer src="/js/leancloud.js" ></script>
 

@@ -16,19 +16,18 @@
   <meta name="author" content="soul11201">
   <meta name="keywords" content="">
   
-    <meta name="description" content="上传一个213M的文件的时候一直报IOerror。首先想到的是php上传文件大小的限制，改为300兆后，不起作用，就感觉是上传的的时候脚本执行的时间太长了，就修改max_input_time 为6000 还是不起作用，琢磨是不是max_input_time解析数据的时间出了问题，最后发现也不是，原来是nginx设置的太小了，改为500m,问题立马解决了。 php 和 nginx 设置如下 ngxi">
+    <meta name="description" content="工程问题的排查过程，就是渐进明细，分而治之的过程。不断缩小问题范围，直到解决问题。            上传文件一直报 IOerror错误，大小213M。 PHP 上传文件大小的限制，改为300兆后，不起作用。上传时，脚本执行的时间很长，调大 PHP max_input_time 配置项为6000 后, w问题还是不解决。修改 Nginx client_max_body">
 <meta property="og:type" content="article">
 <meta property="og:title" content="PHP文件上传">
 <meta property="og:url" content="http://blog.soul11201.com/2015/08/05/php-upload-file/index.html">
 <meta property="og:site_name" content="coder 随想录">
-<meta property="og:description" content="上传一个213M的文件的时候一直报IOerror。首先想到的是php上传文件大小的限制，改为300兆后，不起作用，就感觉是上传的的时候脚本执行的时间太长了，就修改max_input_time 为6000 还是不起作用，琢磨是不是max_input_time解析数据的时间出了问题，最后发现也不是，原来是nginx设置的太小了，改为500m,问题立马解决了。 php 和 nginx 设置如下 ngxi">
+<meta property="og:description" content="工程问题的排查过程，就是渐进明细，分而治之的过程。不断缩小问题范围，直到解决问题。            上传文件一直报 IOerror错误，大小213M。 PHP 上传文件大小的限制，改为300兆后，不起作用。上传时，脚本执行的时间很长，调大 PHP max_input_time 配置项为6000 后, w问题还是不解决。修改 Nginx client_max_body">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-08-05T11:07:02.000Z">
-<meta property="article:modified_time" content="2023-11-08T05:14:52.467Z">
+<meta property="article:modified_time" content="2024-01-21T16:29:13.394Z">
 <meta property="article:author" content="soul11201">
-<meta property="article:tag" content="nginx">
-<meta property="article:tag" content="php">
-<meta property="article:tag" content="配置">
+<meta property="article:tag" content="PHP">
+<meta property="article:tag" content="Nginx">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -71,7 +70,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -93,15 +92,17 @@
   
 
   
-
-  
     
   
 
 
 
   
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
 </head>
 
 
@@ -133,7 +134,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -145,7 +146,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -157,7 +158,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -169,7 +170,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -181,7 +182,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -193,7 +194,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -253,7 +254,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          871 字
+          343 字
         
       </span>
     
@@ -265,7 +266,7 @@
         
         
           <!-- compatible with older versions-->
-          8 分钟
+          3 分钟
         
       </span>
     
@@ -302,18 +303,23 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">PHP文件上传</h1>
+            <h1 id="seo-header">PHP文件上传</h1>
             
             
               <div class="markdown-body">
                 
-                <p>上传一个213M的文件的时候一直报IOerror。首先想到的是php上传文件大小的限制，改为300兆后，不起作用，就感觉是上传的的时候脚本执行的时间太长了，就修改<code>max_input_time</code>
-为6000
-还是不起作用，琢磨是不是<code>max_input_time</code>解析数据的时间出了问题，最后发现也不是，原来是nginx设置的太小了，改为500m,问题立马解决了。</p>
+                <div class="note note-success">
+            <p>工程问题的排查过程，就是渐进明细，分而治之的过程。不断缩小问题范围，直到解决问题。</p>
+          </div>
+<p>上传文件一直报 <code>IOerror</code>错误，大小<code>213M</code>。</p>
+<p>PHP
+上传文件大小的限制，改为300兆后，不起作用。上传时，脚本执行的时间很长，调大
+PHP <code>max_input_time</code> 配置项为6000 后, w问题还是不解决。修改
+Nginx <code>client_max_body_size</code> 为<code>500M</code>,
+问题立马解决了。</p>
 <p>php 和 nginx 设置如下</p>
-<p>ngxin server 里面配置如下 <figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs lisp">server&#123;<br>     ***<br>     client_max_body_size <span class="hljs-number">1000</span>M<span class="hljs-comment">;</span><br>     ****<br>&#125;<br></code></pre></td></tr></table></figure></p>
-<p>php.ini 配置如下 <figure class="highlight lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs lisp">file_uploads = On <span class="hljs-comment">;是否允许通过HTTP上传文件的开关。默认为ON即是开</span><br>upload_max_filesize = <span class="hljs-number">500</span>M <span class="hljs-comment">;上传文件上限 </span><br>upload_tmp_dir <span class="hljs-comment">;文件上传至服务器上存储临时文件的地方，如果没指定就会用系统默认的临时文件夹。</span><br>如果要上传比较大的文件，仅仅以上两条还不够，必须把服务器缓存上限调大，把脚本最大执行时间变长 <br>post_max_size = <span class="hljs-number">500</span>M <span class="hljs-comment">; POST给PHP的所能接收的最大值</span><br>max_execution_time = <span class="hljs-number">30</span> <span class="hljs-comment">; 每个PHP页面运行的最大时间值 Maximum execution time of each script, in seconds脚本最大执行时间 </span><br>max_input_time = <span class="hljs-number">60</span> <span class="hljs-comment">; 每个PHP页面接收数据所需的最大时间 解析一次请求时间上线 Maximum amount of time each script may spend parsing request data </span><br>memory_limit = <span class="hljs-number">128</span>M <span class="hljs-comment">;  每个PHP页面所吃掉的最大内存 内存上限 Maximum amount of memory a script may consume (128MB)</span><br></code></pre></td></tr></table></figure></p>
+<p>ngxin server 里面配置如下 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs nginx">server&#123;<br>   <span class="hljs-attribute">client_max_body_size</span> <span class="hljs-number">1000M</span>;<br>&#125;<br></code></pre></td></tr></table></figure></p>
+<p>php.ini 配置如下 <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs ini"><span class="hljs-attr">file_uploads</span> = <span class="hljs-literal">On</span> <span class="hljs-comment">;是否允许通过HTTP上传文件的开关。默认为ON即是开</span><br><span class="hljs-attr">upload_max_filesize</span> = <span class="hljs-number">500</span>M <span class="hljs-comment">;上传文件上限 </span><br>upload_tmp_dir <span class="hljs-comment">;文件上传至服务器上存储临时文件的地方，如果没指定就会用系统默认的临时文件夹。</span><br>如果要上传比较大的文件，仅仅以上两条还不够，必须把服务器缓存上限调大，把脚本最大执行时间变长 <br><span class="hljs-attr">post_max_size</span> = <span class="hljs-number">500</span>M <span class="hljs-comment">; POST给PHP的所能接收的最大值</span><br><span class="hljs-attr">max_execution_time</span> = <span class="hljs-number">30</span> <span class="hljs-comment">; 每个PHP页面运行的最大时间值 Maximum execution time of each script, in seconds脚本最大执行时间 </span><br><span class="hljs-attr">max_input_time</span> = <span class="hljs-number">60</span> <span class="hljs-comment">; 每个PHP页面接收数据所需的最大时间 解析一次请求时间上线 Maximum amount of time each script may spend parsing request data </span><br><span class="hljs-attr">memory_limit</span> = <span class="hljs-number">128</span>M <span class="hljs-comment">;  每个PHP页面所吃掉的最大内存 内存上限 Maximum amount of memory a script may consume (128MB)</span><br></code></pre></td></tr></table></figure></p>
 <p>相关参数解释</p>
 <p>##参考</p>
 <p>http://www.jb51.net/article/18975.htm
@@ -326,15 +332,41 @@ http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml</p>
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF/PHP/" class="category-chain-item">PHP</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/nginx/">#nginx</a>
+        <a href="/tags/PHP/" class="print-no-link">#PHP</a>
       
-        <a href="/tags/php/">#php</a>
-      
-        <a href="/tags/%E9%85%8D%E7%BD%AE/">#配置</a>
+        <a href="/tags/Nginx/" class="print-no-link">#Nginx</a>
       
     </div>
   
@@ -370,7 +402,7 @@ http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml</p>
             
               
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
                     <i class="iconfont icon-by"></i>
                   </span>
@@ -391,9 +423,9 @@ http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml</p>
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2015/08/05/php-upload-file/" title="PHP文件上传">
+                      <a href="/2015/08/12/How-to-set-up-your-own-private-RTMP-server-using-nginx/" title="【译】How to set up your own private RTMP server using nginx">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">PHP文件上传</span>
+                        <span class="hidden-mobile">【译】How to set up your own private RTMP server using nginx</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -493,9 +525,22 @@ http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml</p>
   
 
 
+  
+  
 
 
 
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
 
 
     
@@ -684,6 +729,49 @@ http://www.360doc.com/content/13/1210/11/14452132_336027836.shtml</p>
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
 
   <script defer src="/js/leancloud.js" ></script>
 

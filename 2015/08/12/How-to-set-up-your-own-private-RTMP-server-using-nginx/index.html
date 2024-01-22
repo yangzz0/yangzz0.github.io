@@ -16,19 +16,19 @@
   <meta name="author" content="soul11201">
   <meta name="keywords" content="">
   
-    <meta name="description" content="原文地址: https:&#x2F;&#x2F;obsproject.com&#x2F;forum&#x2F;resources&#x2F;how-to-set-up-your-own-private-rtmp-server-using-nginx.50&#x2F;  大多数人喜欢使用Twitch.tv和Ustream这类服务把流视频转播放给用户，并且工作的也非常好。但是有时候你想对你的流视频有更多的控制权，或者你想其他人把视频流转发给你，或者你想转发视频">
+    <meta name="description" content="原文地址: https:&#x2F;&#x2F;obsproject.com&#x2F;forum&#x2F;resources&#x2F;how-to-set-up-your-own-private-rtmp-server-using-nginx.50&#x2F;  大多数人喜欢使用Twitch.tv和Ustream这类服务把流视频转播放给用户，并且工作的也非常好。但是有时候你想对你的流视频有更多的控制权，或者你想其他人把视频流转发给你，或者你想转发视">
 <meta property="og:type" content="article">
 <meta property="og:title" content="【译】How to set up your own private RTMP server using nginx">
 <meta property="og:url" content="http://blog.soul11201.com/2015/08/12/How-to-set-up-your-own-private-RTMP-server-using-nginx/index.html">
 <meta property="og:site_name" content="coder 随想录">
-<meta property="og:description" content="原文地址: https:&#x2F;&#x2F;obsproject.com&#x2F;forum&#x2F;resources&#x2F;how-to-set-up-your-own-private-rtmp-server-using-nginx.50&#x2F;  大多数人喜欢使用Twitch.tv和Ustream这类服务把流视频转播放给用户，并且工作的也非常好。但是有时候你想对你的流视频有更多的控制权，或者你想其他人把视频流转发给你，或者你想转发视频">
+<meta property="og:description" content="原文地址: https:&#x2F;&#x2F;obsproject.com&#x2F;forum&#x2F;resources&#x2F;how-to-set-up-your-own-private-rtmp-server-using-nginx.50&#x2F;  大多数人喜欢使用Twitch.tv和Ustream这类服务把流视频转播放给用户，并且工作的也非常好。但是有时候你想对你的流视频有更多的控制权，或者你想其他人把视频流转发给你，或者你想转发视">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-08-12T09:20:51.000Z">
-<meta property="article:modified_time" content="2023-11-08T05:14:52.463Z">
+<meta property="article:modified_time" content="2024-01-21T15:09:34.344Z">
 <meta property="article:author" content="soul11201">
-<meta property="article:tag" content="nginx">
-<meta property="article:tag" content="翻译">
+<meta property="article:tag" content="Nginx">
 <meta property="article:tag" content="rtmp">
+<meta property="article:tag" content="翻译">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -71,7 +71,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -93,15 +93,17 @@
   
 
   
-
-  
     
   
 
 
 
   
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
 </head>
 
 
@@ -133,7 +135,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -145,7 +147,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -157,7 +159,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -169,7 +171,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -181,7 +183,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -193,7 +195,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -253,7 +255,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          3.2k 字
+          1.8k 字
         
       </span>
     
@@ -265,7 +267,7 @@
         
         
           <!-- compatible with older versions-->
-          27 分钟
+          16 分钟
         
       </span>
     
@@ -302,13 +304,13 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">【译】How to set up your own private RTMP server using nginx</h1>
+            <h1 id="seo-header">【译】How to set up your own private RTMP server using nginx</h1>
             
             
               <div class="markdown-body">
                 
-                <blockquote><p>原文地址:
+                <blockquote>
+<p>原文地址:
 https://obsproject.com/forum/resources/how-to-set-up-your-own-private-rtmp-server-using-nginx.50/</p>
 </blockquote>
 <p>大多数人喜欢使用Twitch.tv和Ustream这类服务把流视频转播放给用户，并且工作的也非常好。但是有时候你想对你的流视频有更多的控制权，或者你想其他人把视频流转发给你，或者你想转发视频流到多个地方，或者一些事情需要你有权限访问RTMP服务器上的视频流。这篇教程内容非常基础，教你在一台linux服务器上搭建一个简单的RTMP服务器。</p>
@@ -390,15 +392,36 @@ RTMP模块不支持RTSP。对于我来说Red5看起来太重，太复杂了，�
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%BF%BB%E8%AF%91/" class="category-chain-item">翻译</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/nginx/">#nginx</a>
+        <a href="/tags/Nginx/" class="print-no-link">#Nginx</a>
       
-        <a href="/tags/%E7%BF%BB%E8%AF%91/">#翻译</a>
+        <a href="/tags/rtmp/" class="print-no-link">#rtmp</a>
       
-        <a href="/tags/rtmp/">#rtmp</a>
+        <a href="/tags/%E7%BF%BB%E8%AF%91/" class="print-no-link">#翻译</a>
       
     </div>
   
@@ -434,7 +457,7 @@ RTMP模块不支持RTSP。对于我来说Red5看起来太重，太复杂了，�
             
               
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
                     <i class="iconfont icon-by"></i>
                   </span>
@@ -455,9 +478,9 @@ RTMP模块不支持RTSP。对于我来说Red5看起来太重，太复杂了，�
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2015/08/12/How-to-set-up-your-own-private-RTMP-server-using-nginx/" title="【译】How to set up your own private RTMP server using nginx">
+                      <a href="/2015/08/17/vod/" title="nginx 点播">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">【译】How to set up your own private RTMP server using nginx</span>
+                        <span class="hidden-mobile">nginx 点播</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -557,9 +580,22 @@ RTMP模块不支持RTSP。对于我来说Red5看起来太重，太复杂了，�
   
 
 
+  
+  
 
 
 
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
 
 
     
@@ -748,6 +784,49 @@ RTMP模块不支持RTSP。对于我来说Red5看起来太重，太复杂了，�
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
 
   <script defer src="/js/leancloud.js" ></script>
 

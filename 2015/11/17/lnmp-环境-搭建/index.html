@@ -16,27 +16,24 @@
   <meta name="author" content="soul11201">
   <meta name="keywords" content="">
   
-    <meta name="description" content="个人使用的方式有两种  lamp&#x2F;lnmp 环境 php 自带的webserver  php 自带的webserver 配置搭建比较简单，一条命令即可以下实现一个本地server php -S 0.0.0.0:8010。在浏览器中就可以访问。 lnmp 环境 搭建 整体结构   盗用一张图  安装 nginx 可以手动编译安装，也可以是使用apt-get方式安装。第二种方式版本较低。 fpm、my">
+    <meta name="description" content="个人使用的方式有两种  LAMP&#x2F;LNMP 环境 PHP 自带的webserver  PHP 自带的webserver 配置搭建比较简单，一条命令即可以下实现一个本地 server php -S 0.0.0.0:8010。在浏览器中就可以访问。 LNMP 环境 搭建 整体结构   安装 Nginx 可以手动编译安装，也可以是使用apt-get方式安装。第二种方式版本较低。 FPM、MySQL 荐a">
 <meta property="og:type" content="article">
-<meta property="og:title" content="php 开发环境搭建">
+<meta property="og:title" content="PHP 开发环境搭建">
 <meta property="og:url" content="http://blog.soul11201.com/2015/11/17/lnmp-%E7%8E%AF%E5%A2%83-%E6%90%AD%E5%BB%BA/index.html">
 <meta property="og:site_name" content="coder 随想录">
-<meta property="og:description" content="个人使用的方式有两种  lamp&#x2F;lnmp 环境 php 自带的webserver  php 自带的webserver 配置搭建比较简单，一条命令即可以下实现一个本地server php -S 0.0.0.0:8010。在浏览器中就可以访问。 lnmp 环境 搭建 整体结构   盗用一张图  安装 nginx 可以手动编译安装，也可以是使用apt-get方式安装。第二种方式版本较低。 fpm、my">
+<meta property="og:description" content="个人使用的方式有两种  LAMP&#x2F;LNMP 环境 PHP 自带的webserver  PHP 自带的webserver 配置搭建比较简单，一条命令即可以下实现一个本地 server php -S 0.0.0.0:8010。在浏览器中就可以访问。 LNMP 环境 搭建 整体结构   安装 Nginx 可以手动编译安装，也可以是使用apt-get方式安装。第二种方式版本较低。 FPM、MySQL 荐a">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg">
+<meta property="og:image" content="http://blog.soul11201.com/imgs/2024-01-21-20-39-15.png">
 <meta property="article:published_time" content="2015-11-17T12:08:24.000Z">
-<meta property="article:modified_time" content="2023-11-08T05:14:52.465Z">
+<meta property="article:modified_time" content="2024-01-21T16:29:40.060Z">
 <meta property="article:author" content="soul11201">
-<meta property="article:tag" content="笔记">
-<meta property="article:tag" content="php">
-<meta property="article:tag" content="lnmp">
-<meta property="article:tag" content="环境搭建">
+<meta property="article:tag" content="PHP">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg">
+<meta name="twitter:image" content="http://blog.soul11201.com/imgs/2024-01-21-20-39-15.png">
   
   
   
-  <title>php 开发环境搭建 - coder 随想录</title>
+  <title>PHP 开发环境搭建 - coder 随想录</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -74,7 +71,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -96,15 +93,17 @@
   
 
   
-
-  
     
   
 
 
 
   
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
 </head>
 
 
@@ -136,7 +135,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -148,7 +147,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -160,7 +159,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -172,7 +171,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -184,7 +183,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -196,7 +195,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -232,7 +231,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="php 开发环境搭建"></span>
+            <span id="subtitle" data-typed-text="PHP 开发环境搭建"></span>
           
         </div>
 
@@ -256,7 +255,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.2k 字
+          271 字
         
       </span>
     
@@ -268,7 +267,7 @@
         
         
           <!-- compatible with older versions-->
-          11 分钟
+          3 分钟
         
       </span>
     
@@ -305,53 +304,53 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">php 开发环境搭建</h1>
+            <h1 id="seo-header">PHP 开发环境搭建</h1>
             
             
               <div class="markdown-body">
                 
                 <p>个人使用的方式有两种</p>
 <ol type="1">
-<li>lamp/lnmp 环境</li>
-<li>php 自带的webserver</li>
+<li>LAMP/LNMP 环境</li>
+<li>PHP 自带的webserver</li>
 </ol>
-<h1 id="php-自带的webserver">php 自带的webserver</h1>
-<p>配置搭建比较简单，一条命令即可以下实现一个本地server
+<h1 id="php-自带的webserver">PHP 自带的webserver</h1>
+<p>配置搭建比较简单，一条命令即可以下实现一个本地 server
 <code>php -S 0.0.0.0:8010</code>。在浏览器中就可以访问。</p>
-<h1 id="lnmp-环境-搭建">lnmp 环境 搭建</h1>
+<h1 id="lnmp-环境-搭建">LNMP 环境 搭建</h1>
 <h2 id="整体结构">整体结构</h2>
-<figure>
-<img src="http://www.68idc.cn/help/uploads/allimg/130923/0G5201D7_0.jpg" srcset="/img/loading.gif" lazyload
-alt="盗用一张图" />
-<figcaption aria-hidden="true">盗用一张图</figcaption>
-</figure>
+<p><img src="/imgs/2024-01-21-20-39-15.png" srcset="/img/loading.gif" lazyload
+alt="https://zhuanlan.zhihu.com/p/427552247" /> <img
+src="/imgs/2024-01-21-20-44-07.png" srcset="/img/loading.gif" lazyload
+alt="https://www.cnblogs.com/renyz/p/11347897.html" /></p>
 <h2 id="安装">安装</h2>
-<p><strong>nginx</strong></p>
+<p><strong>Nginx</strong></p>
 <p>可以手动编译安装，也可以是使用<code>apt-get</code>方式安装。第二种方式版本较低。</p>
-<p><strong>fpm、mysql</strong></p>
+<p><strong>FPM、MySQL</strong></p>
 <p>荐<code>apt-get</code>方式安装，便捷。</p>
 <h2 id="配置">配置</h2>
-<p><strong>nginx </strong></p>
+<p><strong>Nginx</strong></p>
 <figure class="highlight nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><code class="hljs nginx"> <span class="hljs-section">server</span> &#123;<br>    <span class="hljs-attribute">listen</span> <span class="hljs-number">8082</span>;<br>    <span class="hljs-comment">#server_name localhost;</span><br><br>    <span class="hljs-attribute">root</span> /data/codes/sevenga_tuitui/backend;<br>    <span class="hljs-attribute">index</span> index.php;<br><br>    <span class="hljs-section">location</span> / &#123; <br>        <span class="hljs-attribute">try_files</span> <span class="hljs-variable">$uri</span> <span class="hljs-variable">$uri</span>/ /index.php?<span class="hljs-variable">$args</span>;<br>        <span class="hljs-comment"># upload_limit_rate 1m;</span><br>    &#125;   <br><br>    <span class="hljs-section">location</span> <span class="hljs-regexp">~ \.php$</span> &#123;<br>        <span class="hljs-attribute">try_files</span> <span class="hljs-variable">$uri</span> =<span class="hljs-number">404</span>;<br>        <span class="hljs-attribute">include</span> fastcgi_params;<br>        <span class="hljs-attribute">fastcgi_pass</span> <span class="hljs-number">127.0.0.1:9000</span>;<br>        <span class="hljs-attribute">fastcgi_index</span> index.php;<br>        <span class="hljs-attribute">fastcgi_param</span> SCRIPT_FILENAME <span class="hljs-variable">$document_root</span><span class="hljs-variable">$fastcgi_script_name</span>;<br>        <span class="hljs-attribute">fastcgi_param</span> PATH_INFO <span class="hljs-variable">$fastcgi_script_name</span>;<br>    &#125;   <br><br>    <span class="hljs-attribute">error_page</span> <span class="hljs-number">500</span> <span class="hljs-number">502</span> <span class="hljs-number">503</span> <span class="hljs-number">504</span> /50x.html;<br>    <span class="hljs-section">location</span> = /50x.html &#123;<br>        <span class="hljs-attribute">root</span> html;<br>    &#125;   <br>&#125;   <br></code></pre></td></tr></table></figure>
-<p><strong>fpm</strong></p>
-<p>配置文件
-<code>/etc/php5/fpm/pool.d/www.conf</code>,设置fpm监听端口和nginx配置一致</p>
+<p><strong>PHP-FPM</strong></p>
+<p>配置文件 <code>/etc/php5/fpm/pool.d/www.conf</code>,设置fpm监听端口和
+Nginx 配置一致</p>
 <figure class="highlight apache"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs apache"><span class="hljs-attribute">listen</span> =<span class="hljs-number">127.0.0.1:9000</span> <br></code></pre></td></tr></table></figure>
-<p>##FAQ</p>
+<h2 id="faq">FAQ</h2>
 <h4
-id="mysql-安装过程未设置密码.用root空密码登陆报-error-1045-28000-错误">mysql
-安装过程未设置密码.。用root、空密码登陆报
+id="mysql-安装过程未设置密码用-root-空密码登陆报-error-1045-28000-错误">mysql
+安装过程未设置密码，用 root 、空密码登陆报
 <code>ERROR 1045 (28000)</code> 错误。</h4>
 <figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs jboss-cli">sudo <span class="hljs-string">/etc/init.d/mysql</span> stop<br>sudo mysqld_safe <span class="hljs-params">--user=mysql</span> <span class="hljs-params">--skip-grant-tables</span> <span class="hljs-params">--skip-networking</span>&amp;<br>sudo mysql -u root mysql<br></code></pre></td></tr></table></figure>
 <p>更改sql用户密码</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs sql"><span class="hljs-keyword">update</span> mysql.user <span class="hljs-keyword">set</span> password<span class="hljs-operator">=</span>PASSWORD（<span class="hljs-string">&#x27;新密码&#x27;</span>） <span class="hljs-keyword">where</span> <span class="hljs-keyword">User</span><span class="hljs-operator">=</span><span class="hljs-string">&#x27;root&#x27;</span><br>flush privileges<br></code></pre></td></tr></table></figure>
 <p>重启数据库：</p>
 <p><code>/etc/init.d/mysql restart</code></p>
-<p>##参考 1. <a
-target="_blank" rel="noopener" href="http://laokaddk.blog.51cto.com/368606/1323292">ubuntu
+<h2 id="参考">参考</h2>
+<ol type="1">
+<li><a target="_blank" rel="noopener" href="http://laokaddk.blog.51cto.com/368606/1323292">ubuntu
 系统解决mysql连接问题（ERROR 1045 (28000): Access denied for user
-'root'@'localhost' (using password: NO)）</a></p>
+'root'@'localhost' (using password: NO)）</a></li>
+</ol>
 
                 
               </div>
@@ -360,17 +359,39 @@ target="_blank" rel="noopener" href="http://laokaddk.blog.51cto.com/368606/13232
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF/PHP/" class="category-chain-item">PHP</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E7%AC%94%E8%AE%B0/">#笔记</a>
-      
-        <a href="/tags/php/">#php</a>
-      
-        <a href="/tags/lnmp/">#lnmp</a>
-      
-        <a href="/tags/%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/">#环境搭建</a>
+        <a href="/tags/PHP/" class="print-no-link">#PHP</a>
       
     </div>
   
@@ -382,7 +403,7 @@ target="_blank" rel="noopener" href="http://laokaddk.blog.51cto.com/368606/13232
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>php 开发环境搭建</div>
+      <div>PHP 开发环境搭建</div>
       <div>http://blog.soul11201.com/2015/11/17/lnmp-环境-搭建/</div>
     </div>
     <div class="license-meta">
@@ -406,7 +427,7 @@ target="_blank" rel="noopener" href="http://laokaddk.blog.51cto.com/368606/13232
             
               
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
                     <i class="iconfont icon-by"></i>
                   </span>
@@ -427,9 +448,9 @@ target="_blank" rel="noopener" href="http://laokaddk.blog.51cto.com/368606/13232
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2015/11/17/lnmp-%E7%8E%AF%E5%A2%83-%E6%90%AD%E5%BB%BA/" title="php 开发环境搭建">
+                      <a href="/2015/12/06/mathjax/" title="Hexo &amp; Mathjax">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">php 开发环境搭建</span>
+                        <span class="hidden-mobile">Hexo &amp; Mathjax</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -529,9 +550,22 @@ target="_blank" rel="noopener" href="http://laokaddk.blog.51cto.com/368606/13232
   
 
 
+  
+  
 
 
 
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
 
 
     
@@ -720,6 +754,49 @@ target="_blank" rel="noopener" href="http://laokaddk.blog.51cto.com/368606/13232
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
 
   <script defer src="/js/leancloud.js" ></script>
 

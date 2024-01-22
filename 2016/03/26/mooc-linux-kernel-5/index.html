@@ -24,13 +24,11 @@
 <meta property="og:description" content="杨振振  原创作品转载请注明出处  《Linux内核分析》MOOC课程 http:&#x2F;&#x2F;www.xuetangx.com&#x2F;courses&#x2F;course-v1:ustcX+USTC001+_&#x2F;about">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2016-03-26T14:39:17.000Z">
-<meta property="article:modified_time" content="2023-11-08T05:14:52.466Z">
+<meta property="article:modified_time" content="2024-01-21T16:36:37.517Z">
 <meta property="article:author" content="soul11201">
-<meta property="article:tag" content="笔记">
 <meta property="article:tag" content="汇编">
-<meta property="article:tag" content="mooc">
-<meta property="article:tag" content="Linux 内核分析">
 <meta property="article:tag" content="C">
+<meta property="article:tag" content="Linux 内核分析">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -73,7 +71,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -95,15 +93,17 @@
   
 
   
-
-  
     
   
 
 
 
   
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
 </head>
 
 
@@ -135,7 +135,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -147,7 +147,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -159,7 +159,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -171,7 +171,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -183,7 +183,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -195,7 +195,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -255,7 +255,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          1.3k 字
+          512 字
         
       </span>
     
@@ -267,7 +267,7 @@
         
         
           <!-- compatible with older versions-->
-          12 分钟
+          5 分钟
         
       </span>
     
@@ -304,28 +304,12 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">Linux 内核分析 -- 系统调用的工作过程（二）</h1>
+            <h1 id="seo-header">Linux 内核分析 -- 系统调用的工作过程（二）</h1>
             
             
               <div class="markdown-body">
                 
-                <blockquote><p>杨振振 原创作品转载请注明出处 《Linux内核分析》MOOC课程
-http://mooc.study.163.com/course/USTC-1000029000</p>
-</blockquote>
-<blockquote><p>杨振振 原创作品转载请注明出处 《Linux内核分析》MOOC课程
-http://www.xuetangx.com/courses/course-v1:ustcX+USTC001+_/about</p>
-</blockquote>
-<blockquote><p>使用gdb跟踪分析一个系统调用内核函数（您上周选择的那一个系统调用），系统调用列表参见http://codelab.shiyanlou.com/xref/linux-3.18.6/arch/x86/syscalls/syscall_32.tbl
-,推荐在实验楼Linux虚拟机环境下完成实验。
-根据本周所学知识分析系统调用的过程，从system_call开始到iret结束之间的整个过程，并画出简要准确的流程图，撰写一篇署名博客，并在博客文章中注明“真实姓名（与最后申请证书的姓名务必一致）
-+ 原创作品转载请注明出处 +
-《Linux内核分析》MOOC课程http://mooc.study.163.com/course/USTC-1000029000
-”，博客内容的具体要求如下：
-题目自拟，内容围绕系统调用system_call的处理过程进行；
-博客内容中需要仔细分析system_call对应的汇编代码的工作过程，特别注意系统调用返回iret之前的进程调度时机等。
-总结部分需要阐明自己对“系统调用处理过程”的理解，进一步推广到一般的中断处理过程。</p>
-</blockquote>
+                <figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs awk"><br><br>使用gdb跟踪分析一个系统调用内核函数（您上周选择的那一个系统调用），系统调用列表参见http:<span class="hljs-regexp">//</span>codelab.shiyanlou.com<span class="hljs-regexp">/xref/</span>linux-<span class="hljs-number">3.18</span>.<span class="hljs-number">6</span><span class="hljs-regexp">/arch/</span>x86<span class="hljs-regexp">/syscalls/</span>syscall_32.tbl ,推荐在实验楼Linux虚拟机环境下完成实验。<br>根据本周所学知识分析系统调用的过程，从system_call开始到iret结束之间的整个过程，并画出简要准确的流程图，撰写一篇署名博客，并在博客文章中注明“真实姓名（与最后申请证书的姓名务必一致） + 原创作品转载请注明出处 + 《Linux内核分析》MOOC课程http:<span class="hljs-regexp">//m</span>ooc.study.<span class="hljs-number">163</span>.com<span class="hljs-regexp">/course/</span>USTC-<span class="hljs-number">1000029000</span> ”，博客内容的具体要求如下：<br>题目自拟，内容围绕系统调用system_call的处理过程进行；<br>博客内容中需要仔细分析system_call对应的汇编代码的工作过程，特别注意系统调用返回iret之前的进程调度时机等。<br>总结部分需要阐明自己对“系统调用处理过程”的理解，进一步推广到一般的中断处理过程。<br><br></code></pre></td></tr></table></figure>
 <h3 id="用到的-gdb-命令">用到的 gdb 命令</h3>
 <p>已知的含义功能的就不赘述了。</p>
 <p>|指令/参数|功能| |---|| |file |加载符号表| |b|| |s||
@@ -413,19 +397,36 @@ system_call 断点可以设置，但是程序运行的时候会直接跳过去
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/Linux-%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/" class="category-chain-item">Linux 内核分析</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E7%AC%94%E8%AE%B0/">#笔记</a>
+        <a href="/tags/%E6%B1%87%E7%BC%96/" class="print-no-link">#汇编</a>
       
-        <a href="/tags/%E6%B1%87%E7%BC%96/">#汇编</a>
+        <a href="/tags/C/" class="print-no-link">#C</a>
       
-        <a href="/tags/mooc/">#mooc</a>
-      
-        <a href="/tags/Linux-%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/">#Linux 内核分析</a>
-      
-        <a href="/tags/C/">#C</a>
+        <a href="/tags/Linux-%E5%86%85%E6%A0%B8%E5%88%86%E6%9E%90/" class="print-no-link">#Linux 内核分析</a>
       
     </div>
   
@@ -461,7 +462,7 @@ system_call 断点可以设置，但是程序运行的时候会直接跳过去
             
               
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
                     <i class="iconfont icon-by"></i>
                   </span>
@@ -482,9 +483,9 @@ system_call 断点可以设置，但是程序运行的时候会直接跳过去
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2016/03/26/mooc-linux-kernel-5/" title="Linux 内核分析 -- 系统调用的工作过程（二）">
+                      <a href="/2016/03/29/nginx-rtmp-makefile/" title="ubuntu 一键自动部署 nginx-rtmp">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">Linux 内核分析 -- 系统调用的工作过程（二）</span>
+                        <span class="hidden-mobile">ubuntu 一键自动部署 nginx-rtmp</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -584,9 +585,22 @@ system_call 断点可以设置，但是程序运行的时候会直接跳过去
   
 
 
+  
+  
 
 
 
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
 
 
     
@@ -775,6 +789,49 @@ system_call 断点可以设置，但是程序运行的时候会直接跳过去
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
 
   <script defer src="/js/leancloud.js" ></script>
 

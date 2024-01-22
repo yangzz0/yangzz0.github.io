@@ -16,22 +16,22 @@
   <meta name="author" content="soul11201">
   <meta name="keywords" content="">
   
-    <meta name="description" content="背景 我每过段时间，就会兴趣大发，噼里啪啦加上一堆qq群，一般就是最近在做相关的工作，或者想了解学习相关的知识，到现在已经加了几十群了。qq群对于我来说，一是看大家伙的讨论一些专业技术问题，一是从共享里面下载一些书籍资料，当然一般一个群建立的比较久了，群里活跃成员达到一定的数目，一个群也会有适当的灌水，娱乐一下，好像有点一个小社会的那么点意思。昨天加一个计算机相关的群，它设置了一个问题： 小于89">
+    <meta name="description" content="人总是有寻找资源的原动力            QQ 群是寻找信息资源的一个重要渠道。优质的专业社群，专业技术问题的探讨、信息共享，给与个体的帮助非常大。日常的闲聊也能让人获得很多乐趣。 昨天在加一个群的时候，它设置了一个有趣的入群问题：              小于899808659的最大质数是？            低头做事 第一感觉是简单，应该能很快做出来，但随">
 <meta property="og:type" content="article">
-<meta property="og:title" content="对一次寻找大素数问题的思考">
+<meta property="og:title" content="寻找大素数">
 <meta property="og:url" content="http://blog.soul11201.com/2015/10/25/prime-linear-time/index.html">
 <meta property="og:site_name" content="coder 随想录">
-<meta property="og:description" content="背景 我每过段时间，就会兴趣大发，噼里啪啦加上一堆qq群，一般就是最近在做相关的工作，或者想了解学习相关的知识，到现在已经加了几十群了。qq群对于我来说，一是看大家伙的讨论一些专业技术问题，一是从共享里面下载一些书籍资料，当然一般一个群建立的比较久了，群里活跃成员达到一定的数目，一个群也会有适当的灌水，娱乐一下，好像有点一个小社会的那么点意思。昨天加一个计算机相关的群，它设置了一个问题： 小于89">
+<meta property="og:description" content="人总是有寻找资源的原动力            QQ 群是寻找信息资源的一个重要渠道。优质的专业社群，专业技术问题的探讨、信息共享，给与个体的帮助非常大。日常的闲聊也能让人获得很多乐趣。 昨天在加一个群的时候，它设置了一个有趣的入群问题：              小于899808659的最大质数是？            低头做事 第一感觉是简单，应该能很快做出来，但随">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2015-10-25T05:49:37.000Z">
-<meta property="article:modified_time" content="2023-11-08T05:14:52.467Z">
+<meta property="article:modified_time" content="2024-01-21T14:59:41.345Z">
 <meta property="article:author" content="soul11201">
-<meta property="article:tag" content="流水账">
+<meta property="article:tag" content="素数">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>对一次寻找大素数问题的思考 - coder 随想录</title>
+  <title>寻找大素数 - coder 随想录</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -69,7 +69,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -91,15 +91,17 @@
   
 
   
-
-  
     
   
 
 
 
   
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
 </head>
 
 
@@ -131,7 +133,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -143,7 +145,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -155,7 +157,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -167,7 +169,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -179,7 +181,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -191,7 +193,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -227,7 +229,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="对一次寻找大素数问题的思考"></span>
+            <span id="subtitle" data-typed-text="寻找大素数"></span>
           
         </div>
 
@@ -251,7 +253,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          2k 字
+          1.6k 字
         
       </span>
     
@@ -263,7 +265,7 @@
         
         
           <!-- compatible with older versions-->
-          17 分钟
+          14 分钟
         
       </span>
     
@@ -300,15 +302,20 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">对一次寻找大素数问题的思考</h1>
+            <h1 id="seo-header">寻找大素数</h1>
             
             
               <div class="markdown-body">
                 
-                <h2 id="背景">背景</h2>
-<p>我每过段时间，就会兴趣大发，噼里啪啦加上一堆qq群，一般就是最近在做相关的工作，或者想了解学习相关的知识，到现在已经加了几十群了。qq群对于我来说，一是看大家伙的讨论一些专业技术问题，一是从共享里面下载一些书籍资料，当然一般一个群建立的比较久了，群里活跃成员达到一定的数目，一个群也会有适当的灌水，娱乐一下，好像有点一个小社会的那么点意思。昨天加一个计算机相关的群，它设置了一个问题：</p>
-<pre><code class="hljs">小于899808659的最大质数是？</code></pre>
+                <div class="note note-success">
+            <p>人总是有寻找资源的原动力</p>
+          </div>
+<p>QQ
+群是寻找信息资源的一个重要渠道。优质的专业社群，专业技术问题的探讨、信息共享，给与个体的帮助非常大。日常的闲聊也能让人获得很多乐趣。</p>
+<p>昨天在加一个群的时候，它设置了一个有趣的入群问题：</p>
+<div class="note note-danger">
+            <p>小于899808659的最大质数是？</p>
+          </div>
 <h2 id="低头做事">低头做事</h2>
 <p>第一感觉是<code>简单，应该能很快做出来</code>，但随后也感觉<code>这个数稍微有点大，会不会没自己想想的这么简单</code>，也想到了三种可能能解决这个问题的方案：试除法（复杂度约为n^1.5）、欧拉筛法
 和
@@ -353,11 +360,32 @@ target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%B4%A0%E6%
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E7%AC%94%E8%AE%B0/" class="category-chain-item">笔记</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%B5%81%E6%B0%B4%E8%B4%A6/">#流水账</a>
+        <a href="/tags/%E7%B4%A0%E6%95%B0/" class="print-no-link">#素数</a>
       
     </div>
   
@@ -369,7 +397,7 @@ target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%B4%A0%E6%
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>对一次寻找大素数问题的思考</div>
+      <div>寻找大素数</div>
       <div>http://blog.soul11201.com/2015/10/25/prime-linear-time/</div>
     </div>
     <div class="license-meta">
@@ -393,7 +421,7 @@ target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%B4%A0%E6%
             
               
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
                     <i class="iconfont icon-by"></i>
                   </span>
@@ -414,9 +442,9 @@ target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%B4%A0%E6%
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2015/10/25/prime-linear-time/" title="对一次寻找大素数问题的流水帐">
+                      <a href="/2015/10/30/http-debug/" title="http 请求调试">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">对一次寻找大素数问题的流水帐</span>
+                        <span class="hidden-mobile">http 请求调试</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -516,9 +544,22 @@ target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%B4%A0%E6%
   
 
 
+  
+  
 
 
 
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
 
 
     
@@ -707,6 +748,49 @@ target="_blank" rel="noopener" href="https://zh.wikipedia.org/wiki/%E7%B4%A0%E6%
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
 
   <script defer src="/js/leancloud.js" ></script>
 

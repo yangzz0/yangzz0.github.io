@@ -16,29 +16,27 @@
   <meta name="author" content="soul11201">
   <meta name="keywords" content="">
   
-    <meta name="description" content="Manjaro 上安装 1sudo pacman -S flameshot cheese 设置 flamespot 截图快捷键   jpegoptim 优化 jpg 照片到指定的大小 优化照片到 190kb附近 jpegoptim -S 190 1.jpg">
+    <meta name="description" content="Manjaro 上安装 1sudo pacman -S flameshot cheese 设置 Flamespot 截图快捷键   jpegoptim 优化 jpg 照片到指定的大小 优化照片到 190kb附近 jpegoptim -S 190 1.jpg">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux 截图 拍照神器 flamespot 、 cheese">
+<meta property="og:title" content="Linux 截图 拍照神器 Flamespot 、 cheese">
 <meta property="og:url" content="http://blog.soul11201.com/2020/12/07/flamespot-cheese/index.html">
 <meta property="og:site_name" content="coder 随想录">
-<meta property="og:description" content="Manjaro 上安装 1sudo pacman -S flameshot cheese 设置 flamespot 截图快捷键   jpegoptim 优化 jpg 照片到指定的大小 优化照片到 190kb附近 jpegoptim -S 190 1.jpg">
+<meta property="og:description" content="Manjaro 上安装 1sudo pacman -S flameshot cheese 设置 Flamespot 截图快捷键   jpegoptim 优化 jpg 照片到指定的大小 优化照片到 190kb附近 jpegoptim -S 190 1.jpg">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://blog.soul11201.com/assets/2020-12-07_11-21.png">
 <meta property="article:published_time" content="2020-12-07T03:25:37.000Z">
-<meta property="article:modified_time" content="2023-11-08T05:14:52.456Z">
+<meta property="article:modified_time" content="2024-01-21T15:54:10.842Z">
 <meta property="article:author" content="soul11201">
 <meta property="article:tag" content="技术">
-<meta property="article:tag" content="kde">
-<meta property="article:tag" content="plasma">
-<meta property="article:tag" content="flameshot">
-<meta property="article:tag" content="keyshorts">
+<meta property="article:tag" content="jpegoptim">
+<meta property="article:tag" content="Flamespot">
 <meta property="article:tag" content="快捷键">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="http://blog.soul11201.com/assets/2020-12-07_11-21.png">
   
   
   
-  <title>Linux 截图 拍照神器 flamespot 、 cheese - coder 随想录</title>
+  <title>Linux 截图 拍照神器 Flamespot 、 cheese - coder 随想录</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -76,7 +74,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -98,15 +96,17 @@
   
 
   
-
-  
     
   
 
 
 
   
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
 </head>
 
 
@@ -138,7 +138,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -150,7 +150,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -162,7 +162,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -174,7 +174,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -186,7 +186,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -198,7 +198,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -234,7 +234,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="Linux 截图 拍照神器 flamespot 、 cheese"></span>
+            <span id="subtitle" data-typed-text="Linux 截图 拍照神器 Flamespot 、 cheese"></span>
           
         </div>
 
@@ -258,7 +258,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          107 字
+          31 字
         
       </span>
     
@@ -307,15 +307,14 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">Linux 截图 拍照神器 flamespot 、 cheese</h1>
+            <h1 id="seo-header">Linux 截图 拍照神器 Flamespot 、 cheese</h1>
             
             
               <div class="markdown-body">
                 
                 <h2 id="manjaro-上安装">Manjaro 上安装</h2>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo pacman -S flameshot cheese<br></code></pre></td></tr></table></figure>
-<h2 id="设置-flamespot-截图快捷键">设置 flamespot 截图快捷键</h2>
+<h2 id="设置-flamespot-截图快捷键">设置 Flamespot 截图快捷键</h2>
 <p><img src="/assets/2020-12-07_11-21.png" srcset="/img/loading.gif" lazyload /> <img
 src="/assets/2020-12-07_11-23.png" srcset="/img/loading.gif" lazyload /></p>
 <h2 id="jpegoptim">jpegoptim</h2>
@@ -330,21 +329,38 @@ src="/assets/2020-12-07_11-23.png" srcset="/img/loading.gif" lazyload /></p>
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E6%8A%80%E6%9C%AF/">#技术</a>
+        <a href="/tags/%E6%8A%80%E6%9C%AF/" class="print-no-link">#技术</a>
       
-        <a href="/tags/kde/">#kde</a>
+        <a href="/tags/jpegoptim/" class="print-no-link">#jpegoptim</a>
       
-        <a href="/tags/plasma/">#plasma</a>
+        <a href="/tags/Flamespot/" class="print-no-link">#Flamespot</a>
       
-        <a href="/tags/flameshot/">#flameshot</a>
-      
-        <a href="/tags/keyshorts/">#keyshorts</a>
-      
-        <a href="/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/">#快捷键</a>
+        <a href="/tags/%E5%BF%AB%E6%8D%B7%E9%94%AE/" class="print-no-link">#快捷键</a>
       
     </div>
   
@@ -356,7 +372,7 @@ src="/assets/2020-12-07_11-23.png" srcset="/img/loading.gif" lazyload /></p>
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>Linux 截图 拍照神器 flamespot 、 cheese</div>
+      <div>Linux 截图 拍照神器 Flamespot 、 cheese</div>
       <div>http://blog.soul11201.com/2020/12/07/flamespot-cheese/</div>
     </div>
     <div class="license-meta">
@@ -380,7 +396,7 @@ src="/assets/2020-12-07_11-23.png" srcset="/img/loading.gif" lazyload /></p>
             
               
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
                     <i class="iconfont icon-by"></i>
                   </span>
@@ -503,9 +519,22 @@ src="/assets/2020-12-07_11-23.png" srcset="/img/loading.gif" lazyload /></p>
   
 
 
+  
+  
 
 
 
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
 
 
     
@@ -694,6 +723,49 @@ src="/assets/2020-12-07_11-23.png" srcset="/img/loading.gif" lazyload /></p>
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
 
   <script defer src="/js/leancloud.js" ></script>
 

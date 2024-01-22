@@ -13,23 +13,21 @@
   <meta http-equiv="x-ua-compatible" content="ie=edge">
   
   <meta name="theme-color" content="#2f4154">
-  <meta name="author" content="yang zhen">
+  <meta name="author" content="soul11201">
   <meta name="keywords" content="">
   
-    <meta name="description" content="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 最近在网上找到了一份xspf文件（下载），用simple xml 将其location和title存入到数据库中。源码下载)，因为文件中的空格太多，先用正则表达式将空格去掉，然后用simplexml解析，存到数据库之中。&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;正则表达式真是太神奇了。。。。HTML+PHP语言:">
+    <meta name="description" content="&nbsp; &nbsp; &nbsp; &nbsp; 最近在网上找到了一份xspf文件（下载），用simple xml 将其location和title存入到数据库中。源码下载)，因为文件中的空格太多，先用正则表达式将空格去掉，然后用simplexml解析，存到数据库之中。&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;正则表达式真是太神奇了。。。。HTML+PHP语言:">
 <meta property="og:type" content="article">
 <meta property="og:title" content="simplexml学习笔记---用simplexml读入一个xml文档并插入到数据库中">
 <meta property="og:url" content="http://blog.soul11201.com/2014/02/12/simplexml-simplexmlxml/index.html">
 <meta property="og:site_name" content="coder 随想录">
-<meta property="og:description" content="&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; 最近在网上找到了一份xspf文件（下载），用simple xml 将其location和title存入到数据库中。源码下载)，因为文件中的空格太多，先用正则表达式将空格去掉，然后用simplexml解析，存到数据库之中。&amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp; &amp;nbsp;正则表达式真是太神奇了。。。。HTML+PHP语言:">
+<meta property="og:description" content="&nbsp; &nbsp; &nbsp; &nbsp; 最近在网上找到了一份xspf文件（下载），用simple xml 将其location和title存入到数据库中。源码下载)，因为文件中的空格太多，先用正则表达式将空格去掉，然后用simplexml解析，存到数据库之中。&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;正则表达式真是太神奇了。。。。HTML+PHP语言:">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2014-02-12T14:07:00.002Z">
-<meta property="article:modified_time" content="2023-11-08T05:14:52.435Z">
+<meta property="article:modified_time" content="2024-01-21T14:54:58.511Z">
 <meta property="article:author" content="soul11201">
-<meta property="article:tag" content="笔记">
-<meta property="article:tag" content="总结">
-<meta property="article:tag" content="xml">
-<meta property="article:tag" content="学习">
+<meta property="article:tag" content="PHP">
+<meta property="article:tag" content="XML">
 <meta name="twitter:card" content="summary_large_image">
   
   
@@ -72,7 +70,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -94,15 +92,17 @@
   
 
   
-
-  
     
   
 
 
 
   
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
 </head>
 
 
@@ -134,7 +134,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -146,7 +146,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -158,7 +158,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -170,7 +170,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -182,7 +182,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -194,7 +194,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -254,7 +254,7 @@
         <i class="iconfont icon-chart"></i>
         
           <!-- compatible with older versions-->
-          29k 字
+          5.5k 字
         
       </span>
     
@@ -266,7 +266,7 @@
         
         
           <!-- compatible with older versions-->
-          243 分钟
+          46 分钟
         
       </span>
     
@@ -303,8 +303,7 @@
       <div class="container nopadding-x-md" id="board-ctn">
         <div id="board">
           <article class="post-content mx-auto">
-            <!-- SEO header -->
-            <h1 style="display: none">simplexml学习笔记---用simplexml读入一个xml文档并插入到数据库中</h1>
+            <h1 id="seo-header">simplexml学习笔记---用simplexml读入一个xml文档并插入到数据库中</h1>
             
             
               <div class="markdown-body">
@@ -318,17 +317,41 @@
             <div>
               <div class="post-metas my-3">
   
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8A%80%E6%9C%AF/" class="category-chain-item">技术</a>
+  
+  
+    <span>></span>
+    
+  <a href="/categories/%E6%8A%80%E6%9C%AF/XML/" class="category-chain-item">XML</a>
+  
+  
+
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
   
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/%E7%AC%94%E8%AE%B0/">#笔记</a>
+        <a href="/tags/PHP/" class="print-no-link">#PHP</a>
       
-        <a href="/tags/%E6%80%BB%E7%BB%93/">#总结</a>
-      
-        <a href="/tags/xml/">#xml</a>
-      
-        <a href="/tags/%E5%AD%A6%E4%B9%A0/">#学习</a>
+        <a href="/tags/XML/" class="print-no-link">#XML</a>
       
     </div>
   
@@ -347,7 +370,7 @@
       
         <div class="license-meta-item">
           <div>作者</div>
-          <div>yang zhen</div>
+          <div>soul11201</div>
         </div>
       
       
@@ -364,7 +387,7 @@
             
               
               
-                <a target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
+                <a class="print-no-link" target="_blank" href="https://creativecommons.org/licenses/by/4.0/">
                   <span class="hint--top hint--rounded" aria-label="BY - 署名">
                     <i class="iconfont icon-by"></i>
                   </span>
@@ -487,9 +510,22 @@
   
 
 
+  
+  
 
 
 
+
+
+
+
+
+  <!-- Custom -->
+  <div class="col-lg-7 mx-auto nopadding-x-md">
+    <div class="container custom post-custom mx-auto">
+      <img src="https://octodex.github.com/images/jetpacktocat.png" srcset="/img/loading.gif" lazyload class="rounded mx-auto d-block mt-5" style="width:150px; height:150px;">
+    </div>
+  </div>
 
 
     
@@ -678,6 +714,49 @@
 
 
   <script>Fluid.plugins.imageCaption();</script>
+
+  
+      <script>
+        if (!window.MathJax) {
+          window.MathJax = {
+            tex    : {
+              inlineMath: { '[+]': [['$', '$']] }
+            },
+            loader : {
+              load: ['ui/lazy']
+            },
+            options: {
+              renderActions: {
+                insertedScript: [200, () => {
+                  document.querySelectorAll('mjx-container').forEach(node => {
+                    let target = node.parentNode;
+                    if (target.nodeName.toLowerCase() === 'li') {
+                      target.parentNode.classList.add('has-jax');
+                    }
+                  });
+                }, '', false]
+              }
+            }
+          };
+        } else {
+          MathJax.startup.document.state(0);
+          MathJax.texReset();
+          MathJax.typeset();
+          MathJax.typesetPromise();
+        }
+
+        Fluid.events.registerRefreshCallback(function() {
+          if ('MathJax' in window && MathJax.startup.document && typeof MathJax.startup.document.state === 'function') {
+            MathJax.startup.document.state(0);
+            MathJax.texReset();
+            MathJax.typeset();
+            MathJax.typesetPromise();
+          }
+        });
+      </script>
+    
+
+  <script  src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" ></script>
 
   <script defer src="/js/leancloud.js" ></script>
 

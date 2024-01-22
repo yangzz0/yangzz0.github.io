@@ -60,7 +60,7 @@
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
     Fluid.ctx = Object.assign({}, Fluid.ctx)
-    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.4","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"blog.soul11201.com","root":"/","version":"1.9.7","typing":{"enable":true,"typeSpeed":120,"cursorChar":"|","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":"yv06ESJ2J5KwPSogj0y5aqzY-MdYXbMMI","app_key":"ODnROP22iCurdpYj4tNzJtji","server_url":null,"path":"window.location.pathname","ignore_local":false},"gtag":null},"search_path":"/local-search.xml","include_content_in_search":true};
 
     if (CONFIG.web_analytics.follow_dnt) {
       var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
@@ -82,15 +82,17 @@
   
 
   
-
-  
     
   
 
 
 
   
-<meta name="generator" content="Hexo 6.3.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
+<!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hexo-math@4.0.0/dist/style.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 7.1.0"><link rel="alternate" href="/atom.xml" title="coder 随想录" type="application/atom+xml">
 </head>
 
 
@@ -122,7 +124,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/">
+              <a class="nav-link" href="/" target="_self">
                 <i class="iconfont icon-home-fill"></i>
                 <span>首页</span>
               </a>
@@ -134,7 +136,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/archives/">
+              <a class="nav-link" href="/archives/" target="_self">
                 <i class="iconfont icon-archive-fill"></i>
                 <span>归档</span>
               </a>
@@ -146,7 +148,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/categories/">
+              <a class="nav-link" href="/categories/" target="_self">
                 <i class="iconfont icon-category-fill"></i>
                 <span>分类</span>
               </a>
@@ -158,7 +160,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/tags/">
+              <a class="nav-link" href="/tags/" target="_self">
                 <i class="iconfont icon-tags-fill"></i>
                 <span>标签</span>
               </a>
@@ -170,7 +172,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/about/">
+              <a class="nav-link" href="/about/" target="_self">
                 <i class="iconfont icon-user-fill"></i>
                 <span>关于</span>
               </a>
@@ -182,7 +184,7 @@
           
           
             <li class="nav-item">
-              <a class="nav-link" href="/links/">
+              <a class="nav-link" href="/links/" target="_self">
                 <i class="iconfont icon-link-fill"></i>
                 <span>友链</span>
               </a>
@@ -250,7 +252,7 @@
                 
 
 <div class="list-group">
-  <p class="h4">共计 14 篇文章</p>
+  <p class="h4">共计 6 篇文章</p>
   <hr>
   
   
@@ -297,57 +299,6 @@
     <a href="/2016/08/08/ssh/" class="list-group-item list-group-item-action">
       <time>08-08</time>
       <div class="list-group-item-title">配置ssh使用密钥登录，禁止口令登录</div>
-    </a>
-  
-    
-    <a href="/2016/05/07/2016-05-07-dig/" class="list-group-item list-group-item-action">
-      <time>05-07</time>
-      <div class="list-group-item-title">dig</div>
-    </a>
-  
-    
-    <a href="/2016/03/11/dashjsoverview/" class="list-group-item list-group-item-action">
-      <time>03-11</time>
-      <div class="list-group-item-title">dash 笔记</div>
-    </a>
-  
-    
-      
-      <p class="h5">2015</p>
-    
-    <a href="/2015/12/07/eclipse-mars-php-%E8%87%AA%E5%8A%A8%E8%A1%A5%E5%85%A8%E6%8F%90%E7%A4%BA/" class="list-group-item list-group-item-action">
-      <time>12-07</time>
-      <div class="list-group-item-title">eclipse-mars-php 自动补全提示</div>
-    </a>
-  
-    
-    <a href="/2015/12/07/awk-%E5%A4%84%E7%90%86%E6%97%A5%E5%BF%97/" class="list-group-item list-group-item-action">
-      <time>12-07</time>
-      <div class="list-group-item-title">awk 处理日志</div>
-    </a>
-  
-    
-    <a href="/2015/11/10/ngx-lua/" class="list-group-item list-group-item-action">
-      <time>11-10</time>
-      <div class="list-group-item-title">ngx-lua 笔记总结</div>
-    </a>
-  
-    
-    <a href="/2015/10/23/obs-use/" class="list-group-item list-group-item-action">
-      <time>10-23</time>
-      <div class="list-group-item-title">obs简单使用</div>
-    </a>
-  
-    
-    <a href="/2015/09/23/debug-tools/" class="list-group-item list-group-item-action">
-      <time>09-23</time>
-      <div class="list-group-item-title">调试工具</div>
-    </a>
-  
-    
-    <a href="/2015/08/04/linux-cmd/" class="list-group-item list-group-item-action">
-      <time>08-04</time>
-      <div class="list-group-item-title">linux 下工具命令</div>
     </a>
   
 </div>
