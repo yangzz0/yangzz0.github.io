@@ -185,24 +185,11 @@
     
     
     
-  </entry>
-  
-  
-  
-  <entry>
-    <title>生活在这个时代面临的问题</title>
-    <link href="/2022/03/04/the-questions-we-faced-and-boring/"/>
-    <url>/2022/03/04/the-questions-we-faced-and-boring/</url>
-    
-    <content type="html"><![CDATA[<h2 id="从几件小事情说起">从几件小事情说起</h2><h3 id="燃气灶">燃气灶</h3><h3 id="section"></h3><p><sup id="fnref:2" class="footnote-ref"><a href="#fn:2" rel="footnote"><spanclass="hint--top hint--rounded"aria-label="http://opinion.people.com.cn/n1/2018/0330/c1003-29897549.html">[2]</span></a></sup></p><p><sup id="fnref:3" class="footnote-ref"><a href="#fn:3" rel="footnote"><spanclass="hint--top hint--rounded"aria-label="https://www.zhihu.com/question/519964076">[3]</span></a></sup></p><section class="footnotes"><div class="footnote-list"><ol><li><span id="fn:2"class="footnote-text"><span>http://opinion.people.com.cn/n1/2018/0330/c1003-29897549.html<a href="#fnref:2" rev="footnote" class="footnote-backref">↩︎</a></span></span></li><li><span id="fn:3"class="footnote-text"><span>https://www.zhihu.com/question/519964076<a href="#fnref:3" rev="footnote" class="footnote-backref">↩︎</a></span></span></li></ol></div></section>]]></content>
-    
-    
-    <categories>
+    <tags>
       
-      <category>随笔</category>
+      <tag>Linux</tag>
       
-    </categories>
-    
+    </tags>
     
   </entry>
   
@@ -238,7 +225,7 @@
     <link href="/2021/12/27/yii2-queue/"/>
     <url>/2021/12/27/yii2-queue/</url>
     
-    <content type="html"><![CDATA[<h2 id="简介">简介</h2><p>一个流行的 Yii2 队列扩展，支持驱动支持DB,Redis,RabbitMQ,Bestalk,German等十多种技术架构</p><p>源码地址: https://github.com/yiisoft/yii2-queue</p><p>下面对以 Redis 为驱动的实现源码进行简要分析</p><h2 id="数据结构">数据结构</h2><table><thead><tr><th>名称</th><th>redis 数据类型</th><th>作用</th></tr></thead><tbody><tr><td>$(channel).moving_lock</td><td>string</td><td>分布式锁，部分队列操作，需要进行加锁处理</td></tr><tr><td>$(channel).waiting</td><td>list</td><td>待处理消息队列</td></tr><tr><td>$(channel).reserved</td><td>zset</td><td>重试队列，用于业务处理失败情况下，进行下次重试</td></tr><tr><td>$(channel).delayed</td><td>zset</td><td>延迟队列，对消息进行延迟处理</td></tr><tr><td>$(channel).attempts</td><td>hash</td><td>存存每条消息重试处理次数</td></tr><tr><td>$(channel).messages</td><td>hash</td><td>完整的消息</td></tr></tbody></table><h2 id="流程">流程</h2><p><img src="/assets/imgs/2024-07-01-yii2-queue-redis-3.png"title="主流程" alt="alt text" /> <imgsrc="/assets/imgs/2024-07-01-yii2-queue-redis.png" title="reserve"alt="alt text" /> <imgsrc="/assets/imgs/2024-07-01-yii2-queue-redis-2.png" title="moveExpire"alt="alt text" /></p><h2 id="pr">PR</h2><p><ahref="https://github.com/yiisoft/yii2-queue/pull/516/files">yii2-queue#516</a></p>]]></content>
+    <content type="html"><![CDATA[<h2 id="简介">简介</h2><p>一个流行的 Yii2 队列扩展，支持驱动支持DB,Redis,RabbitMQ,Bestalk,German等十多种技术架构</p><p>源码地址: https://github.com/yiisoft/yii2-queue</p><p>下面对以 Redis 为驱动的实现源码进行简要分析</p><h2 id="特性">特性</h2><ol type="1"><li>延迟消息</li><li>重试机制</li><li>消息主题</li><li>消费者组</li><li>消费确认</li></ol><h2 id="数据结构">数据结构</h2><table><thead><tr><th>名称</th><th>redis 数据类型</th><th>作用</th></tr></thead><tbody><tr><td>$(channel).moving_lock</td><td>string</td><td>分布式锁，部分队列操作，需要进行加锁处理</td></tr><tr><td>$(channel).waiting</td><td>list</td><td>待处理消息队列</td></tr><tr><td>$(channel).reserved</td><td>zset</td><td>重试队列，用于业务处理失败情况下，进行下次重试</td></tr><tr><td>$(channel).delayed</td><td>zset</td><td>延迟队列，对消息进行延迟处理</td></tr><tr><td>$(channel).attempts</td><td>hash</td><td>存存每条消息重试处理次数</td></tr><tr><td>$(channel).messages</td><td>hash</td><td>完整的消息</td></tr></tbody></table><h2 id="流程">流程</h2><p><img src="/assets/imgs/2024-07-01-yii2-queue-redis-3.png"title="主流程" alt="alt text" /> <imgsrc="/assets/imgs/2024-07-01-yii2-queue-redis.png" title="reserve"alt="alt text" /> <imgsrc="/assets/imgs/2024-07-01-yii2-queue-redis-2.png" title="moveExpire"alt="alt text" /></p><h2 id="pr">PR</h2><p><ahref="https://github.com/yiisoft/yii2-queue/pull/516/files">yii2-queue#516</a></p>]]></content>
     
     
     <categories>
@@ -265,19 +252,11 @@
     <link href="/2021/12/23/go-invalid-mem-address/"/>
     <url>/2021/12/23/go-invalid-mem-address/</url>
     
-    <content type="html"><![CDATA[<h2 id="背景与过程">背景与过程</h2><p>维护的一个线上工单同步项目，业务方反馈工单不能同步。线上排查过程简单总结一下。</p><p>查看定时任务，没什么问题，每分钟会检测进程是否存活，挂掉的会拉起来，并且每天凌晨也会重启一下进程。</p><p>查看进程状态也是在<code>S</code>态，运行时间也无异常</p><p>日志中有一条如下记录：</p><figure class="highlight awk"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs awk">invalid memory address or nil pointer dereference<br><span class="hljs-keyword">exit</span>....<br></code></pre></td></tr></table></figure><p>很奇怪，日志记录 exit，但是进程却没有退出。</p><p>排查源码，结构逻辑类似下面代码样例</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br><span class="hljs-string">&quot;fmt&quot;</span><br><span class="hljs-string">&quot;github.com/Shopify/sarama&quot;</span><br><span class="hljs-string">&quot;github.com/astaxie/beego/logs&quot;</span><br>cluster <span class="hljs-string">&quot;github.com/bsm/sarama-cluster&quot;</span><br><span class="hljs-string">&quot;os&quot;</span><br><span class="hljs-string">&quot;os/signal&quot;</span><br><span class="hljs-string">&quot;runtime/debug&quot;</span><br><span class="hljs-string">&quot;syscall&quot;</span><br>)<br><br><span class="hljs-keyword">var</span> (<br>cfg <span class="hljs-keyword">struct</span> &#123;<br>Kafka <span class="hljs-keyword">struct</span> &#123;<br>Addrs  []<span class="hljs-type">string</span><br>Group  <span class="hljs-type">string</span><br>Topics []<span class="hljs-type">string</span><br>&#125;<br>&#125;<br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">bussiness_logic</span><span class="hljs-params">(message *sarama.ConsumerMessage)</span></span> &#123;<br><span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;pass&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br><br><span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br><br><span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br><span class="hljs-keyword">if</span> err := <span class="hljs-built_in">recover</span>(); err != <span class="hljs-literal">nil</span> &#123;<br>fmt.Println(err)<br>fmt.Println(<span class="hljs-string">&quot;exit....&quot;</span>)<br>&#125;<br>&#125;()<br><br><span class="hljs-keyword">var</span> (<br>kafkaConfig   = cluster.NewConfig()<br>KafkaConsumer *cluster.Consumer<br>err           <span class="hljs-type">error</span><br>)<br><br>kafkaConfig.Consumer.Return.Errors = <span class="hljs-literal">true</span><br>kafkaConfig.Group.Return.Notifications = <span class="hljs-literal">true</span><br><br><span class="hljs-keyword">if</span> KafkaConsumer, err = cluster.NewConsumer(cfg.Kafka.Addrs, cfg.Kafka.Group, cfg.Kafka.Topics, kafkaConfig); err != <span class="hljs-literal">nil</span> &#123;<br><span class="hljs-built_in">panic</span>(err)<br>&#125;<br><br><span class="hljs-keyword">defer</span> KafkaConsumer.Close()<br><br><span class="hljs-keyword">var</span> (<br>message      *sarama.ConsumerMessage<br>notification *cluster.Notification<br>)<br><br><span class="hljs-keyword">for</span> &#123;<br><span class="hljs-keyword">select</span> &#123;<br><span class="hljs-keyword">case</span> message = &lt;-KafkaConsumer.Messages():<br>bussiness_logic(message)<br><span class="hljs-keyword">case</span> notification = &lt;-KafkaConsumer.Notifications():<br>logs.Info(<span class="hljs-string">&quot;kafka notification:%v&quot;</span>, notification)<br><span class="hljs-keyword">case</span> err = &lt;-KafkaConsumer.Errors():<br>logs.Info(<span class="hljs-string">&quot;kafka error:%v&quot;</span>, err)<br>&#125;<br>&#125;<br>&#125;()<br><br>c := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> os.Signal, <span class="hljs-number">1</span>)<br>signal.Notify(c)<br>signal.Ignore(syscall.SIGPIPE, syscall.SIGWINCH, syscall.SIGHUP, syscall.SIGURG)<br><br>s := &lt;-c<br>fmt.Println(s)<br>debug.PrintStack()<br>&#125;<br><br></code></pre></td></tr></table></figure><p>bussiness_logic 出现指针访问异常后，go 协程会被回收，执行<code>defer</code>语句。问题出在了这里，记录完日志后，没调用<code>os.Exit(1)</code></p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs go">      <span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br><span class="hljs-keyword">if</span> err := <span class="hljs-built_in">recover</span>(); err != <span class="hljs-literal">nil</span> &#123;<br>fmt.Println(err)<br>fmt.Println(<span class="hljs-string">&quot;exit....&quot;</span>)<br>&#125;<br>&#125;()<br></code></pre></td></tr></table></figure><h2 id="消息为什么会丢失">消息为什么会丢失？</h2><p><img src="/assets/go-sarama.consumer-3.png" /></p><ul><li>协程 hbloop： 间隔一段时间向broker发送心跳的</li><li>协程 parseResponse,responseFeeder：会将获取到的 kafka批量消息存到内存 <code>[]*ConsumerMmessage&#123;&#125;</code> 中,并通过管道<code>chan *ConsumerMmessage</code>发送出去，应用程序从而能一条一条的消费</li></ul><h3 id="原因">原因</h3><p>应用程序在消费其中一条数据时，业务处理逻辑处理出现内存异常，协程退出，系统回收。内存中剩余未消费的消息旧在哪里一直不会被消费，等到进程通过信号终止时，这些消息被丢弃</p><h2 id="同类问题-demo">同类问题 demo</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br><span class="hljs-string">&quot;fmt&quot;</span><br><span class="hljs-string">&quot;sync&quot;</span><br><span class="hljs-string">&quot;time&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br><br><span class="hljs-keyword">var</span> f <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span><br><br>c := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br>d := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br>wg := sync.WaitGroup&#123;&#125;<br>wg.Add(<span class="hljs-number">1</span>)<br>    <br>f = <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br><span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br><span class="hljs-keyword">if</span> err := <span class="hljs-built_in">recover</span>(); err != <span class="hljs-literal">nil</span> &#123;<br>fmt.Println(err)<br>fmt.Println(<span class="hljs-string">&quot;exit....&quot;</span>)<br>&#125;<br>&#125;()<br><br><span class="hljs-keyword">for</span> data := <span class="hljs-keyword">range</span> d &#123;<br>fmt.Printf(<span class="hljs-string">&quot;cosume %d\n &quot;</span>, data)<br><br><span class="hljs-keyword">var</span> i *<span class="hljs-type">int</span><br>*i = <span class="hljs-number">1</span><br>fmt.Println(i, &amp;i, *i)<br>&#125;<br><br>&#125;<br><br><span class="hljs-keyword">go</span> f()<br><br><span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br><span class="hljs-keyword">for</span> &#123;<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;-\n&quot;</span>)<br><span class="hljs-keyword">select</span> &#123;<br><span class="hljs-keyword">case</span> x, _ := &lt;-c:<br>d &lt;- x<br>&#125;<br>&#125;<br>&#125;()<br><br><span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++ &#123;<br>fmt.Printf(<span class="hljs-string">&quot;producing %d:\n&quot;</span>, i)<br>c &lt;- i<br>&#125;<br>&#125;()<br>    <br>    <span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>t := time.Tick(<span class="hljs-number">1</span> * time.Second)<br><br><span class="hljs-keyword">for</span> &#123;<br><span class="hljs-keyword">select</span> &#123;<br><span class="hljs-keyword">case</span> &lt;-t:<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;--\n&quot;</span>)<br><br>&#125;<br>&#125;<br>&#125;()<br><br>time.Sleep(<span class="hljs-number">1</span> * time.Second)<br><br>wg.Wait()<br><br>&#125;<br></code></pre></td></tr></table></figure>]]></content>
+    <content type="html"><![CDATA[<h2 id="背景与过程">背景与过程</h2><p>维护的一个线上工单同步项目，业务方反馈工单不能同步。线上排查过程简单总结一下。</p><p>查看定时任务，没什么问题，每分钟会检测进程是否存活，挂掉的会拉起来，并且每天凌晨也会重启一下进程。</p><p>查看进程状态也是在<code>S</code>态，运行时间也无异常</p><p>日志中有一条如下记录：</p><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs text">invalid memory address or nil pointer dereference<br>exit....<br></code></pre></td></tr></table></figure><p>很奇怪，日志记录 exit，但是进程却没有退出。</p><p>排查源码，结构逻辑类似下面代码样例</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br><span class="hljs-string">&quot;fmt&quot;</span><br><span class="hljs-string">&quot;github.com/Shopify/sarama&quot;</span><br><span class="hljs-string">&quot;github.com/astaxie/beego/logs&quot;</span><br>cluster <span class="hljs-string">&quot;github.com/bsm/sarama-cluster&quot;</span><br><span class="hljs-string">&quot;os&quot;</span><br><span class="hljs-string">&quot;os/signal&quot;</span><br><span class="hljs-string">&quot;runtime/debug&quot;</span><br><span class="hljs-string">&quot;syscall&quot;</span><br>)<br><br><span class="hljs-keyword">var</span> (<br>cfg <span class="hljs-keyword">struct</span> &#123;<br>Kafka <span class="hljs-keyword">struct</span> &#123;<br>Addrs  []<span class="hljs-type">string</span><br>Group  <span class="hljs-type">string</span><br>Topics []<span class="hljs-type">string</span><br>&#125;<br>&#125;<br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">bussiness_logic</span><span class="hljs-params">(message *sarama.ConsumerMessage)</span></span> &#123;<br><span class="hljs-built_in">println</span>(<span class="hljs-string">&quot;pass&quot;</span>)<br>&#125;<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br><br><span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br><br><span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br><span class="hljs-keyword">if</span> err := <span class="hljs-built_in">recover</span>(); err != <span class="hljs-literal">nil</span> &#123;<br>fmt.Println(err)<br>fmt.Println(<span class="hljs-string">&quot;exit....&quot;</span>)<br>&#125;<br>&#125;()<br><br><span class="hljs-keyword">var</span> (<br>kafkaConfig   = cluster.NewConfig()<br>KafkaConsumer *cluster.Consumer<br>err           <span class="hljs-type">error</span><br>)<br><br>kafkaConfig.Consumer.Return.Errors = <span class="hljs-literal">true</span><br>kafkaConfig.Group.Return.Notifications = <span class="hljs-literal">true</span><br><br><span class="hljs-keyword">if</span> KafkaConsumer, err = cluster.NewConsumer(cfg.Kafka.Addrs, cfg.Kafka.Group, cfg.Kafka.Topics, kafkaConfig); err != <span class="hljs-literal">nil</span> &#123;<br><span class="hljs-built_in">panic</span>(err)<br>&#125;<br><br><span class="hljs-keyword">defer</span> KafkaConsumer.Close()<br><br><span class="hljs-keyword">var</span> (<br>message      *sarama.ConsumerMessage<br>notification *cluster.Notification<br>)<br><br><span class="hljs-keyword">for</span> &#123;<br><span class="hljs-keyword">select</span> &#123;<br><span class="hljs-keyword">case</span> message = &lt;-KafkaConsumer.Messages():<br>bussiness_logic(message)<br><span class="hljs-keyword">case</span> notification = &lt;-KafkaConsumer.Notifications():<br>logs.Info(<span class="hljs-string">&quot;kafka notification:%v&quot;</span>, notification)<br><span class="hljs-keyword">case</span> err = &lt;-KafkaConsumer.Errors():<br>logs.Info(<span class="hljs-string">&quot;kafka error:%v&quot;</span>, err)<br>&#125;<br>&#125;<br>&#125;()<br><br>c := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> os.Signal, <span class="hljs-number">1</span>)<br>signal.Notify(c)<br>signal.Ignore(syscall.SIGPIPE, syscall.SIGWINCH, syscall.SIGHUP, syscall.SIGURG)<br><br>s := &lt;-c<br>fmt.Println(s)<br>debug.PrintStack()<br>&#125;<br><br></code></pre></td></tr></table></figure><p>bussiness_logic 出现指针访问异常后，go 协程会被回收，执行<code>defer</code>语句。问题出在了这里，记录完日志后，没调用<code>os.Exit(1)</code></p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs go">      <span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br><span class="hljs-keyword">if</span> err := <span class="hljs-built_in">recover</span>(); err != <span class="hljs-literal">nil</span> &#123;<br>fmt.Println(err)<br>fmt.Println(<span class="hljs-string">&quot;exit....&quot;</span>)<br>&#125;<br>&#125;()<br></code></pre></td></tr></table></figure><h2 id="消息为什么会丢失">消息为什么会丢失？</h2><p><img src="/assets/go-sarama.consumer-3.png" /></p><ul><li>协程 hbloop： 间隔一段时间向broker发送心跳的</li><li>协程 parseResponse,responseFeeder：会将获取到的 kafka批量消息存到内存 <code>[]*ConsumerMmessage&#123;&#125;</code> 中,并通过管道<code>chan *ConsumerMmessage</code>发送出去，应用程序从而能一条一条的消费</li></ul><h3 id="原因">原因</h3><p>应用程序在消费其中一条数据时，业务处理逻辑处理出现内存异常，协程退出，系统回收。内存中剩余未消费的消息旧在哪里一直不会被消费，等到进程通过信号终止时，这些消息被丢弃</p><h2 id="同类问题-demo">同类问题 demo</h2><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><code class="hljs go"><span class="hljs-keyword">package</span> main<br><br><span class="hljs-keyword">import</span> (<br><span class="hljs-string">&quot;fmt&quot;</span><br><span class="hljs-string">&quot;sync&quot;</span><br><span class="hljs-string">&quot;time&quot;</span><br>)<br><br><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">main</span><span class="hljs-params">()</span></span> &#123;<br><br><span class="hljs-keyword">var</span> f <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span><br><br>c := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br>d := <span class="hljs-built_in">make</span>(<span class="hljs-keyword">chan</span> <span class="hljs-type">int</span>)<br>wg := sync.WaitGroup&#123;&#125;<br>wg.Add(<span class="hljs-number">1</span>)<br>    <br>f = <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br><span class="hljs-keyword">defer</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br><span class="hljs-keyword">if</span> err := <span class="hljs-built_in">recover</span>(); err != <span class="hljs-literal">nil</span> &#123;<br>fmt.Println(err)<br>fmt.Println(<span class="hljs-string">&quot;exit....&quot;</span>)<br>&#125;<br>&#125;()<br><br><span class="hljs-keyword">for</span> data := <span class="hljs-keyword">range</span> d &#123;<br>fmt.Printf(<span class="hljs-string">&quot;cosume %d\n &quot;</span>, data)<br><br><span class="hljs-keyword">var</span> i *<span class="hljs-type">int</span><br>*i = <span class="hljs-number">1</span><br>fmt.Println(i, &amp;i, *i)<br>&#125;<br><br>&#125;<br><br><span class="hljs-keyword">go</span> f()<br><br><span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br><span class="hljs-keyword">for</span> &#123;<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;-\n&quot;</span>)<br><span class="hljs-keyword">select</span> &#123;<br><span class="hljs-keyword">case</span> x, _ := &lt;-c:<br>d &lt;- x<br>&#125;<br>&#125;<br>&#125;()<br><br><span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br><span class="hljs-keyword">for</span> i := <span class="hljs-number">0</span>; i &lt; <span class="hljs-number">100</span>; i++ &#123;<br>fmt.Printf(<span class="hljs-string">&quot;producing %d:\n&quot;</span>, i)<br>c &lt;- i<br>&#125;<br>&#125;()<br>    <br>    <span class="hljs-keyword">go</span> <span class="hljs-function"><span class="hljs-keyword">func</span><span class="hljs-params">()</span></span> &#123;<br>t := time.Tick(<span class="hljs-number">1</span> * time.Second)<br><br><span class="hljs-keyword">for</span> &#123;<br><span class="hljs-keyword">select</span> &#123;<br><span class="hljs-keyword">case</span> &lt;-t:<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&quot;--\n&quot;</span>)<br><br>&#125;<br>&#125;<br>&#125;()<br><br>time.Sleep(<span class="hljs-number">1</span> * time.Second)<br><br>wg.Wait()<br><br>&#125;<br></code></pre></td></tr></table></figure>]]></content>
     
-    
-    <categories>
-      
-      <category>技术内幕</category>
-      
-    </categories>
     
     
     <tags>
-      
-      <tag>troubleshooting</tag>
       
       <tag>Golang</tag>
       
@@ -334,20 +313,7 @@
   
   
   <entry>
-    <title>一些优秀的 PHP 参考资料</title>
-    <link href="/2021/11/10/opt/"/>
-    <url>/2021/11/10/opt/</url>
-    
-    <content type="html"><![CDATA[<p>https://learnku.com/php/t/43336https://github.com/soul11201/php-core-hackhttps://www.kancloud.cn/kancloud/php-internals/42741</p><p>https://www.php.net/manual/zh/function.sys-get-temp-dir.phphttps://github.com/php/php-src/blob/af6c11c5f060870d052a2b765dc634d9e47d0f18/main/php_open_temporary_file.c#L238</p>]]></content>
-    
-    
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>Python 多线程处理任务</title>
+    <title>使用 Python 多线程导入美餐就餐数据</title>
     <link href="/2021/11/05/python-thread/"/>
     <url>/2021/11/05/python-thread/</url>
     
@@ -364,6 +330,8 @@
     <tags>
       
       <tag>Python</tag>
+      
+      <tag>并发</tag>
       
     </tags>
     
@@ -389,6 +357,10 @@
     <tags>
       
       <tag>C</tag>
+      
+      <tag>Linux</tag>
+      
+      <tag>并发</tag>
       
     </tags>
     
@@ -438,7 +410,9 @@
     
     <tags>
       
-      <tag>troubleshooting</tag>
+      <tag>工作流</tag>
+      
+      <tag>Ruby</tag>
       
     </tags>
     
@@ -464,6 +438,8 @@
     <tags>
       
       <tag>PHP</tag>
+      
+      <tag>Linux</tag>
       
       <tag>Yii2</tag>
       
@@ -567,6 +543,8 @@
     
     <tags>
       
+      <tag>Linux</tag>
+      
       <tag>Docker</tag>
       
     </tags>
@@ -591,6 +569,8 @@
     
     
     <tags>
+      
+      <tag>Linux</tag>
       
       <tag>Rust</tag>
       
@@ -636,6 +616,8 @@
     
     
     <categories>
+      
+      <category>技术内幕</category>
       
       <category>音视频</category>
       
@@ -688,7 +670,7 @@
     
     <tags>
       
-      <tag>Rust</tag>
+      <tag>工作流</tag>
       
       <tag>Python</tag>
       
@@ -767,6 +749,8 @@
     
     <tags>
       
+      <tag>Linux</tag>
+      
       <tag>Docker</tag>
       
     </tags>
@@ -796,30 +780,7 @@
       
       <tag>Linux</tag>
       
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>在 Emacs 中读邮件</title>
-    <link href="/2020/11/16/emacs-email/"/>
-    <url>/2020/11/16/emacs-email/</url>
-    
-    <content type="html"><![CDATA[<p>http://kimi.im/2019-03-31-emacs-offlineimap-mu4e-mail-client</p><p>https://coldnew.github.io/6a7aa5c1/</p><p>https://www.djcbsoftware.nl/code/mu/mu4e/Gmail-configuration.html</p>]]></content>
-    
-    
-    <categories>
-      
-      <category>技术</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>Emacs</tag>
+      <tag>工作流</tag>
       
     </tags>
     
@@ -844,6 +805,8 @@
     
     <tags>
       
+      <tag>Linux</tag>
+      
       <tag>音视频</tag>
       
     </tags>
@@ -857,7 +820,7 @@
     <link href="/2020/10/16/arch-rpi-salt-cups/"/>
     <url>/2020/10/16/arch-rpi-salt-cups/</url>
     
-    <content type="html"><![CDATA[<h2 id="树莓派安装-archlinux">树莓派安装 ArchLinux</h2><p>https://qsctech-sange.github.io/arch-on-Raspberrypi.html</p><p>https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os/</p><h3 id="pacman-guide">pacman guide</h3><p>https://kaosx.us/docs/pacman/</p><h2 id="archlinux-配置网络">ArchLinux 配置网络</h2><p>网线与 wifi 同时启用，网线优先级更高。</p><h3 id="iproute">iproute</h3><p>https://blog.csdn.net/leshami/article/details/78021859</p><h3 id="dhcpd">dhcpd</h3><p>https://wiki.archlinux.org/index.php/Dhcpcd</p><h3 id="wpa_supplicant">wpa_supplicant</h3><p>https://w1.fi/cgit/hostap/plain/wpa_supplicant/READMEhttps://wiki.archlinux.org/index.php/Wpa_supplicant</p><p>https://www.zcfy.cc/article/how-to-update-wifi-network-password-from-terminal-in-arch-linux</p><p>https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-4</p><h2 id="archlinux-安装-cups">ArchLinux 安装 Cups</h2><pre><code class="hljs">pacman -Syy cups cups-pdf colord ipp-usb logrotate docx2txt  antiword foomatic-db-nonfree foomatic-db-engine foomatic-db  foomatic-db-gutenprint-ppds  gutenprint foomatic-db-nonfree-ppds  gsfonts ghostscript hplip</code></pre><p>https://wiki.archlinux.org/index.php/CUPS</p><p>https://developers.hp.com/hp-linux-imaging-and-printing/about</p><p>https://docs.oracle.com/cd/E26926_01/html/E25812/gllhj.html#gjokv</p><h3 id="cups-作为-systemd-服务">cups 作为 systemd 服务</h3><p>https://superuser.com/questions/490713/arch-linux-cannot-start-cups-service-with-systemdhttp://www.ruanyifeng.com/blog/2016/03/systemd-tutorial-commands.html</p><h3 id="打印管理----基于-cups">打印管理 -- 基于 Cups</h3><p>https://blog.csdn.net/lhf_tiger/article/details/8055380</p><h3 id="cups-pdf">Cups Pdf</h3><p>Ubuntu18.04 配置Cups PDF虚拟打印机服务https://my.oschina.net/u/4400737/blog/3244045</p><p>https://www.archlinux.org/packages/extra/x86_64/cups-pdf/</p><h2 id="saltstacks-管理树莓派">Saltstacks 管理树莓派</h2><p><ahref="https://www.packtpub.com/product/learning-saltstack-second-edition/9781785881909">LearningSaltStack - Second Edition</a></p><h3 id="安装-saltstacks">安装 Saltstacks</h3><p>https://docs.saltstack.com/en/latest/topics/installation/index.html#quick-install</p><p>https://github.com/saltstack/salt-bootstrap ### salt minion id如何生成？ ###</p><pre><code class="hljs">cat /etc/machine-id| xargs -n 1 hostnamectl set-hostname | hostnamectl &amp;&amp; cat /etc/hostname</code></pre><h4 id="machine-id-调研">machine id 调研</h4><p>http://manpages.ubuntu.com/manpages/bionic/man5/machine-id.5.htmlhttps://jlk.fjfi.cvut.cz/arch/manpages/man/machine-id.5.zh_CNhttps://unix.stackexchange.com/questions/402999/is-it-ok-to-change-etc-machine-id</p><h3 id="管理命令">管理命令</h3><p>https://blog.51cto.com/6226001001/1909013</p><h3 id="s3-文件下载">s3 文件下载</h3><p>https://salt-zh.readthedocs.io/en/latest/ref/modules/all/salt.modules.s3.html</p><h3 id="salt-api">salt-api</h3><p>https://jaminzhang.github.io/saltstack/SaltStack-API-Config-and-Usage/</p><p>https://blog.51cto.com/6226001001/1909013</p><h3 id="todo-----saltstack-多-master-架构">[TODO] --- SaltStack 多Master 架构</h3><p>https://jaminzhang.github.io/saltstack/SaltStack-MultiMaster-Architecture/</p><h3 id="salt-事件转发到-普罗米修斯-监控">salt 事件转发到 普罗米修斯监控</h3>]]></content>
+    <content type="html"><![CDATA[<h2 id="技术栈">技术栈</h2><p><img src="/imgs/2020-10-16-cloud.print.drawio.png" /></p><h2 id="树莓派安装-archlinux">树莓派安装 ArchLinux</h2><p>https://qsctech-sange.github.io/arch-on-Raspberrypi.html</p><p>https://mirrors.tuna.tsinghua.edu.cn/archlinuxarm/os/</p><h3 id="pacman-guide">pacman guide</h3><p>https://kaosx.us/docs/pacman/</p><h2 id="archlinux-配置网络">ArchLinux 配置网络</h2><p>网线与 wifi 同时启用，网线优先级更高。</p><h3 id="iproute">iproute</h3><p>https://blog.csdn.net/leshami/article/details/78021859</p><h3 id="dhcpd">dhcpd</h3><p>https://wiki.archlinux.org/index.php/Dhcpcd</p><h3 id="wpa_supplicant">wpa_supplicant</h3><p>https://w1.fi/cgit/hostap/plain/wpa_supplicant/READMEhttps://wiki.archlinux.org/index.php/Wpa_supplicant</p><p>https://www.zcfy.cc/article/how-to-update-wifi-network-password-from-terminal-in-arch-linux</p><p>https://archlinuxarm.org/platforms/armv8/broadcom/raspberry-pi-4</p><h2 id="archlinux-安装-cups">ArchLinux 安装 Cups</h2><pre><code class="hljs">pacman -Syy cups cups-pdf colord ipp-usb logrotate docx2txt  antiword foomatic-db-nonfree foomatic-db-engine foomatic-db  foomatic-db-gutenprint-ppds  gutenprint foomatic-db-nonfree-ppds  gsfonts ghostscript hplip</code></pre><p>https://wiki.archlinux.org/index.php/CUPS</p><p>https://developers.hp.com/hp-linux-imaging-and-printing/about</p><p>https://docs.oracle.com/cd/E26926_01/html/E25812/gllhj.html#gjokv</p><h3 id="cups-作为-systemd-服务">cups 作为 systemd 服务</h3><p>https://superuser.com/questions/490713/arch-linux-cannot-start-cups-service-with-systemdhttp://www.ruanyifeng.com/blog/2016/03/systemd-tutorial-commands.html</p><h3 id="打印管理----基于-cups">打印管理 -- 基于 Cups</h3><p>https://blog.csdn.net/lhf_tiger/article/details/8055380</p><h3 id="cups-pdf">Cups Pdf</h3><p>Ubuntu18.04 配置Cups PDF虚拟打印机服务https://my.oschina.net/u/4400737/blog/3244045</p><p>https://www.archlinux.org/packages/extra/x86_64/cups-pdf/</p><h2 id="saltstacks-管理树莓派">Saltstacks 管理树莓派</h2><p><ahref="https://www.packtpub.com/product/learning-saltstack-second-edition/9781785881909">LearningSaltStack - Second Edition</a></p><h3 id="安装-saltstacks">安装 Saltstacks</h3><p>https://docs.saltstack.com/en/latest/topics/installation/index.html#quick-install</p><p>https://github.com/saltstack/salt-bootstrap ### salt minion id如何生成？ ###</p><pre><code class="hljs">cat /etc/machine-id| xargs -n 1 hostnamectl set-hostname | hostnamectl &amp;&amp; cat /etc/hostname</code></pre><h4 id="machine-id-调研">machine id 调研</h4><p>http://manpages.ubuntu.com/manpages/bionic/man5/machine-id.5.htmlhttps://jlk.fjfi.cvut.cz/arch/manpages/man/machine-id.5.zh_CNhttps://unix.stackexchange.com/questions/402999/is-it-ok-to-change-etc-machine-id</p><h3 id="管理命令">管理命令</h3><p>https://blog.51cto.com/6226001001/1909013</p><h3 id="s3-文件下载">s3 文件下载</h3><p>https://salt-zh.readthedocs.io/en/latest/ref/modules/all/salt.modules.s3.html</p><h3 id="salt-api">salt-api</h3><p>https://jaminzhang.github.io/saltstack/SaltStack-API-Config-and-Usage/</p><p>https://blog.51cto.com/6226001001/1909013</p><h3 id="todo-----saltstack-多-master-架构">[TODO] --- SaltStack 多Master 架构</h3><p>https://jaminzhang.github.io/saltstack/SaltStack-MultiMaster-Architecture/</p><h3 id="salt-事件转发到-普罗米修斯-监控">salt 事件转发到 普罗米修斯监控</h3>]]></content>
     
     
     <categories>
@@ -869,7 +832,11 @@
     
     <tags>
       
+      <tag>Linux</tag>
+      
       <tag>解决方案</tag>
+      
+      <tag>Saltstack</tag>
       
     </tags>
     
@@ -943,6 +910,8 @@
     
     
     <tags>
+      
+      <tag>Linux</tag>
       
       <tag>工作流</tag>
       
@@ -1019,32 +988,11 @@
     
     <tags>
       
+      <tag>PHP</tag>
+      
       <tag>Yii2</tag>
       
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>curl 几个 timeout 相关的配置项</title>
-    <link href="/2020/03/23/curl-timeout-opt/"/>
-    <url>/2020/03/23/curl-timeout-opt/</url>
-    
-    <content type="html"><![CDATA[]]></content>
-    
-    
-    <categories>
-      
-      <category>系统编程</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>PHP</tag>
+      <tag>工作流</tag>
       
     </tags>
     
@@ -1070,6 +1018,8 @@
     <tags>
       
       <tag>C</tag>
+      
+      <tag>Linux</tag>
       
     </tags>
     
@@ -1162,7 +1112,7 @@
     
     <categories>
       
-      <category>随笔</category>
+      <category>工作</category>
       
     </categories>
     
@@ -1181,7 +1131,7 @@
     
     <categories>
       
-      <category>随笔</category>
+      <category>工作</category>
       
     </categories>
     
@@ -1200,7 +1150,7 @@
     
     <categories>
       
-      <category>随笔</category>
+      <category>工作</category>
       
     </categories>
     
@@ -1219,7 +1169,7 @@
     
     <categories>
       
-      <category>随笔</category>
+      <category>工作</category>
       
     </categories>
     
@@ -1275,33 +1225,6 @@
       <tag>PHP</tag>
       
       <tag>Lisp</tag>
-      
-    </tags>
-    
-  </entry>
-  
-  
-  
-  <entry>
-    <title>weiboad/kafka-php 数据丢失故障排查</title>
-    <link href="/2018/04/08/weiboad-kafka-socket-bug/"/>
-    <url>/2018/04/08/weiboad-kafka-socket-bug/</url>
-    
-    <content type="html"><![CDATA[<h2 id="问题发现">问题发现</h2><h2 id="稳定复现故障">稳定复现故障</h2><h2 id="修复方案">修复方案</h2><pre><code class="hljs">https://github.com/weiboad/kafka-php/issues/130</code></pre>]]></content>
-    
-    
-    <categories>
-      
-      <category>技术</category>
-      
-      <category>PHP</category>
-      
-    </categories>
-    
-    
-    <tags>
-      
-      <tag>troubleshooting</tag>
       
     </tags>
     
@@ -1377,6 +1300,8 @@
     
     
     <tags>
+      
+      <tag>PHP</tag>
       
       <tag>troubleshooting</tag>
       
@@ -1505,6 +1430,10 @@
     
     <tags>
       
+      <tag>Linux</tag>
+      
+      <tag>Nginx</tag>
+      
       <tag>翻译</tag>
       
       <tag>troubleshooting</tag>
@@ -1529,6 +1458,16 @@
       
     </categories>
     
+    
+    <tags>
+      
+      <tag>Linux</tag>
+      
+      <tag>systemtap</tag>
+      
+      <tag>trace</tag>
+      
+    </tags>
     
   </entry>
   
@@ -1601,6 +1540,12 @@
     </categories>
     
     
+    <tags>
+      
+      <tag>Linux</tag>
+      
+    </tags>
+    
   </entry>
   
   
@@ -1653,6 +1598,8 @@
       
       <tag>PHP</tag>
       
+      <tag>依赖管理</tag>
+      
     </tags>
     
   </entry>
@@ -1675,6 +1622,8 @@
     
     
     <tags>
+      
+      <tag>个人博客</tag>
       
       <tag>jekyll</tag>
       
@@ -1701,6 +1650,12 @@
     </categories>
     
     
+    <tags>
+      
+      <tag>个人博客</tag>
+      
+    </tags>
+    
   </entry>
   
   
@@ -1724,6 +1679,8 @@
       
       <tag>Linux</tag>
       
+      <tag>SSH</tag>
+      
     </tags>
     
   </entry>
@@ -1746,6 +1703,14 @@
       
     </categories>
     
+    
+    <tags>
+      
+      <tag>git</tag>
+      
+      <tag>版本控制</tag>
+      
+    </tags>
     
   </entry>
   
@@ -2485,6 +2450,8 @@
     
     <tags>
       
+      <tag>Nginx</tag>
+      
       <tag>Lua</tag>
       
     </tags>
@@ -2509,6 +2476,8 @@
     
     
     <tags>
+      
+      <tag>Nginx</tag>
       
       <tag>音视频</tag>
       
@@ -2535,6 +2504,8 @@
     
     <tags>
       
+      <tag>Nginx</tag>
+      
       <tag>音视频</tag>
       
     </tags>
@@ -2559,6 +2530,8 @@
     
     
     <tags>
+      
+      <tag>Nginx</tag>
       
       <tag>翻译</tag>
       
